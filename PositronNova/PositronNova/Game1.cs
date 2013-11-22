@@ -16,6 +16,8 @@ namespace PositronNova
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        Texture2D background;
+        Rectangle mainFrame;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
