@@ -16,11 +16,10 @@ namespace PositronNova
     /// </summary>
     public class PositronNova : Microsoft.Xna.Framework.Game
     {
-        Texture2D background;
         Rectangle mainFrame;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        private Texture2D background;
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,7 +47,7 @@ namespace PositronNova
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            background = Content.Load<Texture2D>("background");
             // TODO: use this.Content to load your game content here
         }
 
@@ -83,9 +82,10 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            GraphicsDevice.Clear(Color.LightGoldenrodYellow);
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
