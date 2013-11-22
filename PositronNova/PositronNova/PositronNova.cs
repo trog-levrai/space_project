@@ -14,14 +14,14 @@ namespace PositronNova
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class PositronNova : Microsoft.Xna.Framework.Game
     {
         Texture2D background;
         Rectangle mainFrame;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+        public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
