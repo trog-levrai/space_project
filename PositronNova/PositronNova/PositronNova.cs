@@ -20,6 +20,7 @@ namespace PositronNova
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D background;
+        private Texture2D nyan;
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -47,7 +48,8 @@ namespace PositronNova
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = Content.Load<Texture2D>("background");
+            background = Content.Load<Texture2D>("img\\background");
+            nyan = Content.Load<Texture2D>("img\\nyan");
             // TODO: use this.Content to load your game content here
         }
 
@@ -85,6 +87,7 @@ namespace PositronNova
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
             spriteBatch.Begin();
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            spriteBatch.Draw(nyan, Vector2.Zero, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
