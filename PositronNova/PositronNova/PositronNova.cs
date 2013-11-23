@@ -19,8 +19,11 @@ namespace PositronNova
         Rectangle mainFrame;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        //Gestion des images...
         private Texture2D background;
         private Texture2D nyan;
+        private Vector2 nyan_position;
+        private Vector2 nyan_displacement;
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -36,7 +39,8 @@ namespace PositronNova
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            nyan_position = Vector2.Zero;
+            nyan_displacement = Vector2.One;
             base.Initialize();
         }
 
@@ -72,7 +76,8 @@ namespace PositronNova
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            //Déplacement du nyan cat vers le bas à droite
+            nyan_position += nyan_displacement;
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -87,7 +92,7 @@ namespace PositronNova
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
             spriteBatch.Begin();
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            spriteBatch.Draw(nyan, Vector2.Zero, Color.White);
+            spriteBatch.Draw(nyan, nyan_position, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
