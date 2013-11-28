@@ -39,8 +39,16 @@ namespace PositronNova
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            this.IsMouseVisible = true;
             nyan_position = Vector2.Zero;
-            nyan_displacement = Vector2.One;
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                nyan_displacement = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+            }
+            //nyan_displacement = Vector2.One;
+            
+
             base.Initialize();
         }
 
