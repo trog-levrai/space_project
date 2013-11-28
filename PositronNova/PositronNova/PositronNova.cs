@@ -41,11 +41,7 @@ namespace PositronNova
             // TODO: Add your initialization logic here
 
             this.IsMouseVisible = true;
-            nyan_position = Vector2.Zero;
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            {
-                nyan_displacement = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
-            }
+            nyan_position = new Vector2(0,0);
             //nyan_displacement = Vector2.One;
             
 
@@ -85,7 +81,18 @@ namespace PositronNova
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             //Déplacement du nyan cat vers le bas à droite
-            nyan_position += nyan_displacement;
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+
+                Vector2 souris = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+                if (nyan_position != souris)
+                {
+                    nyan_displacement = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+                    nyan_position += nyan_displacement;
+                }
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
