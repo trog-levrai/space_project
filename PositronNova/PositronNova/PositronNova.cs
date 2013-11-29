@@ -21,9 +21,7 @@ namespace PositronNova
         SpriteBatch spriteBatch;
         //Gestion des images...
         private Texture2D background;
-        private Texture2D nyan;
-        private Vector2 nyan_position;
-        private Vector2 nyan_displacement;
+        private sprite nyan;
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -41,8 +39,9 @@ namespace PositronNova
             // TODO: Add your initialization logic here
 
             this.IsMouseVisible = true;
-            nyan_position = new Vector2(0,0);
-            //nyan_displacement = Vector2.One;
+            nyan = new sprite();
+            nyan.Direction = Vector2.Zero;
+            nyan.Initialize();
             
 
             base.Initialize();
@@ -57,8 +56,8 @@ namespace PositronNova
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
-            //nyan = Content.Load<Texture2D>("img\\nyan");
-            nyan = Content.Load<Texture2D>("img\\nyan_transparent");
+            nyan.LoadContent(Content, "img\\nyan");
+            nyan.Speed = (float)0.1;
             // TODO: use this.Content to load your game content here
         }
 
@@ -79,23 +78,16 @@ namespace PositronNova
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-            //Déplacement du nyan cat vers le bas à droite
-
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-
-                Vector2 souris = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
-                if (nyan_position != souris)
-                {
-                    nyan_displacement = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
-                    nyan_position += nyan_displacement;
-                }
+                nyan.Direction = Vector2.UnitX;
             }
 
-            // TODO: Add your update logic here
-
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                nyan.Direction = Vector2.UnitY;
+            }
+            nyan.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -108,7 +100,7 @@ namespace PositronNova
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
             spriteBatch.Begin();
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            spriteBatch.Draw(nyan, nyan_position, Color.White);
+            nyan.Draw(spriteBatch, gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);

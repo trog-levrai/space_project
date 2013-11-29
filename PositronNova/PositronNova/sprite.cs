@@ -12,9 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace PositronNova
 {
-    class sprite
-    {
-        public class Sprite
+        public class sprite
         {
             public Texture2D Texture
             {
@@ -71,6 +69,7 @@ namespace PositronNova
             /// <param name="joueurNum">Le numéro du joueur qui doit être surveillé</param>
             public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState)
             {
+
             }
             /// <summary>
             /// Dessine le sprite en utilisant ses attributs et le spritebatch donné
@@ -83,4 +82,3 @@ namespace PositronNova
             }
         }
     }
-}
