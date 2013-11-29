@@ -57,7 +57,8 @@ namespace PositronNova
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
-            nyan = Content.Load<Texture2D>("img\\nyan");
+            //nyan = Content.Load<Texture2D>("img\\nyan");
+            nyan = Content.Load<Texture2D>("img\\nyan_transparent");
             // TODO: use this.Content to load your game content here
         }
 
