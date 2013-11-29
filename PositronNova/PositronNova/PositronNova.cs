@@ -16,7 +16,6 @@ namespace PositronNova
     /// </summary>
     public class PositronNova : Microsoft.Xna.Framework.Game
     {
-        Rectangle mainFrame;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         //Gestion des images...
@@ -37,7 +36,9 @@ namespace PositronNova
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            //Les deux lignes suivantes sont là pour une histoire de FPS. A modifier quand on saura faire donc...
+            IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
             this.IsMouseVisible = true;
             nyan = new sprite();
             nyan.Direction = Vector2.Zero;
@@ -78,15 +79,7 @@ namespace PositronNova
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                nyan.Direction = Vector2.UnitX;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                nyan.Direction = Vector2.UnitY;
-            }
+            nyan.HandleInput(Keyboard.GetState(), Mouse.GetState());
             nyan.Update(gameTime);
             base.Update(gameTime);
         }

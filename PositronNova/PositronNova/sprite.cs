@@ -32,6 +32,12 @@ namespace PositronNova
                 set { _direction = Vector2.Normalize(value); }
             }
             private Vector2 _direction;
+            public Vector2 FPosition
+            {
+                get { return _direction; }
+                set { _direction = Vector2.Normalize(value); }
+            }
+            private Vector2 _fposition;
             public float Speed
             {
                 get { return _speed; }
@@ -69,7 +75,28 @@ namespace PositronNova
             /// <param name="joueurNum">Le numéro du joueur qui doit être surveillé</param>
             public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState)
             {
-
+                //Ce code est magique, ne pas trop toucher SVP :-)
+                if (keyboardState.IsKeyDown(Keys.Up))
+                {
+                    _position.Y--;
+                }
+                else if (keyboardState.IsKeyDown(Keys.Down))
+                {
+                    _position.Y++;
+                }
+                if (keyboardState.IsKeyDown(Keys.Right))
+                {
+                    _position.X++;
+                }
+                else if (keyboardState.IsKeyDown(Keys.Left))
+                {
+                    _position.X--;
+                }
+                if (mouseState.RightButton == ButtonState.Pressed)
+                {
+                    _direction.X = mouseState.X - _position.X;
+                    _direction.Y = mouseState.Y - _position.Y;
+                }
             }
             /// <summary>
             /// Dessine le sprite en utilisant ses attributs et le spritebatch donné
