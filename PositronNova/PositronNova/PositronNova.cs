@@ -45,8 +45,6 @@ namespace PositronNova
             nyan.Direction = Vector2.Zero;
             nyan.Mouse = Vector2.Zero;
             nyan.Initialize();
-            
-
             base.Initialize();
         }
 
@@ -60,7 +58,7 @@ namespace PositronNova
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
             nyan.LoadContent(Content, "img\\nyan");
-            nyan.Speed = (float)0.001;
+            nyan.Speed = (float)0.1;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
             // TODO: use this.Content to load your game content here
         }

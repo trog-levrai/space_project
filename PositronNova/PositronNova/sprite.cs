@@ -112,7 +112,7 @@ namespace PositronNova
                     _mouse.Y = mouseState.Y;
                     _direction.X = mouseState.X - _position.X;
                     _direction.Y = mouseState.Y - _position.Y;
-                    Vector2.Normalize(_direction);
+                    _direction.Normalize();
                 }
             }
             /// <summary>
