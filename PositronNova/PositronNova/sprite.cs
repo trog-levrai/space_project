@@ -31,6 +31,13 @@ namespace PositronNova
                 get { return _direction; }
                 set { _direction = Vector2.Normalize(value); }
             }
+
+            private Vector2 _mouse;
+            public Vector2 Mouse
+            {
+                get { return _mouse; }
+                set { _mouse = value; }
+            }
             private Vector2 _direction;
             public Vector2 FPosition
             {
@@ -65,7 +72,14 @@ namespace PositronNova
             /// <param name="gameTime">Le GameTime associé à la frame</param>
             public virtual void Update(GameTime gameTime)
             {
-                _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (_position.X != _mouse.X && _position.Y != _mouse.Y)
+                {
+                    _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                }
+                else
+                {
+                    _direction = Vector2.Zero;
+                }
             }
             /// <summary>
             /// Permet de gérer les entrées du joueur
@@ -94,8 +108,11 @@ namespace PositronNova
                 }
                 if (mouseState.RightButton == ButtonState.Pressed)
                 {
+                    _mouse.X = mouseState.X;
+                    _mouse.Y = mouseState.Y;
                     _direction.X = mouseState.X - _position.X;
                     _direction.Y = mouseState.Y - _position.Y;
+                    Vector2.Normalize(_direction);
                 }
             }
             /// <summary>
