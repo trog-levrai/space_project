@@ -14,6 +14,7 @@ namespace PositronNova
 {
         public class sprite
         {
+            private bool moving;
             public Texture2D Texture
             {
                 get { return _texture; }
@@ -31,7 +32,6 @@ namespace PositronNova
                 get { return _direction; }
                 set { _direction = Vector2.Normalize(value); }
             }
-
             private Vector2 _mouse;
             public Vector2 Mouse
             {
@@ -72,13 +72,13 @@ namespace PositronNova
             /// <param name="gameTime">Le GameTime associé à la frame</param>
             public virtual void Update(GameTime gameTime)
             {
-                if (_position.X != _mouse.X && _position.Y != _mouse.Y)
+                if (Math.Abs(_position.X - _mouse.X) <= 2 && Math.Abs(_position.Y - _mouse.Y) <= 2)
+                {
+                    moving = false;
+                }
+                if (moving)
                 {
                     _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-                }
-                else
-                {
-                    _direction = Vector2.Zero;
                 }
             }
             /// <summary>
@@ -108,6 +108,7 @@ namespace PositronNova
                 }
                 if (mouseState.RightButton == ButtonState.Pressed)
                 {
+                    moving = true;
                     _mouse.X = mouseState.X;
                     _mouse.Y = mouseState.Y;
                     _direction.X = mouseState.X - _position.X;
