@@ -13,19 +13,43 @@ namespace PositronNova
         //Capte le texte
         //Le code sera à compléter pour l'implémentation de l'autocomplete pour shell
         private bool tab = false;
+        private Keys[] prevPressedKeys;
         private string input;
         public void KBInput(KeyboardState keyboardState)
         {
             if (tab)
             {
+                Keys[] pressedKeys = keyboardState.GetPressedKeys();  
+                bool shift = keyboardState.IsKeyDown(Keys.LeftShift) || keyboardState.IsKeyDown(Keys.RightShift);
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
                     texto.Enqueue(input);
                     input = "";
+                    tab = false;
+                    return;
                 }
+                //Gestion déguelasse mais obligatoire du clavier
                 else
                 {
-                    input += keyboardState.ToString();
+                    if (keyboardState.IsKeyDown(Keys.Space))
+                    {
+                        input += " ";
+                    }
+                    foreach (Keys key in pressedKeys)
+                    {
+                        if (!prevPressedKeys.Contains(key))
+                        {
+                            string keyString = key.ToString();
+                            if (keyString.Length == 1)
+                            {
+                                char c = keyString[0];
+                                if (!shift)
+                                    c += (char)('a' - 'A');
+                                input += "" + c;
+                            }
+                        }
+                    }
+                    prevPressedKeys = pressedKeys;
                 }
             }
             else
@@ -43,13 +67,14 @@ namespace PositronNova
             position = new Vector2(0, GraphicsDeviceManager.DefaultBackBufferHeight - 12*texts.Length);
             return position;
         }
-        public string ReturnString()
+        public string ReturnString(KeyboardState kb)
         {
             texto.CopyTo(texts, 0);
             string ans = "";
             foreach (string text in texts)
             {
-                ans = ans + text + "\n";
+                if (text != "")
+                {ans = ans + text + "\n";}
             }
             return ans;
         }
