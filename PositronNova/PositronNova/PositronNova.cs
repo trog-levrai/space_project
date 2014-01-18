@@ -22,6 +22,8 @@ namespace PositronNova
         private Texture2D background;
         private sprite nyan;
         private SpriteFont _font;
+        private SpriteFont chat;
+        private Chat text;
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,6 +47,7 @@ namespace PositronNova
             nyan.Direction = Vector2.Zero;
             nyan.Mouse = Vector2.Zero;
             nyan.Initialize();
+            text = new Chat();
             base.Initialize();
         }
 
@@ -58,8 +61,9 @@ namespace PositronNova
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
             nyan.LoadContent(Content, "img\\nyan");
-            nyan.Speed = (float)0.1;
+            nyan.Speed = (float)0.5;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
+            chat = Content.Load<SpriteFont>("chat");
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,6 +101,7 @@ namespace PositronNova
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.DrawString(_font, "Mouse position : " + nyan.Mouse, new Vector2(0,0), Color.Red);
             spriteBatch.DrawString(_font, "Position : " + nyan.Position, new Vector2(0, 10), Color.Red);
+            spriteBatch.DrawString(chat, text.ReturnString(), text.GetPosition(), Color.AntiqueWhite);
             nyan.Draw(spriteBatch, gameTime);
             spriteBatch.DrawString(_font, "NyanCat", new Vector2(nyan.Position.X - 3,nyan.Position.Y - 15), Color.Thistle);
             spriteBatch.End();
