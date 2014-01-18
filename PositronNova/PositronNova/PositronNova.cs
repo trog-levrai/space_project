@@ -22,6 +22,7 @@ namespace PositronNova
         private Texture2D background;
         private sprite nyan;
         private SpriteFont _font;
+        Camera2d _camera;
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -57,6 +58,7 @@ namespace PositronNova
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
+            _camera = new Camera2d(background.Width, background.Height, GraphicsDevice);
             nyan.LoadContent(Content, "img\\nyan");
             nyan.Speed = (float)0.1;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
@@ -82,6 +84,37 @@ namespace PositronNova
             // Allows the game to exit
             nyan.HandleInput(Keyboard.GetState(), Mouse.GetState());
             nyan.Update(gameTime);
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            Vector2 movement = Vector2.Zero;
+
+            if (keyboardState.IsKeyDown(Keys.Q))
+
+                movement.X--;
+
+            if (keyboardState.IsKeyDown(Keys.D))
+
+                movement.X++;
+
+            if (keyboardState.IsKeyDown(Keys.Z))
+
+                movement.Y--;
+
+            if (keyboardState.IsKeyDown(Keys.S))
+
+                movement.Y++;
+
+            _camera.Pos += movement * 20;
+
+            //PageDown et PageUp pour le zoom
+
+            if (keyboardState.IsKeyDown(Keys.PageDown))
+
+                _camera.Zoom -= 0.05f;
+
+            if (keyboardState.IsKeyDown(Keys.PageUp))
+
+                _camera.Zoom += 0.05f;
             base.Update(gameTime);
         }
 
@@ -92,9 +125,14 @@ namespace PositronNova
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Immediate,
+
+        BlendState.AlphaBlend, SamplerState.PointClamp,
+
+        null, null, null, _camera.GetTransformation());
             //Laiser cette ligne en première position.
-            spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            //spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
             spriteBatch.DrawString(_font, "Mouse position : " + nyan.Mouse, new Vector2(0,0), Color.Red);
             spriteBatch.DrawString(_font, "Position : " + nyan.Position, new Vector2(0, 10), Color.Red);
             nyan.Draw(spriteBatch, gameTime);
