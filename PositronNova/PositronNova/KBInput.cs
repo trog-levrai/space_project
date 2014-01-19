@@ -19,6 +19,7 @@ namespace PositronNova
         }
         public string GetString(KeyboardState kbState)
         {
+            current = "";
             Keys[] pressedKeys = kbState.GetPressedKeys();
             shift = kbState.IsKeyDown(Keys.RightShift) || kbState.IsKeyDown(Keys.LeftShift);
             //Si la touche vient d'être relevée
@@ -48,7 +49,7 @@ namespace PositronNova
                 {
                     current += " ";
                 }
-                if (key.ToString().Length == 1)
+                if (key.ToString().Length == 1 && key != Keys.Enter)
                 {
                     char c = key.ToString()[0];
                     if (!shift)
@@ -56,7 +57,6 @@ namespace PositronNova
                     current += "" + c;
                 }
             }
-            
         }
     }
 }
