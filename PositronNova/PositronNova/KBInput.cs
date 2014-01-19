@@ -45,16 +45,26 @@ namespace PositronNova
         {
             if (key != Keys.Tab && key != Keys.Enter)
             {
-                if (key == Keys.Space)
+                switch (key)
                 {
-                    current += " ";
-                }
-                if (key.ToString().Length == 1 && key != Keys.Enter)
-                {
-                    char c = key.ToString()[0];
-                    if (!shift)
-                        c += (char)('a' - 'A');
-                    current += "" + c;
+                    case Keys.Space:
+                        current += " ";
+                        break;
+                    case Keys.OemComma:
+                        current += ",";
+                        break;
+                    case Keys.OemPlus:
+                        current += "+";
+                        break;
+                    default:
+                        if (key.ToString().Length == 1 && key != Keys.Enter)
+                        {
+                            char c = key.ToString()[0];
+                            if (!shift)
+                                c += (char)('a' - 'A');
+                            current += "" + c;
+                        }
+                        break;
                 }
             }
         }

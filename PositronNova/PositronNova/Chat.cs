@@ -16,12 +16,14 @@ namespace PositronNova
         private int rank;
         private string input;
         private KBInput kb;
+        public string[] texts;
         public Chat()
         {
             tab = false;
             rank = 0;
             input = "";
             kb = new KBInput();
+            texts = new string[10] {"", "", "", "", "", "", "", "", "", ""};
         }
         public void KBInput(KeyboardState keyboardState)
         {
@@ -30,24 +32,25 @@ namespace PositronNova
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
                     int i = 0;
-                    while (i<10 && texts[i] != "")
+                    do
                     {
                         i += 1;
-                    }
-                    if (i == 10)
+                    } while (i < texts.Length && texts[i] != "");
+                    if (i == texts.Length && input != "")
                     {
                         //On décale tout et on met input à la dernière place car tout est remplis
-                        for (int j = 1; j < 9; j++)
+                        for (int j = 1; j < texts.Length; j++)
                         {
                             texts[j - 1] = texts[j];
                         }
-                        texts[9] = input;
+                        texts[texts.Length - 1] = input;
+                        rank = 10;
                     }
-                    else
+                    if (input != "" && i < texts.Length)
                     {
                         texts[i] = input;
+                        rank += 1;
                     }
-                    rank = i + 1;
                     input = "";
                     kb.current = "";
                     tab = false;
@@ -70,7 +73,6 @@ namespace PositronNova
             return position;
         }
         //Génère le texte à afficher
-        private string[] texts = new string[10] { "", "", "", "", "", "", "", "", "", ""};
         public string ReturnString(KeyboardState kb)
         {
             string ans = "";
@@ -78,7 +80,11 @@ namespace PositronNova
             {
                 if (text != "")
                 {
-                    ans = ans + "<" + text + ">\n";
+                    ans += "<" + text + ">\n";
+                }
+                else
+                {
+                    ans += "Error";
                 }
             }
             return ans;
