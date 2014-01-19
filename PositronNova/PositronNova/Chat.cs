@@ -13,43 +13,22 @@ namespace PositronNova
         //Capte le texte
         //Le code sera à compléter pour l'implémentation de l'autocomplete pour shell
         private bool tab = false;
-        private Keys[] prevPressedKeys;
-        private string input;
+        private string input = "";
+        private KBInput kb = new KBInput();
         public void KBInput(KeyboardState keyboardState)
         {
             if (tab)
             {
-                Keys[] pressedKeys = keyboardState.GetPressedKeys();  
-                bool shift = keyboardState.IsKeyDown(Keys.LeftShift) || keyboardState.IsKeyDown(Keys.RightShift);
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
                     texto.Enqueue(input);
                     input = "";
+                    kb.current = "";
                     tab = false;
-                    return;
                 }
-                //Gestion déguelasse mais obligatoire du clavier
                 else
                 {
-                    if (keyboardState.IsKeyDown(Keys.Space))
-                    {
-                        input += " ";
-                    }
-                    foreach (Keys key in pressedKeys)
-                    {
-                        if (!prevPressedKeys.Contains(key))
-                        {
-                            string keyString = key.ToString();
-                            if (keyString.Length == 1)
-                            {
-                                char c = keyString[0];
-                                if (!shift)
-                                    c += (char)('a' - 'A');
-                                input += "" + c;
-                            }
-                        }
-                    }
-                    prevPressedKeys = pressedKeys;
+                    input += kb.GetString(keyboardState);
                 }
             }
             else
@@ -59,22 +38,22 @@ namespace PositronNova
         }
         //File du texte à afficher
         private Queue<string> texto = new Queue<string>(10);
-        private string[] texts = new string[10];
         //Position de l'affichage
         private Vector2 position;
         public Vector2 GetPosition()
         {
-            position = new Vector2(0, GraphicsDeviceManager.DefaultBackBufferHeight - 12*texts.Length);
+            position = new Vector2(0, GraphicsDeviceManager.DefaultBackBufferHeight - 12*texto.LongCount());
             return position;
         }
         public string ReturnString(KeyboardState kb)
         {
-            texto.CopyTo(texts, 0);
+            string[] texts = new string[texto.Count];
+            texts = texto.ToArray();
             string ans = "";
-            foreach (string text in texts)
+            for (int i = 0; i < texts.Length; i++)
             {
-                if (text != "")
-                {ans = ans + text + "\n";}
+                if (texts[i] != "")
+                { ans = ans + texts[i] + "\n"; }
             }
             return ans;
         }
