@@ -100,8 +100,6 @@ namespace PositronNova
             spriteBatch.Begin();
             //Laiser cette ligne en première position.
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            spriteBatch.DrawString(_font, "Mouse position : " + nyan.Mouse, new Vector2(0,0), Color.Red);
-            spriteBatch.DrawString(_font, "Position : " + nyan.Position, new Vector2(0, 10), Color.Red);
             spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
             nyan.Draw(spriteBatch, gameTime);
             spriteBatch.DrawString(_font, "NyanCat", new Vector2(nyan.Position.X - 3,nyan.Position.Y - 15), Color.Thistle);

@@ -12,16 +12,42 @@ namespace PositronNova
     {
         //Capte le texte
         //Le code sera à compléter pour l'implémentation de l'autocomplete pour shell
-        private bool tab = false;
-        private string input = "";
-        private KBInput kb = new KBInput();
+        private bool tab;
+        private int rank;
+        private string input;
+        private KBInput kb;
+        public Chat()
+        {
+            tab = false;
+            rank = 0;
+            input = "";
+            kb = new KBInput();
+        }
         public void KBInput(KeyboardState keyboardState)
         {
             if (tab)
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
-                    texto.Enqueue(input);
+                    int i = 0;
+                    while (i<10 && texts[i] != "")
+                    {
+                        i += 1;
+                    }
+                    if (i == 10)
+                    {
+                        //On décale tout et on met input à la dernière place car tout est remplis
+                        for (int j = 1; j < 9; j++)
+                        {
+                            texts[j - 1] = texts[j];
+                        }
+                        texts[9] = input;
+                    }
+                    else
+                    {
+                        texts[i] = input;
+                    }
+                    rank = i + 1;
                     input = "";
                     kb.current = "";
                     tab = false;
@@ -36,24 +62,24 @@ namespace PositronNova
                 tab = keyboardState.IsKeyDown(Keys.Tab);
             }
         }
-        //File du texte à afficher
-        private Queue<string> texto = new Queue<string>(10);
         //Position de l'affichage
         private Vector2 position;
         public Vector2 GetPosition()
         {
-            position = new Vector2(0, GraphicsDeviceManager.DefaultBackBufferHeight - 12*texto.LongCount());
+            position = new Vector2(0, GraphicsDeviceManager.DefaultBackBufferHeight - 14*rank);
             return position;
         }
+        //Génère le texte à afficher
+        private string[] texts = new string[10] { "", "", "", "", "", "", "", "", "", ""};
         public string ReturnString(KeyboardState kb)
         {
-            string[] texts = new string[texto.Count];
-            texts = texto.ToArray();
             string ans = "";
-            for (int i = 0; i < texts.Length; i++)
+            foreach (string text in texts)
             {
-                if (texts[i] != "")
-                { ans = ans + texts[i] + "\n"; }
+                if (text != "")
+                {
+                    ans = ans + "<" + text + ">\n";
+                }
             }
             return ans;
         }
