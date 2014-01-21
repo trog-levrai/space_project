@@ -82,10 +82,6 @@ namespace PositronNova
                 {
                     ans += "<" + text + ">\n";
                 }
-                else
-                {
-                    ans += "Error";
-                }
             }
             return ans;
         }
