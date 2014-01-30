@@ -14,6 +14,8 @@ namespace PositronNova
 {
         public class sprite
         {
+            //Booleen de selection
+            private bool selected = false;
             private bool moving;
             public Texture2D Texture
             {
@@ -76,7 +78,7 @@ namespace PositronNova
                 {
                     moving = false;
                 }
-                if (moving)
+                if (moving && selected)
                 {
                     _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 }
@@ -105,6 +107,10 @@ namespace PositronNova
                 else if (keyboardState.IsKeyDown(Keys.Left))
                 {
                     _position.X--;
+                }
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    selected = Math.Abs(mouseState.X - _position.X) <= 40 && Math.Abs(mouseState.Y - _position.Y) <= 26;
                 }
                 if (mouseState.RightButton == ButtonState.Pressed)
                 {
