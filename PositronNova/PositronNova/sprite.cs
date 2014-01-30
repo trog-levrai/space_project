@@ -112,7 +112,7 @@ namespace PositronNova
                 {
                     selected = Math.Abs(mouseState.X - _position.X) <= 40 && Math.Abs(mouseState.Y - _position.Y) <= 26;
                 }
-                if (mouseState.RightButton == ButtonState.Pressed)
+                if (mouseState.RightButton == ButtonState.Pressed && selected)
                 {
                     moving = true;
                     _mouse.X = mouseState.X;
