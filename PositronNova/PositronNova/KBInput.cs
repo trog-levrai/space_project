@@ -53,6 +53,12 @@ namespace PositronNova
                     case Keys.OemComma:
                         current += ",";
                         break;
+                    case Keys.OemSemicolon:
+                        current += ";";
+                        break;
+                    case Keys.OemCloseBrackets:
+                        current += "]";
+                        break;
                     case Keys.OemPlus:
                         current += "+";
                         break;
