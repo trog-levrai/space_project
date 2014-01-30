@@ -78,7 +78,7 @@ namespace PositronNova
                 {
                     moving = false;
                 }
-                if (moving && selected)
+                if (moving)
                 {
                     _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 }
