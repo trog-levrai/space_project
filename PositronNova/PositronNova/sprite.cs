@@ -16,6 +16,10 @@ namespace PositronNova
         {
             //Booleen de selection
             private bool selected = false;
+            public bool Selected
+            {
+                get { return selected; }
+            }
             private bool moving;
             public Texture2D Texture
             {

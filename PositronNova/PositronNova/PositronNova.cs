@@ -22,7 +22,6 @@ namespace PositronNova
         //Gestion des images...
         private Texture2D background;
         private Unit nyan;
-        private SpriteFont _font;
         Camera2d _camera;
         public PositronNova()
         {
@@ -43,7 +42,7 @@ namespace PositronNova
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsMouseVisible = true;
-            nyan = new Unit("Nyan avec classe :-)", 1, Content);
+            nyan = new Unit("Chasseur", 1, Content);
             base.Initialize();
         }
 
@@ -57,7 +56,6 @@ namespace PositronNova
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
             _camera = new Camera2d(background.Width, background.Height, GraphicsDevice);
-            _font = Content.Load<SpriteFont>("Affichage_mouse");
             // TODO: use this.Content to load your game content here
         }
 
@@ -127,10 +125,8 @@ namespace PositronNova
             //Laiser cette ligne en première position.
             //spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
-            nyan.sprite.Draw(spriteBatch, gameTime);
-            spriteBatch.DrawString(_font, nyan.Name, new Vector2(nyan.sprite.Position.X - 3,nyan.sprite.Position.Y - 15), Color.Thistle);
+            nyan.Draw(spriteBatch, gameTime);
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
