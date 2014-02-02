@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using PositronNova.Class.Unit;
 
 namespace PositronNova
 {
@@ -20,7 +21,7 @@ namespace PositronNova
         SpriteBatch spriteBatch;
         //Gestion des images...
         private Texture2D background;
-        private sprite nyan;
+        private Unit nyan;
         private SpriteFont _font;
         Camera2d _camera;
         public PositronNova()
@@ -42,10 +43,7 @@ namespace PositronNova
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsMouseVisible = true;
-            nyan = new sprite();
-            nyan.Direction = Vector2.Zero;
-            nyan.Mouse = Vector2.Zero;
-            nyan.Initialize();
+            nyan = new Unit("Nyan avec classe :-)", 1, Content);
             base.Initialize();
         }
 
@@ -59,8 +57,6 @@ namespace PositronNova
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
             _camera = new Camera2d(background.Width, background.Height, GraphicsDevice);
-            nyan.LoadContent(Content, "img\\nyan");
-            nyan.Speed = (float)0.1;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
             // TODO: use this.Content to load your game content here
         }
@@ -81,8 +77,6 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            nyan.HandleInput(Keyboard.GetState(), Mouse.GetState());
             nyan.Update(gameTime);
             KeyboardState keyboardState = Keyboard.GetState();
 
@@ -133,10 +127,8 @@ namespace PositronNova
             //Laiser cette ligne en première position.
             //spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
-            spriteBatch.DrawString(_font, "Mouse position : " + nyan.Mouse, new Vector2(0,0), Color.Red);
-            spriteBatch.DrawString(_font, "Position : " + nyan.Position, new Vector2(0, 10), Color.Red);
-            nyan.Draw(spriteBatch, gameTime);
-            spriteBatch.DrawString(_font, "NyanCat", new Vector2(nyan.Position.X - 3,nyan.Position.Y - 15), Color.Thistle);
+            nyan.sprite.Draw(spriteBatch, gameTime);
+            spriteBatch.DrawString(_font, nyan.Name, new Vector2(nyan.sprite.Position.X - 3,nyan.sprite.Position.Y - 15), Color.Thistle);
             spriteBatch.End();
 
             base.Draw(gameTime);
