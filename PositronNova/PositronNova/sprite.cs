@@ -96,22 +96,6 @@ namespace PositronNova
             public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState)
             {
                 //Ce code est magique, ne pas trop toucher SVP :-)
-                if (keyboardState.IsKeyDown(Keys.Up))
-                {
-                    _position.Y--;
-                }
-                else if (keyboardState.IsKeyDown(Keys.Down))
-                {
-                    _position.Y++;
-                }
-                if (keyboardState.IsKeyDown(Keys.Right))
-                {
-                    _position.X++;
-                }
-                else if (keyboardState.IsKeyDown(Keys.Left))
-                {
-                    _position.X--;
-                }
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
                     selected = Math.Abs(mouseState.X - _position.X) <= 40 && Math.Abs(mouseState.Y - _position.Y) <= 26;

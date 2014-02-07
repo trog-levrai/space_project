@@ -80,19 +80,19 @@ namespace PositronNova
 
             Vector2 movement = Vector2.Zero;
 
-            if (keyboardState.IsKeyDown(Keys.Q))
+            if (keyboardState.IsKeyDown(Keys.Left))
 
                 movement.X--;
 
-            if (keyboardState.IsKeyDown(Keys.D))
+            if (keyboardState.IsKeyDown(Keys.Right))
 
                 movement.X++;
 
-            if (keyboardState.IsKeyDown(Keys.Z))
+            if (keyboardState.IsKeyDown(Keys.Up))
 
                 movement.Y--;
 
-            if (keyboardState.IsKeyDown(Keys.S))
+            if (keyboardState.IsKeyDown(Keys.Down))
 
                 movement.Y++;
 
