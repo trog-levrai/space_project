@@ -30,7 +30,11 @@ namespace PositronNova.Class.Unit
         }
         public void Update(GameTime gt)
         {
-            sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
+            //On ne prend les touches que si c'est un allie
+            if (friendly)
+            {
+                sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
+            }
             sprite.Update(gt);
         }
         //Ce qui suit est le constructeur

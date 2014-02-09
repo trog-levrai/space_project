@@ -22,6 +22,7 @@ namespace PositronNova
         //Gestion des images...
         private Texture2D background;
         private Fighter nyan;
+        private Destroyer ennemy;
         Camera2d _camera;
         public PositronNova()
         {
@@ -43,6 +44,7 @@ namespace PositronNova
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsMouseVisible = true;
             nyan = new Fighter("Chasseur", Content, new Vector2(10,10), true);
+            ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
             base.Initialize();
         }
 
@@ -76,6 +78,7 @@ namespace PositronNova
         protected override void Update(GameTime gameTime)
         {
             nyan.Update(gameTime);
+            ennemy.Update(gameTime);
             KeyboardState keyboardState = Keyboard.GetState();
 
             Vector2 movement = Vector2.Zero;
@@ -126,6 +129,7 @@ namespace PositronNova
             //spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
             nyan.Draw(spriteBatch, gameTime);
+            ennemy.Draw(spriteBatch, gameTime);
             spriteBatch.End();
             base.Draw(gameTime);
         }
