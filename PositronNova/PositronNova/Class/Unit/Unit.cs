@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,6 +14,7 @@ namespace PositronNova.Class.Unit
     {
         protected System.TimeSpan fireRate;
         protected System.TimeSpan last;
+        protected SoundEffect laserSound;
         private bool friendly;
         private Color color;
         private SpriteFont _font;
@@ -60,6 +62,7 @@ namespace PositronNova.Class.Unit
             }
             this.name = name;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
+            laserSound = Content.Load<SoundEffect>("sounds\\laser");
         }
         //Le but est de rendre le sprite de la classe private.
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -76,6 +79,7 @@ namespace PositronNova.Class.Unit
         public void attack(Unit enn)
         {
             enn.Pv -= damage;
+            laserSound.Play();
         }
     }
     class Fighter : Unit
