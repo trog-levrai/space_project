@@ -11,6 +11,8 @@ namespace PositronNova.Class.Unit
 {
     public abstract class Unit
     {
+        private bool friendly;
+        private Color color;
         private SpriteFont _font;
         public sprite sprite;
         private string name;
@@ -32,8 +34,17 @@ namespace PositronNova.Class.Unit
             sprite.Update(gt);
         }
         //Ce qui suit est le constructeur
-        public Unit(string name, ContentManager Content)
+        public Unit(string name, ContentManager Content, bool friendly)
         {
+            this.friendly = friendly;
+            if (friendly)
+            {
+                color = Color.Blue;
+            }
+            else
+            {
+                color = Color.IndianRed;
+            }
             this.name = name;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
         }
@@ -41,20 +52,16 @@ namespace PositronNova.Class.Unit
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             sprite.Draw(spriteBatch, gameTime);
+            spriteBatch.DrawString(_font, name, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 15), color);
             if (sprite.Selected)
             {
-                spriteBatch.DrawString(_font, name, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 15), Color.Thistle);
-                spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 25), Color.Thistle);
-            }
-            else
-            {
-                spriteBatch.DrawString(_font, name, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 15), Color.Thistle);
+                spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 25), color);
             }
         }
     }
     class Fighter : Unit
     {
-        public Fighter(string name, ContentManager Content) : base(name, Content)
+        public Fighter(string name, ContentManager Content, bool friendly) : base(name, Content, friendly)
         {
             pv_max = 10;
             pv = 10;
@@ -64,6 +71,34 @@ namespace PositronNova.Class.Unit
             sprite.Initialize();
             sprite.LoadContent(Content, "img\\Chasseur_1B");
             sprite.Speed = (float)0.15;
+        }
+    }
+    class Destroyer : Unit
+    {
+        public Destroyer(string name, ContentManager Content, bool friendly) : base(name, Content, friendly)
+        {
+            pv_max = 20;
+            pv = 20;
+            sprite = new sprite();
+            sprite.Direction = Vector2.Zero;
+            sprite.Mouse = Vector2.Zero;
+            sprite.Initialize();
+            sprite.LoadContent(Content, "img\\Destroyer_1B");
+            sprite.Speed = (float)0.1;
+        }
+    }
+    class Heavy : Unit
+    {
+        public Heavy(string name, ContentManager Content, bool friendly) : base(name, Content, friendly)
+        {
+            pv_max = 30;
+            pv = 30;
+            sprite = new sprite();
+            sprite.Direction = Vector2.Zero;
+            sprite.Mouse = Vector2.Zero;
+            sprite.Initialize();
+            sprite.LoadContent(Content, "img\\Vaisseau_1_LourdB");
+            sprite.Speed = (float)0.05;
         }
     }
 }
