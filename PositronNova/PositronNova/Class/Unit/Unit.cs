@@ -40,6 +40,7 @@ namespace PositronNova.Class.Unit
             if (friendly)
             {
                 sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
+                //Le but du test est de savoir si il s'est bien ecoule au moins une seconde
                 if (last >= fireRate)
                 {
                     attack(enn);
@@ -49,6 +50,7 @@ namespace PositronNova.Class.Unit
             sprite.Update(gt);
         }
         //Ce qui suit est le constructeur
+        //On pourra rajouter facilement plein d'options quand quelqu'un sera motive
         public Unit(string name, ContentManager Content, bool friendly)
         {
             this.friendly = friendly;
@@ -75,13 +77,17 @@ namespace PositronNova.Class.Unit
                 spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 25), color);
             }
         }
-        //Methode ultra basique
+        //Methode ultra basique pour l'attaque
+        //Il va falloir rajouter plein de trucs du genre une portee de tir
+        //Un systeme pour selectionner les ennemis a abatre, etc
         public void attack(Unit enn)
         {
             enn.Pv -= damage;
             laserSound.Play();
         }
     }
+    //Les dignes heritieres de la class Unit :-)
+    //On initialise une variable qui nous servira de timer pour les attques avec "last"
     class Fighter : Unit
     {
         public Fighter(string name, ContentManager Content,Vector2 Pos, bool friendly) : base(name, Content, friendly)
