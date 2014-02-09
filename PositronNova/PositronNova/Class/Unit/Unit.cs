@@ -11,6 +11,8 @@ namespace PositronNova.Class.Unit
 {
     public abstract class Unit
     {
+        protected System.TimeSpan fireRate;
+        protected System.TimeSpan last;
         private bool friendly;
         private Color color;
         private SpriteFont _font;
@@ -31,11 +33,16 @@ namespace PositronNova.Class.Unit
         }
         public void Update(GameTime gt, Unit enn)
         {
+            last = last.Add(gt.ElapsedGameTime);
             //On ne prend les touches que si c'est un allie
             if (friendly)
             {
                 sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
-                attack(enn);
+                if (last >= fireRate)
+                {
+                    attack(enn);
+                    last = new TimeSpan(0);
+                }
             }
             sprite.Update(gt);
         }
@@ -65,7 +72,7 @@ namespace PositronNova.Class.Unit
                 spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 25), color);
             }
         }
-        //Methode ultra basique pour le moment
+        //Methode ultra basique
         public void attack(Unit enn)
         {
             enn.Pv -= damage;
@@ -75,6 +82,8 @@ namespace PositronNova.Class.Unit
     {
         public Fighter(string name, ContentManager Content,Vector2 Pos, bool friendly) : base(name, Content, friendly)
         {
+            last = new TimeSpan(0);
+            fireRate = new TimeSpan(0,0,0,1);
             pv_max = 10;
             pv = 10;
             damage = 1;
@@ -86,6 +95,8 @@ namespace PositronNova.Class.Unit
     {
         public Destroyer(string name, ContentManager Content, Vector2 Pos, bool friendly) : base(name, Content, friendly)
         {
+            last = new TimeSpan(0);
+            fireRate = new TimeSpan(0, 0, 0, 1);
             pv_max = 20;
             pv = 20;
             damage = 2;
@@ -97,6 +108,8 @@ namespace PositronNova.Class.Unit
     {
         public Heavy(string name, ContentManager Content, Vector2 Pos, bool friendly) : base(name, Content, friendly)
         {
+            last = new TimeSpan(0);
+            fireRate = new TimeSpan(0, 0, 0, 2);
             pv_max = 30;
             pv = 30;
             damage = 4;
