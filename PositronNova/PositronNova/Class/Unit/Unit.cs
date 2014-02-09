@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PositronNova.Class.Unit
 {
-    class Unit
+    public abstract class Unit
     {
         private SpriteFont _font;
         public sprite sprite;
@@ -32,42 +32,8 @@ namespace PositronNova.Class.Unit
             sprite.Update(gt);
         }
         //Ce qui suit est le constructeur
-        public Unit(string name, byte type, ContentManager Content)
+        public Unit(string name, ContentManager Content)
         {
-            //Le switch sert a donner les caracteristiques selon la classe du vaisseau
-            switch (type)
-            {
-                case 1:
-                    pv_max = 10;
-                    pv = 10;
-                    sprite = new sprite();
-                    sprite.Direction = Vector2.Zero;
-                    sprite.Mouse = Vector2.Zero;
-                    sprite.Initialize();
-                    sprite.LoadContent(Content, "img\\Chasseur_1B");
-                    sprite.Speed = (float)0.15;
-                    break;
-                case 2:
-                    pv_max = 15;
-                    pv = 15;
-                    sprite = new sprite();
-                    sprite.Direction = Vector2.Zero;
-                    sprite.Mouse = Vector2.Zero;
-                    sprite.Initialize();
-                    sprite.LoadContent(Content, "img\\Vaisseau_1_LourdB");
-                    sprite.Speed = (float)0.125;
-                    break;
-                case 3:
-                    pv_max = 20;
-                    pv = 20;
-                    sprite = new sprite();
-                    sprite.Direction = Vector2.Zero;
-                    sprite.Mouse = Vector2.Zero;
-                    sprite.Initialize();
-                    sprite.LoadContent(Content, "img\\Destroyer_1B");
-                    sprite.Speed = (float)0.1;
-                    break;
-            }
             this.name = name;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
         }
@@ -84,6 +50,20 @@ namespace PositronNova.Class.Unit
             {
                 spriteBatch.DrawString(_font, name, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 15), Color.Thistle);
             }
+        }
+    }
+    class Fighter : Unit
+    {
+        public Fighter(string name, ContentManager Content) : base(name, Content)
+        {
+            pv_max = 10;
+            pv = 10;
+            sprite = new sprite();
+            sprite.Direction = Vector2.Zero;
+            sprite.Mouse = Vector2.Zero;
+            sprite.Initialize();
+            sprite.LoadContent(Content, "img\\Chasseur_1B");
+            sprite.Speed = (float)0.15;
         }
     }
 }

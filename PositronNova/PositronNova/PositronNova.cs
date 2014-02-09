@@ -21,7 +21,7 @@ namespace PositronNova
         SpriteBatch spriteBatch;
         //Gestion des images...
         private Texture2D background;
-        private Unit nyan;
+        private Fighter nyan;
         Camera2d _camera;
         public PositronNova()
         {
@@ -42,7 +42,7 @@ namespace PositronNova
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsMouseVisible = true;
-            nyan = new Unit("Chasseur", 1, Content);
+            nyan = new Fighter("Chasseur", Content);
             base.Initialize();
         }
 
