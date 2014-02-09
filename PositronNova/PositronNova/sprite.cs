@@ -57,11 +57,13 @@ namespace PositronNova
                 set { _speed = value; }
             }
             private float _speed;
-            public virtual void Initialize()
+            public sprite(Vector2 pos, ContentManager content, string cont)
             {
-                _position = Vector2.Zero;
+                _position = pos;
                 _direction = Vector2.Zero;
                 _speed = 0;
+                Mouse = Vector2.Zero;
+                LoadContent(content, cont);
             }
             /// <summary>
             /// Charge l'image voulue grâce au ContentManager donné

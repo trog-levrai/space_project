@@ -61,43 +61,31 @@ namespace PositronNova.Class.Unit
     }
     class Fighter : Unit
     {
-        public Fighter(string name, ContentManager Content, bool friendly) : base(name, Content, friendly)
+        public Fighter(string name, ContentManager Content,Vector2 Pos, bool friendly) : base(name, Content, friendly)
         {
             pv_max = 10;
             pv = 10;
-            sprite = new sprite();
-            sprite.Direction = Vector2.Zero;
-            sprite.Mouse = Vector2.Zero;
-            sprite.Initialize();
-            sprite.LoadContent(Content, "img\\Chasseur_1B");
+            sprite = new sprite(Pos,Content,"img\\Chasseur_1B");
             sprite.Speed = (float)0.15;
         }
     }
     class Destroyer : Unit
     {
-        public Destroyer(string name, ContentManager Content, bool friendly) : base(name, Content, friendly)
+        public Destroyer(string name, ContentManager Content, Vector2 Pos, bool friendly) : base(name, Content, friendly)
         {
             pv_max = 20;
             pv = 20;
-            sprite = new sprite();
-            sprite.Direction = Vector2.Zero;
-            sprite.Mouse = Vector2.Zero;
-            sprite.Initialize();
-            sprite.LoadContent(Content, "img\\Destroyer_1B");
+            sprite = new sprite(Pos, Content, "img\\Destroyer_1B");
             sprite.Speed = (float)0.1;
         }
     }
     class Heavy : Unit
     {
-        public Heavy(string name, ContentManager Content, bool friendly) : base(name, Content, friendly)
+        public Heavy(string name, ContentManager Content, Vector2 Pos, bool friendly) : base(name, Content, friendly)
         {
             pv_max = 30;
             pv = 30;
-            sprite = new sprite();
-            sprite.Direction = Vector2.Zero;
-            sprite.Mouse = Vector2.Zero;
-            sprite.Initialize();
-            sprite.LoadContent(Content, "img\\Vaisseau_1_LourdB");
+            sprite = new sprite(Pos, Content, "img\\Vaisseau_1_LourdB");
             sprite.Speed = (float)0.05;
         }
     }

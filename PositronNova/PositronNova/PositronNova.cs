@@ -42,7 +42,7 @@ namespace PositronNova
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
             this.IsMouseVisible = true;
-            nyan = new Fighter("Chasseur", Content, true);
+            nyan = new Fighter("Chasseur", Content, new Vector2(10,10), true);
             base.Initialize();
         }
 
