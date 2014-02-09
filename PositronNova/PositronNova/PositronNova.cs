@@ -77,8 +77,8 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            nyan.Update(gameTime);
-            ennemy.Update(gameTime);
+            nyan.Update(gameTime, ennemy);
+            ennemy.Update(gameTime, nyan);
             KeyboardState keyboardState = Keyboard.GetState();
 
             Vector2 movement = Vector2.Zero;

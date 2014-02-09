@@ -17,6 +17,7 @@ namespace PositronNova.Class.Unit
         public sprite sprite;
         private string name;
         private byte type;
+        protected int damage;
         protected int pv_max;
         public int Pv_max
         {
@@ -28,12 +29,13 @@ namespace PositronNova.Class.Unit
             get { return pv; }
             set { pv = value; }
         }
-        public void Update(GameTime gt)
+        public void Update(GameTime gt, Unit enn)
         {
             //On ne prend les touches que si c'est un allie
             if (friendly)
             {
                 sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
+                attack(enn);
             }
             sprite.Update(gt);
         }
@@ -57,10 +59,16 @@ namespace PositronNova.Class.Unit
         {
             sprite.Draw(spriteBatch, gameTime);
             spriteBatch.DrawString(_font, name, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 15), color);
-            if (sprite.Selected)
+            //Mettre "|| !friendly" pour tester l'effet de la methode attack
+            if (sprite.Selected || !friendly)
             {
                 spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 25), color);
             }
+        }
+        //Methode ultra basique pour le moment
+        public void attack(Unit enn)
+        {
+            enn.Pv -= damage;
         }
     }
     class Fighter : Unit
@@ -69,6 +77,7 @@ namespace PositronNova.Class.Unit
         {
             pv_max = 10;
             pv = 10;
+            damage = 1;
             sprite = new sprite(Pos,Content,"img\\Chasseur_1B");
             sprite.Speed = (float)0.15;
         }
@@ -79,6 +88,7 @@ namespace PositronNova.Class.Unit
         {
             pv_max = 20;
             pv = 20;
+            damage = 2;
             sprite = new sprite(Pos, Content, "img\\Destroyer_1B");
             sprite.Speed = (float)0.1;
         }
@@ -89,6 +99,7 @@ namespace PositronNova.Class.Unit
         {
             pv_max = 30;
             pv = 30;
+            damage = 4;
             sprite = new sprite(Pos, Content, "img\\Vaisseau_1_LourdB");
             sprite.Speed = (float)0.05;
         }
