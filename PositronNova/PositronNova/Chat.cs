@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net.Sockets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -31,6 +32,10 @@ namespace PositronNova
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
+                    byte[] msg = Encoding.Default.GetBytes(input);
+                    UdpClient udpClient = new UdpClient();
+                    udpClient.Send(msg, msg.Length, "10.3.140.113", 5035);
+                    udpClient.Close();
                     int i = 0;
                     do
                     {
