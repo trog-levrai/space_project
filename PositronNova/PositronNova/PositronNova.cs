@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -19,6 +23,8 @@ namespace PositronNova
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         //Gestion des images...
+        //Pour la gestion du serveur
+        private static Thread _thEcoute;
         private Texture2D background;
         private sprite nyan;
         private SpriteFont _font;
@@ -49,6 +55,21 @@ namespace PositronNova
             nyan.Initialize();
             text = new Chat();
             base.Initialize();
+            _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
+            _thEcoute.Start(text);
+        }
+        private static void Ecouter(Object txt)
+        {
+            //On crée le serveur en lui spécifiant le port sur lequel il devra écouter.
+            UdpClient serveur = new UdpClient(5035);
+            //Création d'une boucle infinie qui aura pour tâche d'écouter.
+            while (true)
+            {
+                IPEndPoint client = null;
+                byte[] data = serveur.Receive(ref client);
+                string message = Encoding.Default.GetString(data);
+                ((Chat) txt).texts[0] = message;
+            }
         }
 
         /// <summary>
