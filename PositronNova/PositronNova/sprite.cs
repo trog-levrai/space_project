@@ -80,7 +80,7 @@ namespace PositronNova
             /// <param name="gameTime">Le GameTime associé à la frame</param>
             public virtual void Update(GameTime gameTime)
             {
-                if (Math.Abs(_position.X - _mouse.X) <= 2 && Math.Abs(_position.Y - _mouse.Y) <= 2)
+                if (Math.Abs(_position.X - _mouse.X) <= 5 && Math.Abs(_position.Y - _mouse.Y) <= 5)
                 {
                     moving = false;
                 }

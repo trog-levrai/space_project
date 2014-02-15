@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -20,10 +24,14 @@ namespace PositronNova
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         //Gestion des images...
+        //Pour la gestion du serveur
+        private static Thread _thEcoute;
         private Texture2D background;
         private Fighter nyan;
         private Destroyer ennemy;
         Camera2d _camera;
+        private SpriteFont chat;
+        private Chat text;
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,7 +53,23 @@ namespace PositronNova
             this.IsMouseVisible = true;
             nyan = new Fighter("Chasseur", Content, new Vector2(10,10), true);
             ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
+            text = new Chat();
             base.Initialize();
+            _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
+            _thEcoute.Start(text);
+        }
+        private static void Ecouter(Object txt)
+        {
+            //On crée le serveur en lui spécifiant le port sur lequel il devra écouter.
+            UdpClient serveur = new UdpClient(5035);
+            //Création d'une boucle infinie qui aura pour tâche d'écouter.
+            while (true)
+            {
+                IPEndPoint client = null;
+                byte[] data = serveur.Receive(ref client);
+                string message = Encoding.Default.GetString(data);
+                ((Chat) txt).addString(message);
+            }
         }
 
         /// <summary>
@@ -58,9 +82,9 @@ namespace PositronNova
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("img\\background");
             _camera = new Camera2d(background.Width, background.Height, GraphicsDevice);
+            chat = Content.Load<SpriteFont>("chat");
             // TODO: use this.Content to load your game content here
         }
-
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
@@ -110,6 +134,7 @@ namespace PositronNova
             if (keyboardState.IsKeyDown(Keys.PageUp))
 
                 _camera.Zoom += 0.05f;
+            text.KBInput(Keyboard.GetState());
             base.Update(gameTime);
         }
 
@@ -125,9 +150,8 @@ namespace PositronNova
         BlendState.AlphaBlend, SamplerState.PointClamp,
 
         null, null, null, _camera.GetTransformation());
-            //Laiser cette ligne en première position.
-            //spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
+            spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
             nyan.Draw(spriteBatch, gameTime);
             ennemy.Draw(spriteBatch, gameTime);
             spriteBatch.End();
