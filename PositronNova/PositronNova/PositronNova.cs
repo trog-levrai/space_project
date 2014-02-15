@@ -68,7 +68,7 @@ namespace PositronNova
                 IPEndPoint client = null;
                 byte[] data = serveur.Receive(ref client);
                 string message = Encoding.Default.GetString(data);
-                ((Chat) txt).texts[0] = message;
+                ((Chat) txt).addString(message);
             }
         }
 

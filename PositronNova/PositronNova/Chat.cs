@@ -17,7 +17,7 @@ namespace PositronNova
         private int rank;
         private string input;
         private KBInput kb;
-        public string[] texts;
+        private string[] texts;
         public Chat()
         {
             tab = false;
@@ -25,6 +25,32 @@ namespace PositronNova
             input = "";
             kb = new KBInput();
             texts = new string[10] {"", "", "", "", "", "", "", "", "", ""};
+        }
+        public void addString(string mess)
+        {
+            if (mess != "")
+            {
+                int i = 0;
+                do
+                {
+                    i += 1;
+                } while (i < texts.Length && texts[i] != "");
+                if (i == texts.Length && mess != "")
+                {
+                    //On décale tout et on met mess à la dernière place car tout est remplis
+                    for (int j = 1; j < texts.Length; j++)
+                    {
+                        texts[j - 1] = texts[j];
+                    }
+                    texts[texts.Length - 1] = mess;
+                    rank = 10;
+                }
+                if (mess != "" && i < texts.Length)
+                {
+                    texts[i] = mess;
+                    rank += 1;
+                }
+            }
         }
         public void KBInput(KeyboardState keyboardState)
         {
@@ -36,26 +62,7 @@ namespace PositronNova
                     UdpClient udpClient = new UdpClient();
                     udpClient.Send(msg, msg.Length, "127.0.0.1", 5035);
                     udpClient.Close();
-                    int i = 0;
-                    do
-                    {
-                        i += 1;
-                    } while (i < texts.Length && texts[i] != "");
-                    if (i == texts.Length && input != "")
-                    {
-                        //On décale tout et on met input à la dernière place car tout est remplis
-                        for (int j = 1; j < texts.Length; j++)
-                        {
-                            texts[j - 1] = texts[j];
-                        }
-                        texts[texts.Length - 1] = input;
-                        rank = 10;
-                    }
-                    if (input != "" && i < texts.Length)
-                    {
-                        texts[i] = input;
-                        rank += 1;
-                    }
+                    addString(input);
                     input = "";
                     kb.current = "";
                     tab = false;
