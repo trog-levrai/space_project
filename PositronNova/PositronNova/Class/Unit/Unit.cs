@@ -18,6 +18,7 @@ namespace PositronNova.Class.Unit
         private bool friendly;
         private Color color;
         private SpriteFont _font;
+        private Texture2D cercle;
         public sprite sprite;
         private string name;
         private byte type;
@@ -56,7 +57,7 @@ namespace PositronNova.Class.Unit
             this.friendly = friendly;
             if (friendly)
             {
-                color = Color.Blue;
+                color = Color.Aqua;
             }
             else
             {
@@ -65,6 +66,7 @@ namespace PositronNova.Class.Unit
             this.name = name;
             _font = Content.Load<SpriteFont>("Affichage_mouse");
             laserSound = Content.Load<SoundEffect>("sounds\\laser");
+            cercle = Content.Load<Texture2D>("img\\cercle-vert2");
         }
         //Le but est de rendre le sprite de la classe private.
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -76,14 +78,19 @@ namespace PositronNova.Class.Unit
             {
                 spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(sprite.Position.X - 3, sprite.Position.Y - 25), color);
             }
+
+            if (sprite.Selected)
+            {
+                spriteBatch.Draw(cercle, new Vector2(sprite.Position.X, sprite.Position.Y + 9), Color.White);
+            }
         }
         //Methode ultra basique pour l'attaque
         //Il va falloir rajouter plein de trucs du genre une portee de tir
         //Un systeme pour selectionner les ennemis a abatre, etc
         public void attack(Unit enn)
         {
-            enn.Pv -= damage;
-            laserSound.Play();
+            //enn.Pv -= damage;
+            //laserSound.Play();
         }
     }
     //Les dignes heritieres de la class Unit :-)

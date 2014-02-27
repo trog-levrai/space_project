@@ -80,7 +80,7 @@ namespace PositronNova
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = Content.Load<Texture2D>("img\\background");
+            background = Content.Load<Texture2D>("img\\wallpaper2");
             _camera = new Camera2d(background.Width, background.Height, GraphicsDevice);
             chat = Content.Load<SpriteFont>("chat");
             // TODO: use this.Content to load your game content here
