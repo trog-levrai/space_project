@@ -88,6 +88,27 @@ namespace PositronNova
                 {
                     _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 }
+
+                if (_position.X < 0)
+                {
+                    _position.X = 0;
+                    moving = false;
+                }
+                if (_position.X > GraphicsDeviceManager.DefaultBackBufferWidth)
+                {
+                    _position.X = GraphicsDeviceManager.DefaultBackBufferWidth;
+                    moving = false;
+                }
+                if (_position.Y < 0)
+                {
+                    _position.Y = 0;
+                    moving = false;
+                }
+                if (_position.Y > GraphicsDeviceManager.DefaultBackBufferHeight)
+                {
+                    _position.Y = GraphicsDeviceManager.DefaultBackBufferHeight;
+                    moving = false;
+                }
             }
             /// <summary>
             /// Permet de gérer les entrées du joueur
