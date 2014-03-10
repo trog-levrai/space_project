@@ -44,8 +44,12 @@ namespace PositronNova.Class.Unit
                 //Le but du test est de savoir si il s'est bien ecoule au moins une seconde
                 if (last >= fireRate)
                 {
-                    attack(enn);
-                    last = new TimeSpan(0);
+                    KeyboardState keyboardState = Keyboard.GetState();
+                    if (keyboardState.IsKeyDown(Keys.X) && enn.Pv >= 0)
+                    {
+                        attack(enn);
+                        last = new TimeSpan(0);
+                    }
                 }
             }
             sprite.Update(gt);
@@ -89,8 +93,8 @@ namespace PositronNova.Class.Unit
         //Un systeme pour selectionner les ennemis a abatre, etc
         public void attack(Unit enn)
         {
-            //enn.Pv -= damage;
-            //laserSound.Play();
+            enn.Pv -= damage;
+            laserSound.Play();
         }
     }
     //Les dignes heritieres de la class Unit :-)

@@ -107,6 +107,7 @@ namespace PositronNova
 
             Vector2 movement = Vector2.Zero;
 
+
             if (keyboardState.IsKeyDown(Keys.Left))
 
                 movement.X--;
