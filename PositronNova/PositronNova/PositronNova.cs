@@ -61,6 +61,7 @@ namespace PositronNova
             base.Initialize();
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
             _thEcoute.Start(text);
+            _thEcoute.IsBackground = true;
         }
         private static void Ecouter(Object txt)
         {
