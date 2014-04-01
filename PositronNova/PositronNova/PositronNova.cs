@@ -26,6 +26,7 @@ namespace PositronNova
         //Gestion des images...
         //Pour la gestion du serveur
         private static Thread _thEcoute;
+        private Unit[] units;
         private Texture2D background;
         private Fighter nyan;
         private Destroyer ennemy;
@@ -53,6 +54,9 @@ namespace PositronNova
             this.IsMouseVisible = true;
             nyan = new Fighter("Chasseur", Content, new Vector2(10,10), true);
             ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
+            units = new Unit[2];
+            units[0] = nyan;
+            units[1] = ennemy;
             text = new Chat();
             base.Initialize();
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
@@ -153,8 +157,12 @@ namespace PositronNova
         null, null, null, _camera.GetTransformation());
             spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
             spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
-            nyan.Draw(spriteBatch, gameTime);
-            ennemy.Draw(spriteBatch, gameTime);
+            //nyan.Draw(spriteBatch, gameTime);
+            //ennemy.Draw(spriteBatch, gameTime);
+            foreach (var unit in units)
+            {
+                unit.Draw(spriteBatch, gameTime);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
