@@ -12,6 +12,12 @@ namespace PositronNova.Class.Unit
 {
     public abstract class Unit
     {
+        private Unit enn;
+        public Unit Ennemy
+        {
+            get { return enn; }
+            set { enn = value; }
+        }
         protected System.TimeSpan fireRate;
         protected System.TimeSpan last;
         protected SoundEffect laserSound;
@@ -34,7 +40,7 @@ namespace PositronNova.Class.Unit
             get { return pv; }
             set { pv = value; }
         }
-        public void Update(GameTime gt, Unit enn)
+        public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
             //On ne prend les touches que si c'est un allie
@@ -42,7 +48,7 @@ namespace PositronNova.Class.Unit
             {
                 sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
                 //Le but du test est de savoir si il s'est bien ecoule au moins une seconde
-                if (last >= fireRate)
+                if (enn != null && last >= fireRate)
                 {
                     KeyboardState keyboardState = Keyboard.GetState();
                     if (keyboardState.IsKeyDown(Keys.X) && enn.Pv >= 0)
@@ -71,6 +77,7 @@ namespace PositronNova.Class.Unit
             _font = Content.Load<SpriteFont>("Affichage_mouse");
             laserSound = Content.Load<SoundEffect>("sounds\\laser");
             cercle = Content.Load<Texture2D>("img\\cercle-vert2");
+            enn = null;
         }
         //Le but est de rendre le sprite de la classe private.
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

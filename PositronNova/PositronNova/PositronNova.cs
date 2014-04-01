@@ -105,8 +105,10 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            nyan.Update(gameTime, ennemy);
-            ennemy.Update(gameTime, nyan);
+            foreach (var unit in units)
+            {
+                unit.Update(gameTime);
+            }
             KeyboardState keyboardState = Keyboard.GetState();
 
             Vector2 movement = Vector2.Zero;
@@ -157,8 +159,7 @@ namespace PositronNova
         null, null, null, _camera.GetTransformation());
             spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
             spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
-            //nyan.Draw(spriteBatch, gameTime);
-            //ennemy.Draw(spriteBatch, gameTime);
+            //Affichage des unites si vous n'aviez pas compris
             foreach (var unit in units)
             {
                 unit.Draw(spriteBatch, gameTime);
