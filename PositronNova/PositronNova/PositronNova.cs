@@ -108,7 +108,7 @@ namespace PositronNova
         {
             foreach (var unit in units)
             {
-                unit.Update(gameTime);
+                unit.Update(gameTime, _camera.Pos);
             }
             KeyboardState keyboardState = Keyboard.GetState();
 

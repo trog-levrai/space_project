@@ -116,20 +116,20 @@ namespace PositronNova
             /// <param name="keyboardState">L'état du clavier à tester</param>
             /// <param name="mouseState">L'état de la souris à tester</param>
             /// <param name="joueurNum">Le numéro du joueur qui doit être surveillé</param>
-            public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState)
+            public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState, Vector2 Pos)
             {
                 //Ce code est magique, ne pas trop toucher SVP :-)
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    selected = Math.Abs(mouseState.X - _position.X) <= 40 && Math.Abs(mouseState.Y - _position.Y) <= 26;
+                    selected = Math.Abs(mouseState.X - _position.X + Pos.X/60) <= 40 && Math.Abs(mouseState.Y - _position.Y + Pos.Y/60) <= 26;
                 }
                 if (mouseState.RightButton == ButtonState.Pressed && selected)
                 {
                     moving = true;
-                    _mouse.X = mouseState.X;
-                    _mouse.Y = mouseState.Y;
-                    _direction.X = mouseState.X - _position.X;
-                    _direction.Y = mouseState.Y - _position.Y;
+                    _mouse.X = mouseState.X + Pos.X/60;
+                    _mouse.Y = mouseState.Y + Pos.Y/60;
+                    _direction.X = mouseState.X - _position.X + Pos.X/60;
+                    _direction.Y = mouseState.Y - _position.Y + Pos.Y/60;
                     _direction.Normalize();
                 }
             }

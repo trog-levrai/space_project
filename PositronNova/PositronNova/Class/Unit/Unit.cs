@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -40,13 +41,13 @@ namespace PositronNova.Class.Unit
             get { return pv; }
             set { pv = value; }
         }
-        public void Update(GameTime gt)
+        public void Update(GameTime gt, Vector2 Pos)
         {
             last = last.Add(gt.ElapsedGameTime);
             //On ne prend les touches que si c'est un allie
             if (friendly)
             {
-                sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
+                sprite.HandleInput(Keyboard.GetState(), Mouse.GetState(), Pos);
                 //Le but du test est de savoir si il s'est bien ecoule au moins une seconde
                 if (enn != null && last >= fireRate)
                 {

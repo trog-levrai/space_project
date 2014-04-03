@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -30,6 +31,12 @@ namespace PositronNova
         {
             if (mess != "")
             {
+                ////On remplace par des emoticones
+                //Regex regex = new Regex();
+                //switch (regex.)
+                //{
+                        
+                //}
                 int i = 0;
                 do
                 {
