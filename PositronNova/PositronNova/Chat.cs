@@ -14,13 +14,17 @@ namespace PositronNova
     {
         //Capte le texte
         //Le code sera à compléter pour l'implémentation de l'autocomplete pour shell
+        private MatchCollection foo;
         private bool tab;
         private int rank;
         private string input;
+        private Regex regex;
         private KBInput kb;
         private string[] texts;
         public Chat()
         {
+            //regex = new Regex("[;(\-)pdosx]*");
+            //regex.Options=
             tab = false;
             rank = 0;
             input = "";
@@ -32,11 +36,7 @@ namespace PositronNova
             if (mess != "")
             {
                 ////On remplace par des emoticones
-                //Regex regex = new Regex();
-                //switch (regex.)
-                //{
-                        
-                //}
+                //foo = regex.Matches(mess);
                 int i = 0;
                 do
                 {
