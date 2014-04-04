@@ -23,6 +23,10 @@ namespace PositronNova.Class.Unit
         protected System.TimeSpan last;
         protected SoundEffect laserSound;
         private bool friendly;
+        public bool Friendly
+        {
+            get { return friendly; }
+        }
         private Color color;
         private SpriteFont _font;
         private Texture2D cercle;
@@ -47,16 +51,12 @@ namespace PositronNova.Class.Unit
             //On ne prend les touches que si c'est un allie
             if (friendly)
             {
-                sprite.HandleInput(Keyboard.GetState(), Mouse.GetState(), Pos);
                 //Le but du test est de savoir si il s'est bien ecoule au moins une seconde
                 if (enn != null && last >= fireRate)
                 {
                     KeyboardState keyboardState = Keyboard.GetState();
-                    if (keyboardState.IsKeyDown(Keys.X) && enn.Pv >= 0)
-                    {
-                        attack(enn);
-                        last = new TimeSpan(0);
-                    }
+                    attack(enn);
+                    last = new TimeSpan(0);
                 }
             }
             sprite.Update(gt);
@@ -101,8 +101,11 @@ namespace PositronNova.Class.Unit
         //Un systeme pour selectionner les ennemis a abatre, etc
         public void attack(Unit enn)
         {
-            enn.Pv -= damage;
-            laserSound.Play();
+            if (enn.Pv > 0)
+            {
+                enn.Pv -= damage;
+                laserSound.Play();
+            }
         }
     }
     //Les dignes heritieres de la class Unit :-)

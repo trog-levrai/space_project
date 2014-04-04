@@ -116,6 +116,10 @@ namespace PositronNova
             /// <param name="keyboardState">L'état du clavier à tester</param>
             /// <param name="mouseState">L'état de la souris à tester</param>
             /// <param name="joueurNum">Le numéro du joueur qui doit être surveillé</param>
+            public virtual bool GetEnnemy(MouseState mouseState, Vector2 Pos)
+            {
+                return mouseState.LeftButton == ButtonState.Pressed && Math.Abs(mouseState.X - _position.X + Pos.X / 60) <= 40 && Math.Abs(mouseState.Y - _position.Y + Pos.Y / 60) <= 26;
+            }
             public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState, Vector2 Pos)
             {
                 //Ce code est magique, ne pas trop toucher SVP :-)

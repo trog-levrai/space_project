@@ -106,9 +106,21 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            bool aux;
             foreach (var unit in units)
             {
                 unit.Update(gameTime, _camera.Pos);
+                if (unit.Friendly)
+                {
+                    unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState(), _camera.Pos);
+                }
+                else
+                {
+                    if (unit.sprite.GetEnnemy(Mouse.GetState(), _camera.Pos))
+                    {
+                        nyan.Ennemy = unit;
+                    }
+                }
             }
             KeyboardState keyboardState = Keyboard.GetState();
 
