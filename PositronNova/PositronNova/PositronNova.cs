@@ -106,7 +106,6 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            bool aux;
             foreach (var unit in units)
             {
                 unit.Update(gameTime, _camera.Pos);
@@ -119,6 +118,13 @@ namespace PositronNova
                     if (unit.sprite.GetEnnemy(Mouse.GetState(), _camera.Pos))
                     {
                         nyan.Ennemy = unit;
+                    }
+                    else
+                    {
+                        if (nyan.Ennemy == unit && Mouse.GetState().LeftButton == ButtonState.Pressed)
+                        {
+                            nyan.Ennemy = null;
+                        }
                     }
                 }
             }

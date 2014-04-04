@@ -118,7 +118,12 @@ namespace PositronNova
             /// <param name="joueurNum">Le numéro du joueur qui doit être surveillé</param>
             public virtual bool GetEnnemy(MouseState mouseState, Vector2 Pos)
             {
-                return mouseState.LeftButton == ButtonState.Pressed && Math.Abs(mouseState.X - _position.X + Pos.X / 60) <= 40 && Math.Abs(mouseState.Y - _position.Y + Pos.Y / 60) <= 26;
+                if(mouseState.LeftButton == ButtonState.Pressed)
+                    return  Math.Abs(mouseState.X - _position.X + Pos.X / 60) <= 40 && Math.Abs(mouseState.Y - _position.Y + Pos.Y / 60) <= 26;
+                else
+                {
+                    return false;
+                }
             }
             public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState, Vector2 Pos)
             {
