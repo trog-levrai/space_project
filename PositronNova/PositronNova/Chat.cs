@@ -23,8 +23,7 @@ namespace PositronNova
         private string[] texts;
         public Chat()
         {
-            //regex = new Regex("[;(\-)pdosx]*");
-            //regex.Options=
+            regex = new Regex(@"[;(\-)pdosx]*");
             tab = false;
             rank = 0;
             input = "";
@@ -35,8 +34,8 @@ namespace PositronNova
         {
             if (mess != "")
             {
-                ////On remplace par des emoticones
-                //foo = regex.Matches(mess);
+                //On remplace par des emoticones
+                regex.Replace(mess, "\u1F601");
                 int i = 0;
                 do
                 {
