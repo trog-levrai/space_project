@@ -39,6 +39,27 @@ namespace PositronNova
             Content.RootDirectory = "Content";
         }
 
+
+
+        Video vid;
+        VideoPlayer vidPlayer;
+
+        Texture2D vidTexture;
+        Rectangle vidRectangle;
+
+        enum GameState
+        {
+            Video,
+            MainMenu,
+            Option,
+            Playing
+        }
+
+        private GameState CurrentGameState = GameState.Video;
+
+        cButton btnPlay;
+
+
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -58,10 +79,12 @@ namespace PositronNova
             units[0] = nyan;
             units[1] = ennemy;
             text = new Chat();
+            vidPlayer = new VideoPlayer();
             base.Initialize();
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
             _thEcoute.Start(text);
             _thEcoute.IsBackground = true;
+            
         }
         private static void Ecouter(Object txt)
         {
@@ -88,6 +111,13 @@ namespace PositronNova
             background = Content.Load<Texture2D>("img\\wallpaper2");
             _camera = new Camera2d(background.Width, background.Height, GraphicsDevice);
             chat = Content.Load<SpriteFont>("chat");
+
+            vid = Content.Load<Video>("Video\\Vid");
+            vidRectangle = new Rectangle(GraphicsDevice.Viewport.X, GraphicsDevice.Viewport.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            vidPlayer.Play(vid);
+
+            btnPlay = new cButton(Content.Load<Texture2D>("img\\Bouton"), graphics.GraphicsDevice);
+            btnPlay.setPosition(new Vector2(150, 150));
             // TODO: use this.Content to load your game content here
         }
         /// <summary>
@@ -106,6 +136,28 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                this.Exit();
+
+            MouseState mouse = Mouse.GetState();
+
+            switch (CurrentGameState)
+            {
+                case GameState.Video:
+                    if (vidPlayer.State == MediaState.Stopped)
+                        CurrentGameState = GameState.MainMenu;
+                    break;
+                case GameState.MainMenu:
+                    if (btnPlay.IsCliked) CurrentGameState = GameState.Playing;
+                    btnPlay.Update(mouse);
+                    break;
+
+                case GameState.Playing:
+
+                    break;
+            }
+
+
             Unit selected = null;
             foreach (var unit in units)
             {
@@ -187,13 +239,29 @@ namespace PositronNova
         BlendState.AlphaBlend, SamplerState.PointClamp,
 
         null, null, null, _camera.GetTransformation());
-            spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
+
+            vidTexture = vidPlayer.GetTexture();
+            spriteBatch.Draw(vidTexture, vidRectangle, Color.White);
+            switch (CurrentGameState)
+            {
+                case GameState.MainMenu:
+                    spriteBatch.Draw(Content.Load<Texture2D>("BackgroudMenu"), new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+                    btnPlay.Draw(spriteBatch);
+                    break;
+
+                case GameState.Playing:
+                                spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
             spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
             //Affichage des unites si vous n'aviez pas compris
             foreach (var unit in units)
             {
                 unit.Draw(spriteBatch, gameTime);
             }
+                    break;
+            }
+
+
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
