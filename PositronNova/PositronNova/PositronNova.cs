@@ -88,6 +88,7 @@ namespace PositronNova
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
 
+
             nyan = new Fighter("Chasseur", Content, new Vector2(10,10), true);
             ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
             units = new Unit[2];
@@ -159,22 +160,27 @@ namespace PositronNova
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
+            Vector2 movement = Vector2.Zero;
 
             switch (CurrentGameState)
             {
                 case GameState.Video:
-                    if (vidPlayer.State == MediaState.Stopped)
+                    if (vidPlayer.State == MediaState.Stopped || (keyboardState.IsKeyDown(Keys.Space)))
                         CurrentGameState = GameState.MainMenu;
+                    _camera.Update2(gameTime, keyboardState, mouse);
                     break;
                 case GameState.MainMenu:
+                    vidPlayer.Stop();
                     if (btnPlay.IsCliked) CurrentGameState = GameState.Playing;
                     btnPlay.Update(mouse);
+                    _camera.Update2(gameTime, keyboardState, mouse);
                     break;
 
                 case GameState.Playing:
-
+                    _camera.Update1(gameTime, keyboardState, mouse);
+                    _camera.Update2(gameTime, keyboardState, mouse);
                     break;
             }
 
@@ -212,11 +218,9 @@ namespace PositronNova
                     }
                 }
             }
-            KeyboardState keyboardState = Keyboard.GetState();
 
-            Vector2 movement = Vector2.Zero;
 
-            _camera.Update(gameTime, keyboardState, mouse);
+
             /*if (keyboardState.IsKeyDown(Keys.Left))
 
                 movement.X--;

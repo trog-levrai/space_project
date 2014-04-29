@@ -32,7 +32,7 @@ namespace PositronNova
             view = newView;
         }
 
-        public void Update(GameTime gt, KeyboardState keyboard, MouseState mouse)
+        public void Update1(GameTime gt, KeyboardState keyboard, MouseState mouse)
         {
             if ((keyboard.IsKeyDown(Keys.Up) || mouse.Y <= 0) && origine.Y > 0)
                 origine = new Vector2(origine.X, origine.Y - 5);
@@ -43,6 +43,11 @@ namespace PositronNova
             if ((keyboard.IsKeyDown(Keys.Right) || mouse.X >= PositronNova.winWidth) && origine.X + PositronNova.winWidth < PositronNova.BackgroundTexture.Width)
                 origine = new Vector2(origine.X + 5, origine.Y);
 
+            
+        }
+
+        public void Update2(GameTime gt, KeyboardState keyboard, MouseState mouse)
+        {
             transforme = Matrix.CreateScale(new Vector3(1, 1, 0)) *
                 Matrix.CreateTranslation(new Vector3(-origine.X, -origine.Y, 0));
         }
