@@ -23,20 +23,35 @@ namespace PositronNova
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        static public int winWidth = 800, winHeight = 600; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
         private static Thread _thEcoute;
+
+        static private Texture2D backgroundTexture;
+        static public Texture2D BackgroundTexture
+        {
+            get { return backgroundTexture; }
+        }
+
         private Unit[] units;
-        private Texture2D background;
         private Fighter nyan;
         private Destroyer ennemy;
+
         Camera2d _camera;
+
         private SpriteFont chat;
         private Chat text;
+
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+
+            graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
+            graphics.PreferredBackBufferHeight = winHeight;
         }
 
 
@@ -72,19 +87,22 @@ namespace PositronNova
             //Les deux lignes suivantes sont là pour une histoire de FPS. A modifier quand on saura faire donc...
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
-            this.IsMouseVisible = true;
+
             nyan = new Fighter("Chasseur", Content, new Vector2(10,10), true);
             ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
             units = new Unit[2];
             units[0] = nyan;
             units[1] = ennemy;
+
             text = new Chat();
+
             vidPlayer = new VideoPlayer();
-            base.Initialize();
+
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
             _thEcoute.Start(text);
             _thEcoute.IsBackground = true;
-            
+
+            base.Initialize();
         }
         private static void Ecouter(Object txt)
         {
@@ -108,8 +126,11 @@ namespace PositronNova
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = Content.Load<Texture2D>("img\\wallpaper2");
-            _camera = new Camera2d(background.Width, background.Height, GraphicsDevice);
+
+            backgroundTexture = Content.Load<Texture2D>("Background");
+
+            _camera = new Camera2d(GraphicsDevice.Viewport);
+
             chat = Content.Load<SpriteFont>("chat");
 
             vid = Content.Load<Video>("Video\\Vid");
@@ -171,14 +192,14 @@ namespace PositronNova
             }
             foreach (var unit in units)
             {
-                unit.Update(gameTime, _camera.Pos);
+                unit.Update(gameTime/*, _camera.Pos*/);
                 if (unit.Friendly)
                 {
-                    unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState(), _camera.Pos);
+                    unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState()/*, _camera.Pos*/);
                 }
                 else
                 {
-                    if (unit.sprite.GetEnnemy(Mouse.GetState(), _camera.Pos))
+                    if (unit.sprite.GetEnnemy(Mouse.GetState()/*, _camera.Pos*/))
                     {
                         selected.Ennemy = unit;
                     }
@@ -195,8 +216,8 @@ namespace PositronNova
 
             Vector2 movement = Vector2.Zero;
 
-
-            if (keyboardState.IsKeyDown(Keys.Left))
+            _camera.Update(gameTime, keyboardState, mouse);
+            /*if (keyboardState.IsKeyDown(Keys.Left))
 
                 movement.X--;
 
@@ -222,7 +243,7 @@ namespace PositronNova
 
             if (keyboardState.IsKeyDown(Keys.PageUp))
 
-                _camera.Zoom += 0.05f;
+                _camera.Zoom += 0.05f;*/
             text.KBInput(Keyboard.GetState());
             base.Update(gameTime);
         }
@@ -234,11 +255,7 @@ namespace PositronNova
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
-            spriteBatch.Begin(SpriteSortMode.Immediate,
-
-        BlendState.AlphaBlend, SamplerState.PointClamp,
-
-        null, null, null, _camera.GetTransformation());
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
 
             vidTexture = vidPlayer.GetTexture();
             spriteBatch.Draw(vidTexture, vidRectangle, Color.White);
@@ -250,13 +267,13 @@ namespace PositronNova
                     break;
 
                 case GameState.Playing:
-                                spriteBatch.Draw(background, Vector2.Zero, background.Bounds, Color.White);
-            spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
-            //Affichage des unites si vous n'aviez pas compris
-            foreach (var unit in units)
-            {
-                unit.Draw(spriteBatch, gameTime);
-            }
+                    spriteBatch.Draw(backgroundTexture, Vector2.Zero, backgroundTexture.Bounds, Color.White);
+                    spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
+                    //Affichage des unites si vous n'aviez pas compris
+                     foreach (var unit in units)
+                    {
+                        unit.Draw(spriteBatch, gameTime);
+                    }
                     break;
             }
 

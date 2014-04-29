@@ -20,43 +20,53 @@ namespace PositronNova
             {
                 get { return selected; }
             }
-            private bool moving;
+
+            private Texture2D _texture;
             public Texture2D Texture
             {
                 get { return _texture; }
                 set { _texture = value; }
             }
-            private Texture2D _texture;
+
+            private Vector2 _position;
             public Vector2 Position
             {
                 get { return _position; }
                 set { _position = value; }
             }
-            private Vector2 _position;
+
+            private Vector2 _direction;
             public Vector2 Direction
             {
                 get { return _direction; }
                 set { _direction = Vector2.Normalize(value); }
             }
+
             private Vector2 _mouse;
             public Vector2 Mouse
             {
                 get { return _mouse; }
                 set { _mouse = value; }
             }
-            private Vector2 _direction;
-            public Vector2 FPosition
-            {
-                get { return _direction; }
-                set { _direction = Vector2.Normalize(value); }
-            }
-            private Vector2 _fposition;
+
+            private float _speed;
             public float Speed
             {
                 get { return _speed; }
                 set { _speed = value; }
             }
-            private float _speed;
+
+            private bool moving;
+            Vector2 destination;
+
+            /*public Vector2 FPosition
+            {
+                get { return _direction; }
+                set { _direction = Vector2.Normalize(value); }
+            }
+            private Vector2 _fposition;*/
+            
+
             public sprite(Vector2 pos, ContentManager content, string cont)
             {
                 _position = pos;
@@ -64,6 +74,13 @@ namespace PositronNova
                 _speed = 0;
                 Mouse = Vector2.Zero;
                 LoadContent(content, cont);
+            }
+
+            public void Init()
+            {
+                Speed = 0;
+                Direction = Vector2.Zero;
+                destination = Position;
             }
             /// <summary>
             /// Charge l'image voulue grâce au ContentManager donné
@@ -78,70 +95,103 @@ namespace PositronNova
             /// Met à jour les variables du sprite
             /// </summary>
             /// <param name="gameTime">Le GameTime associé à la frame</param>
-            public virtual void Update(GameTime gameTime)
-            {
-                if (Math.Abs(_position.X - _mouse.X) <= 5 && Math.Abs(_position.Y - _mouse.Y) <= 5)
-                {
-                    moving = false;
-                }
-                if (moving)
-                {
-                    _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-                }
+            /// 
 
-                if (_position.X < 0)
-                {
-                    _position.X = 0;
-                    moving = false;
-                }
-                if (_position.X > GraphicsDeviceManager.DefaultBackBufferWidth)
-                {
-                    _position.X = GraphicsDeviceManager.DefaultBackBufferWidth;
-                    moving = false;
-                }
-                if (_position.Y < 0)
-                {
-                    _position.Y = 0;
-                    moving = false;
-                }
-                if (_position.Y > GraphicsDeviceManager.DefaultBackBufferHeight)
-                {
-                    _position.Y = GraphicsDeviceManager.DefaultBackBufferHeight;
-                    moving = false;
-                }
-            }
             /// <summary>
             /// Permet de gérer les entrées du joueur
             /// </summary>
             /// <param name="keyboardState">L'état du clavier à tester</param>
             /// <param name="mouseState">L'état de la souris à tester</param>
             /// <param name="joueurNum">Le numéro du joueur qui doit être surveillé</param>
-            public virtual bool GetEnnemy(MouseState mouseState, Vector2 Pos)
+            public virtual bool GetEnnemy(MouseState mouseState/*, Vector2 Pos*/)
             {
-                if(mouseState.LeftButton == ButtonState.Pressed)
-                    return  Math.Abs(mouseState.X - _position.X + Pos.X / 60) <= 40 && Math.Abs(mouseState.Y - _position.Y + Pos.Y / 60) <= 26;
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                    return Math.Abs(mouseState.X - _position.X /*+ Pos.X / 60*/) <= 40 && Math.Abs(mouseState.Y - _position.Y /*+ Pos.Y / 60*/) <= 26;
                 else
                 {
                     return false;
                 }
             }
-            public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState, Vector2 Pos)
+            public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState/*, Vector2 Pos*/)
             {
                 //Ce code est magique, ne pas trop toucher SVP :-)
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    selected = Math.Abs(mouseState.X - _position.X + Pos.X/60) <= 40 && Math.Abs(mouseState.Y - _position.Y + Pos.Y/60) <= 26;
+                    selected = Math.Abs(mouseState.X - _position.X /*+ Pos.X/60*/) <= 40 && Math.Abs(mouseState.Y - _position.Y /*+ Pos.Y/60*/) <= 26;
                 }
                 if (mouseState.RightButton == ButtonState.Pressed && selected)
                 {
+                    //moving = true;
+                    //_mouse.X = mouseState.X /*+ Pos.X/60*/;
+                    //_mouse.Y = mouseState.Y /*+ Pos.Y/60*/;
+                    //_direction.X = mouseState.X - _position.X /*+ Pos.X/60*/;
+                    //_direction.Y = mouseState.Y - _position.Y /*+ Pos.Y/60*/;
+                    //_direction.Normalize();
+                    destination = new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
                     moving = true;
-                    _mouse.X = mouseState.X + Pos.X/60;
-                    _mouse.Y = mouseState.Y + Pos.Y/60;
-                    _direction.X = mouseState.X - _position.X + Pos.X/60;
-                    _direction.Y = mouseState.Y - _position.Y + Pos.Y/60;
-                    _direction.Normalize();
                 }
             }
+            
+            void deplacement()
+            {
+                int stopPrecision = 2;
+
+                if (moving)
+                {
+                    destination = new Vector2((int)destination.X, (int)destination.Y);
+                    Direction = new Vector2(destination.X - Position.X, destination.Y - Position.Y);
+                    Position += Direction * Speed; // Silence ça pousse... ahem... bouge ! :o)
+                    
+                    if (Math.Abs(Position.X - destination.X) <= stopPrecision && Math.Abs(Position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
+                        Position = destination;
+                }
+                else
+                    Init();
+
+                if (Position != destination)
+                {
+                    moving = true;
+                    Speed = 2f;
+                }
+                else
+                    moving = false;
+            }
+
+            public virtual void Update(GameTime gameTime)
+            {
+                //if (Math.Abs(_position.X - _mouse.X) <= 5 && Math.Abs(_position.Y - _mouse.Y) <= 5)
+                //{
+                //    moving = false;
+                //}
+                //if (moving)
+                //{
+                //    _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                //}
+
+                //if (_position.X < 0)
+                //{
+                //    _position.X = 0;
+                //    moving = false;
+                //}
+                //if (_position.X > GraphicsDeviceManager.DefaultBackBufferWidth)
+                //{
+                //    _position.X = GraphicsDeviceManager.DefaultBackBufferWidth;
+                //    moving = false;
+                //}
+                //if (_position.Y < 0)
+                //{
+                //    _position.Y = 0;
+                //    moving = false;
+                //}
+                //if (_position.Y > GraphicsDeviceManager.DefaultBackBufferHeight)
+                //{
+                //    _position.Y = GraphicsDeviceManager.DefaultBackBufferHeight;
+                //    moving = false;
+                //}
+
+                deplacement();
+            }
+            
             /// <summary>
             /// Dessine le sprite en utilisant ses attributs et le spritebatch donné
             /// </summary>

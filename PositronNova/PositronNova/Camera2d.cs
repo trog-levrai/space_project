@@ -4,140 +4,151 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace PositronNova
 {
     public class Camera2d
     {
-        GraphicsDevice _device;
+        //GraphicsDevice _device;
+        //private int _worldWidth;
+        //private int _worldHeight;
+        //private const float ZOOM_UPPER_LIMIT = 2.0f;
+        //private const float ZOOM_LOWER_LIMIT = 0.2f;
+        //private float _zoom = 1.0f;
+        //private Vector2 _pos = Vector2.Zero;
+        //private float _rotation = 0.0f;
 
-        private int _worldWidth;
-
-        private int _worldHeight;
-
-        private const float ZOOM_UPPER_LIMIT = 2.0f;
-
-        private const float ZOOM_LOWER_LIMIT = 0.2f;
-
-        private float _zoom = 1.0f;
-
-        private Vector2 _pos = Vector2.Zero;
-
-        private float _rotation = 0.0f;
-
-        public Camera2d(int worldWidth, int worldHeight, GraphicsDevice device)
+        public Matrix transforme;
+        Viewport view;
+        static Vector2 origine;
+        static public Vector2 Origine
         {
-
-            _device = device;
-
-            _worldWidth = worldWidth;
-
-            _worldHeight = worldHeight;
-
+            get { return origine; }
         }
 
-        public float Rotation
+        public Camera2d(Viewport newView)
         {
-
-            get { return _rotation; }
-
-            set { _rotation = value; }
-
+            view = newView;
         }
 
-        public Vector2 Pos
+        public void Update(GameTime gt, KeyboardState keyboard, MouseState mouse)
         {
+            if ((keyboard.IsKeyDown(Keys.Up) || mouse.Y <= 0) && origine.Y > 0)
+                origine = new Vector2(origine.X, origine.Y - 5);
+            if ((keyboard.IsKeyDown(Keys.Down) || mouse.Y >= PositronNova.winHeight) && origine.Y + PositronNova.winHeight < PositronNova.BackgroundTexture.Height)
+                origine = new Vector2(origine.X, origine.Y + 5);
+            if ((keyboard.IsKeyDown(Keys.Left) || mouse.X <= 0) && origine.X > 0)
+                origine = new Vector2(origine.X - 5, origine.Y);
+            if ((keyboard.IsKeyDown(Keys.Right) || mouse.X >= PositronNova.winWidth) && origine.X + PositronNova.winWidth < PositronNova.BackgroundTexture.Width)
+                origine = new Vector2(origine.X + 5, origine.Y);
 
-            get { return _pos; }
-
-            set
-            {
-
-                //Détermine les position à ne pas dépasser pour garder l'image dans la fenêtre.
-
-                float leftBarrier = (float)_device.Viewport.Width * .5f / _zoom;
-
-                float rightBarrier = _worldWidth - (float)_device.Viewport.Width * .5f / _zoom;
-
-                float bottomBarrier = _worldHeight - (float)_device.Viewport.Height * .5f / _zoom;
-
-                float topBarrier = (float)_device.Viewport.Height * .5f / _zoom;
-
-                _pos = value;
-
-                if (_pos.X < leftBarrier)
-
-                    _pos.X = leftBarrier;
-
-                if (_pos.X > rightBarrier)
-
-                    _pos.X = rightBarrier;
-
-                if (_pos.Y < topBarrier)
-
-                    _pos.Y = topBarrier;
-
-                if (_pos.Y > bottomBarrier)
-
-                    _pos.Y = bottomBarrier;
-
-            }
-
+            transforme = Matrix.CreateScale(new Vector3(1, 1, 0)) *
+                Matrix.CreateTranslation(new Vector3(-origine.X, -origine.Y, 0));
         }
 
-        public float Zoom
-        {
+        //public float Rotation
+        //{
 
-            get { return _zoom; }
+        //    get { return _rotation; }
 
-            set
-            {
+        //    set { _rotation = value; }
 
-                _zoom = value;
+        //}
 
-                if (_zoom < ZOOM_LOWER_LIMIT)
+        //public Vector2 Pos
+        //{
 
-                    _zoom = ZOOM_LOWER_LIMIT;
+        //    get { return _pos; }
 
-                if (_zoom > ZOOM_UPPER_LIMIT)
+        //    set
+        //    {
 
-                    _zoom = ZOOM_UPPER_LIMIT;
+        //        //Détermine les position à ne pas dépasser pour garder l'image dans la fenêtre.
 
-                //Vérifie si zoom est trop petit
+        //        float leftBarrier = (float)_device.Viewport.Width * .5f / _zoom;
 
-                float zoomMinX = (float)_device.Viewport.Width / _worldWidth;
+        //        float rightBarrier = _worldWidth - (float)_device.Viewport.Width * .5f / _zoom;
 
-                float zoomMinY = (float)_device.Viewport.Height / _worldHeight;
+        //        float bottomBarrier = _worldHeight - (float)_device.Viewport.Height * .5f / _zoom;
 
-                float zoomMin = (zoomMinX < zoomMinY) ? zoomMinY : zoomMinX;
+        //        float topBarrier = (float)_device.Viewport.Height * .5f / _zoom;
 
-                if (_zoom < zoomMin)
-                {
+        //        _pos = value;
 
-                    _zoom = zoomMin;
+        //        if (_pos.X < leftBarrier)
 
-                }
+        //            _pos.X = leftBarrier;
 
-            }
+        //        if (_pos.X > rightBarrier)
 
-        }
+        //            _pos.X = rightBarrier;
 
-        public Matrix GetTransformation()
-        {
+        //        if (_pos.Y < topBarrier)
 
-            //Centre de la fenêtre est le point d'origine.
+        //            _pos.Y = topBarrier;
 
-            return
+        //        if (_pos.Y > bottomBarrier)
 
-                Matrix.CreateTranslation(new Vector3(-_pos.X, -_pos.Y, 0)) *
+        //            _pos.Y = bottomBarrier;
 
-                Matrix.CreateRotationZ(Rotation) *
+        //    }
 
-                Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+        //}
 
-                Matrix.CreateTranslation(new Vector3(_device.Viewport.Width * 0.5f, _device.Viewport.Height * 0.5f, 0));
+        //public float Zoom
+        //{
 
-        }
+        //    get { return _zoom; }
+
+        //    set
+        //    {
+
+        //        _zoom = value;
+
+        //        if (_zoom < ZOOM_LOWER_LIMIT)
+
+        //            _zoom = ZOOM_LOWER_LIMIT;
+
+        //        if (_zoom > ZOOM_UPPER_LIMIT)
+
+        //            _zoom = ZOOM_UPPER_LIMIT;
+
+        //        //Vérifie si zoom est trop petit
+
+        //        float zoomMinX = (float)_device.Viewport.Width / _worldWidth;
+
+        //        float zoomMinY = (float)_device.Viewport.Height / _worldHeight;
+
+        //        float zoomMin = (zoomMinX < zoomMinY) ? zoomMinY : zoomMinX;
+
+        //        if (_zoom < zoomMin)
+        //        {
+
+        //            _zoom = zoomMin;
+
+        //        }
+
+        //    }
+
+        //}
+
+        //public Matrix GetTransformation()
+        //{
+
+        //    //Centre de la fenêtre est le point d'origine.
+
+        //    return
+
+        //        Matrix.CreateTranslation(new Vector3(-_pos.X, -_pos.Y, 0)) *
+
+        //        Matrix.CreateRotationZ(Rotation) *
+
+        //        Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+
+        //        Matrix.CreateTranslation(new Vector3(_device.Viewport.Width * 0.5f, _device.Viewport.Height * 0.5f, 0));
+
+        //}
 
 
     }
