@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Camera2d.cs" />
     <Compile Include="cButton.cs" />
+    <Compile Include="Class\Bullet.cs" />
     <Compile Include="Class\Physique.cs" />
     <Compile Include="Class\Unit\Unit.cs" />
     <Compile Include="Chat.cs" />

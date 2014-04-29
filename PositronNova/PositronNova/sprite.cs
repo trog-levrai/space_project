@@ -28,6 +28,10 @@ namespace PositronNova
                 set { _texture = value; }
             }
 
+            public Vector2 textureOrigine;
+    
+            public float textureRotation;
+
             private Vector2 _position;
             public Vector2 Position
             {
@@ -57,7 +61,10 @@ namespace PositronNova
             }
 
             private bool moving;
+
             Vector2 destination;
+
+            public Color[] textureData; //Pour les collisions Pix/Pix 
 
             /*public Vector2 FPosition
             {
@@ -66,6 +73,7 @@ namespace PositronNova
             }
             private Vector2 _fposition;*/
             
+            ////////////////////////// CONSTRUCTEURS
 
             public sprite(Vector2 pos, ContentManager content, string cont)
             {
@@ -75,6 +83,18 @@ namespace PositronNova
                 Mouse = Vector2.Zero;
                 LoadContent(content, cont);
             }
+
+            public sprite(Vector2 pos, float textureRotation, ContentManager content, string cont)
+            {
+                _position = pos;
+                this.textureRotation = textureRotation;
+                _direction = Vector2.Zero;
+                _speed = 0;
+                Mouse = Vector2.Zero;
+                LoadContent(content, cont);
+            }
+
+            /////////////////////// METHODES
 
             public void Init()
             {
@@ -103,30 +123,22 @@ namespace PositronNova
             /// <param name="keyboardState">L'état du clavier à tester</param>
             /// <param name="mouseState">L'état de la souris à tester</param>
             /// <param name="joueurNum">Le numéro du joueur qui doit être surveillé</param>
-            public virtual bool GetEnnemy(MouseState mouseState/*, Vector2 Pos*/)
+            public virtual bool GetEnnemy(MouseState mouseState)
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
-                    return Math.Abs(mouseState.X - _position.X /*+ Pos.X / 60*/) <= 40 && Math.Abs(mouseState.Y - _position.Y /*+ Pos.Y / 60*/) <= 26;
+                    return Math.Abs(mouseState.X - _position.X + Camera2d.Origine.X) <= 40 & Math.Abs(mouseState.Y - _position.Y + Camera2d.Origine.Y) <= 26;
                 else
-                {
                     return false;
-                }
             }
             public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState/*, Vector2 Pos*/)
             {
                 //Ce code est magique, ne pas trop toucher SVP :-)
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    selected = Math.Abs(mouseState.X - _position.X /*+ Pos.X/60*/) <= 40 && Math.Abs(mouseState.Y - _position.Y /*+ Pos.Y/60*/) <= 26;
+                    selected = Math.Abs(mouseState.X - _position.X + Camera2d.Origine.X) <= Texture.Width & Math.Abs(mouseState.Y - _position.Y + Camera2d.Origine.Y) <= Texture.Height; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                 }
                 if (mouseState.RightButton == ButtonState.Pressed && selected)
                 {
-                    //moving = true;
-                    //_mouse.X = mouseState.X /*+ Pos.X/60*/;
-                    //_mouse.Y = mouseState.Y /*+ Pos.Y/60*/;
-                    //_direction.X = mouseState.X - _position.X /*+ Pos.X/60*/;
-                    //_direction.Y = mouseState.Y - _position.Y /*+ Pos.Y/60*/;
-                    //_direction.Normalize();
                     destination = new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
                     moving = true;
                 }
@@ -157,39 +169,15 @@ namespace PositronNova
                     moving = false;
             }
 
+            //////////////////////////// UPDATE & DRAW
+
             public virtual void Update(GameTime gameTime)
             {
-                //if (Math.Abs(_position.X - _mouse.X) <= 5 && Math.Abs(_position.Y - _mouse.Y) <= 5)
-                //{
-                //    moving = false;
-                //}
-                //if (moving)
-                //{
-                //    _position += _direction * _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-                //}
-
-                //if (_position.X < 0)
-                //{
-                //    _position.X = 0;
-                //    moving = false;
-                //}
-                //if (_position.X > GraphicsDeviceManager.DefaultBackBufferWidth)
-                //{
-                //    _position.X = GraphicsDeviceManager.DefaultBackBufferWidth;
-                //    moving = false;
-                //}
-                //if (_position.Y < 0)
-                //{
-                //    _position.Y = 0;
-                //    moving = false;
-                //}
-                //if (_position.Y > GraphicsDeviceManager.DefaultBackBufferHeight)
-                //{
-                //    _position.Y = GraphicsDeviceManager.DefaultBackBufferHeight;
-                //    moving = false;
-                //}
-
                 deplacement();
+
+                if (Position.X <= 5 || Position.X + Texture.Width >= PositronNova.BackgroundTexture.Width - 5||
+                    Position.Y <= 5 || Position.Y + Texture.Height >= PositronNova.BackgroundTexture.Height - 5)
+                    moving = false;
             }
             
             /// <summary>
@@ -200,6 +188,11 @@ namespace PositronNova
             public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
             {
                 spriteBatch.Draw(_texture, _position, Color.White);
+            }
+
+            public virtual void Draw(SpriteBatch sb)
+            {
+                sb.Draw(_texture, _position, null, Color.White, textureRotation, textureOrigine, 1f, SpriteEffects.None, 0);
             }
         }
     }

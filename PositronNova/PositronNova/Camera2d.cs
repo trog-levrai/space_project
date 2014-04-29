@@ -21,15 +21,19 @@ namespace PositronNova
 
         public Matrix transforme;
         Viewport view;
+        float zoom;
         static Vector2 origine;
         static public Vector2 Origine
         {
             get { return origine; }
         }
 
+        KeyboardState keyRepeat;
+
         public Camera2d(Viewport newView)
         {
             view = newView;
+            zoom = 1;
         }
 
         public void Update1(GameTime gt, KeyboardState keyboard, MouseState mouse)
@@ -43,12 +47,17 @@ namespace PositronNova
             if ((keyboard.IsKeyDown(Keys.Right) || mouse.X >= PositronNova.winWidth) && origine.X + PositronNova.winWidth < PositronNova.BackgroundTexture.Width)
                 origine = new Vector2(origine.X + 5, origine.Y);
 
-            
+            if (keyboard.IsKeyDown(Keys.PageUp) && keyRepeat.IsKeyUp(Keys.PageUp)) // ZOOM : Pas opérationnel !!! Mais ça fonctionne ;)
+                zoom -= 0.2f;
+            if (keyboard.IsKeyDown(Keys.PageDown) && keyRepeat.IsKeyUp(Keys.PageDown))
+                zoom += 0.2f;
+
+            keyRepeat = Keyboard.GetState();
         }
 
         public void Update2(GameTime gt, KeyboardState keyboard, MouseState mouse)
         {
-            transforme = Matrix.CreateScale(new Vector3(1, 1, 0)) *
+            transforme = Matrix.CreateScale(new Vector3(zoom, zoom, 0)) *
                 Matrix.CreateTranslation(new Vector3(-origine.X, -origine.Y, 0));
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CollisionPerPixel
+namespace PositronNova.Class
 {
     static public class Physique
     {
@@ -31,7 +31,7 @@ namespace CollisionPerPixel
             return false;
         }
 
-        //UTILISE LES TEXTURE2D ET LES VECTOR2, LAQUELLE DES DEUX EST LA MEILLEURE ?... BONNE QUESTION
+        //UTILISE LES TEXTURE2D ET LES VECTOR2, LAQUELLE DES DEUX EST LA MEILLEURE ?... BONNE QUESTION !
         static public bool IntersectPixel(Texture2D text1, Vector2 pos1, Color[] data1,
                                     Texture2D text2, Vector2 pos2, Color[] data2)
         {

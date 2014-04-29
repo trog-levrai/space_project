@@ -45,7 +45,7 @@ namespace PositronNova.Class.Unit
             get { return pv; }
             set { pv = value; }
         }
-        public void Update(GameTime gt/*, Vector2 Pos*/)
+        public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
             //On ne prend les touches que si c'est un allie

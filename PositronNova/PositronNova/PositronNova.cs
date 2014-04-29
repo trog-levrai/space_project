@@ -35,6 +35,12 @@ namespace PositronNova
             get { return backgroundTexture; }
         }
 
+
+        // WORLD ELEMENTS
+        //public List<Unit> unitList = new List<Unit>();
+        //public List<Bullet> bulletList = new List<Bullet>();
+
+
         private Unit[] units;
         private Fighter nyan;
         private Destroyer ennemy;
@@ -89,7 +95,7 @@ namespace PositronNova
             graphics.SynchronizeWithVerticalRetrace = false;
 
 
-            nyan = new Fighter("Chasseur", Content, new Vector2(10,10), true);
+            nyan = new Fighter("Chasseur", Content, new Vector2(500,300), true);
             ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
             units = new Unit[2];
             units[0] = nyan;
@@ -198,14 +204,14 @@ namespace PositronNova
             }
             foreach (var unit in units)
             {
-                unit.Update(gameTime/*, _camera.Pos*/);
+                unit.Update(gameTime);
                 if (unit.Friendly)
                 {
-                    unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState()/*, _camera.Pos*/);
+                    unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
                 }
                 else
                 {
-                    if (unit.sprite.GetEnnemy(Mouse.GetState()/*, _camera.Pos*/))
+                    if (unit.sprite.GetEnnemy(Mouse.GetState()))
                     {
                         selected.Ennemy = unit;
                     }
