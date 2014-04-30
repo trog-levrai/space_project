@@ -40,6 +40,12 @@ namespace PositronNova
         //public List<Unit> unitList = new List<Unit>();
         //public List<Bullet> bulletList = new List<Bullet>();
 
+        KeyboardState keyboardState;
+        KeyboardState oldKeyboardState;
+
+        GameScreen activeScreen;
+        StartScreen startScreen;
+        ActionScreen actionScreen;
 
         private Unit[] units;
         private Fighter nyan;
@@ -71,14 +77,11 @@ namespace PositronNova
         enum GameState
         {
             Video,
-            MainMenu,
-            Option,
-            Playing
+            Game
         }
 
         private GameState CurrentGameState = GameState.Video;
 
-        cButton btnPlay;
 
 
         /// <summary>
@@ -138,14 +141,30 @@ namespace PositronNova
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
+            startScreen = new StartScreen(
+                this,
+                spriteBatch,
+                Content.Load<SpriteFont>("menufont"),
+                Content.Load<Texture2D>("BackgroudMenu"));
+            Components.Add(startScreen);
+            startScreen.Hide();
+
+            actionScreen = new ActionScreen(
+                this,
+                spriteBatch,
+                Content.Load<Texture2D>("Background"));
+            Components.Add(actionScreen);
+            actionScreen.Hide();
+
+            activeScreen = startScreen;
+            activeScreen.Show();
+
             chat = Content.Load<SpriteFont>("chat");
 
             vid = Content.Load<Video>("Video\\Vid");
             vidRectangle = new Rectangle(GraphicsDevice.Viewport.X, GraphicsDevice.Viewport.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             vidPlayer.Play(vid);
 
-            btnPlay = new cButton(Content.Load<Texture2D>("img\\Bouton"), graphics.GraphicsDevice);
-            btnPlay.setPosition(new Vector2(150, 150));
             // TODO: use this.Content to load your game content here
         }
         /// <summary>
@@ -174,55 +193,71 @@ namespace PositronNova
             {
                 case GameState.Video:
                     if (vidPlayer.State == MediaState.Stopped || (keyboardState.IsKeyDown(Keys.Space)))
-                        CurrentGameState = GameState.MainMenu;
+                        CurrentGameState = GameState.Game;
                     _camera.Update2(gameTime, keyboardState, mouse);
                     break;
-                case GameState.MainMenu:
+                case GameState.Game:
                     vidPlayer.Stop();
-                    if (btnPlay.IsCliked) CurrentGameState = GameState.Playing;
-                    btnPlay.Update(mouse);
-                    _camera.Update2(gameTime, keyboardState, mouse);
-                    break;
-
-                case GameState.Playing:
-                    _camera.Update1(gameTime, keyboardState, mouse);
-                    _camera.Update2(gameTime, keyboardState, mouse);
-                    break;
-            }
-
-
-            Unit selected = null;
-            foreach (var unit in units)
-            {
-                if (unit.Friendly)
-                {
-                    if (unit.sprite.Selected)
+                    if (activeScreen == startScreen)
                     {
-                        selected = unit;
-                    }
-                }
-            }
-            foreach (var unit in units)
-            {
-                unit.Update(gameTime);
-                if (unit.Friendly)
-                {
-                    unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
-                }
-                else
-                {
-                    if (unit.sprite.GetEnnemy(Mouse.GetState()))
-                    {
-                        selected.Ennemy = unit;
-                    }
-                    else
-                    {
-                        if (nyan.Ennemy == unit && Mouse.GetState().LeftButton == ButtonState.Pressed && selected != null)
+                        _camera.Update2(gameTime, keyboardState, mouse);
+                        if (CheckKey(Keys.Enter))
                         {
-                            selected.Ennemy = null;
+                            if (startScreen.SelectedIndex == 0)
+                            {
+                                activeScreen.Hide();
+                                activeScreen = actionScreen;
+                                activeScreen.Show();
+                            }
+                            if (startScreen.SelectedIndex == 1)
+                                this.Exit();
                         }
                     }
-                }
+                    if (activeScreen == actionScreen)
+                    {
+                        _camera.Update1(gameTime, keyboardState, mouse);
+                        _camera.Update2(gameTime, keyboardState, mouse);
+
+                        Unit selected = null;
+                        foreach (var unit in units)
+                        {
+                            if (unit.Friendly)
+                            {
+                                if (unit.sprite.Selected)
+                                {
+                                    selected = unit;
+                                }
+                            }
+                        }
+                        foreach (var unit in units)
+                        {
+                            unit.Update(gameTime);
+                            if (unit.Friendly)
+                            {
+                                unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
+                            }
+                            else
+                            {
+                                if (unit.sprite.GetEnnemy(Mouse.GetState()))
+                                {
+                                    selected.Ennemy = unit;
+                                }
+                                else
+                                {
+                                    if (nyan.Ennemy == unit && Mouse.GetState().LeftButton == ButtonState.Pressed && selected != null)
+                                    {
+                                        selected.Ennemy = null;
+                                    }
+                                }
+                            }
+                        }
+
+                        // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!!!
+
+
+                        text.KBInput(Keyboard.GetState());
+                    }
+                    break;
             }
 
 
@@ -254,8 +289,10 @@ namespace PositronNova
             if (keyboardState.IsKeyDown(Keys.PageUp))
 
                 _camera.Zoom += 0.05f;*/
-            text.KBInput(Keyboard.GetState());
+
             base.Update(gameTime);
+
+            oldKeyboardState = keyboardState;
         }
 
         /// <summary>
@@ -269,28 +306,38 @@ namespace PositronNova
 
             vidTexture = vidPlayer.GetTexture();
             spriteBatch.Draw(vidTexture, vidRectangle, Color.White);
+
             switch (CurrentGameState)
             {
-                case GameState.MainMenu:
-                    spriteBatch.Draw(Content.Load<Texture2D>("BackgroudMenu"), new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
-                    btnPlay.Draw(spriteBatch);
-                    break;
 
-                case GameState.Playing:
-                    spriteBatch.Draw(backgroundTexture, Vector2.Zero, backgroundTexture.Bounds, Color.White);
-                    spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
-                    //Affichage des unites si vous n'aviez pas compris
-                     foreach (var unit in units)
+                case GameState.Game:
+                    if (activeScreen == startScreen)
                     {
-                        unit.Draw(spriteBatch, gameTime);
+                        startScreen.Draw(gameTime);
+                    }
+                    if (activeScreen == actionScreen)
+                    {
+                        actionScreen.Draw(gameTime);
+                        spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
+                        //Affichage des unites si vous n'aviez pas compris
+                        foreach (var unit in units)
+                        {
+                            unit.Draw(spriteBatch, gameTime);
+                        }
                     }
                     break;
             }
 
 
-
             spriteBatch.End();
-            base.Draw(gameTime);
+            //base.Draw(gameTime);
+        }
+
+        private bool CheckKey(Keys theKey)
+        {
+            return
+            keyboardState.IsKeyUp(theKey) &&
+            oldKeyboardState.IsKeyDown(theKey);
         }
     }
 }
