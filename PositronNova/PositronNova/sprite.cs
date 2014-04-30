@@ -135,7 +135,7 @@ namespace PositronNova
                 //Ce code est magique, ne pas trop toucher SVP :-)
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    selected = Math.Abs(mouseState.X - _position.X + Camera2d.Origine.X) <= Texture.Width & Math.Abs(mouseState.Y - _position.Y + Camera2d.Origine.Y) <= Texture.Height; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
+                    selected = Math.Abs(mouseState.X - (_position.X + Texture.Width / 2)+ Camera2d.Origine.X) <= Texture.Width / 2 & Math.Abs(mouseState.Y - (_position.Y + Texture.Height / 2) + Camera2d.Origine.Y) <= Texture.Height / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                 }
                 if (mouseState.RightButton == ButtonState.Pressed && selected)
                 {
