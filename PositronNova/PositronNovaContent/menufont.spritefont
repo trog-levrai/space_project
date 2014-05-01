@@ -7,12 +7,7 @@ with.
 -->
 <XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
   <Asset Type="Graphics:FontDescription">
-
-    <!--
-    Modify this string to change the font that will be imported.
-    -->
-    <FontName>Verdana</FontName>
-
+    <FontName>Impact</FontName>
     <!--
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
