@@ -140,7 +140,7 @@ namespace PositronNova
                 }
                 if (mouseState.RightButton == ButtonState.Pressed && selected)
                 {
-                    destination = new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
+                    destination = new Vector2(mouseState.X + Camera2d.Origine.X - Texture.Width / 2, mouseState.Y + Camera2d.Origine.Y - Texture.Height / 2); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
                     moving = true;
                 }
             }
