@@ -208,7 +208,7 @@ namespace PositronNova
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
                             }
-                            if (startScreen.SelectedIndex == 1)
+                            if (startScreen.SelectedIndex == 2)
                                 this.Exit();
                         }
                     }

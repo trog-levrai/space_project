@@ -159,10 +159,10 @@ namespace PositronNova
                 else
                 {
                     tint = normal;
-                    spriteBatch.DrawString(
-                        spriteFont, menuItems[i], location, tint);
-                    location.Y += spriteFont.LineSpacing + 5;
                 }
+                spriteBatch.DrawString(
+                spriteFont, menuItems[i], location, tint);
+                location.Y += spriteFont.LineSpacing + 5;
             }
         }
 
