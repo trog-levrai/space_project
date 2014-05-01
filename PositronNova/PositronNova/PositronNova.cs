@@ -70,7 +70,6 @@ namespace PositronNova
 
         Video vid;
         VideoPlayer vidPlayer;
-
         Texture2D vidTexture;
         Rectangle vidRectangle;
 
@@ -238,13 +237,14 @@ namespace PositronNova
                             }
                             else
                             {
-                                if (unit.sprite.GetEnnemy(Mouse.GetState()))
+                                if (unit.sprite.GetEnnemy(Mouse.GetState()) && selected != null)
                                 {
                                     selected.Ennemy = unit;
+                                    selected.sprite.Selected = true;
                                 }
                                 else
                                 {
-                                    if (nyan.Ennemy == unit && Mouse.GetState().LeftButton == ButtonState.Pressed && selected != null)
+                                    if (selected != null && selected.Ennemy == unit && Mouse.GetState().LeftButton == ButtonState.Pressed)
                                     {
                                         selected.Ennemy = null;
                                     }
