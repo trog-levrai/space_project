@@ -9,11 +9,6 @@ Content\img\Bouton.xnb
 Content\BackgroudMenu.xnb
 Content\Background.xnb
 Content\img\boom80.xnb
-Content\Affichage_mouse.xnb
-Content\chat.xnb
-Content\menufont.xnb
-Content\sounds\laser.xnb
-Content\Video\Vid.xnb
 Content\img\BarreRessources.xnb
 Content\img\Bullet.xnb
 Content\img\Chasseur.xnb
@@ -44,4 +39,9 @@ Content\img\Vaisseau_1.xnb
 Content\img\Vaisseau_1B.xnb
 Content\img\Vaisseau_1_Lourd.xnb
 Content\img\Viseur.xnb
+Content\Affichage_mouse.xnb
+Content\chat.xnb
+Content\menufont.xnb
+Content\sounds\laser.xnb
+Content\Video\Vid.xnb
 Content\Video\Vid.wmv

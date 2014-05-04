@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -60,6 +58,8 @@ namespace PositronNova
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
+            text = new Chat(this);
+
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
             graphics.PreferredBackBufferHeight = winHeight;
         }
@@ -99,7 +99,6 @@ namespace PositronNova
             genUnit(20, true);
             genUnit(20, false);
 
-            text = new Chat();
             vidPlayer = new VideoPlayer();
 
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
@@ -107,7 +106,7 @@ namespace PositronNova
             _thEcoute.IsBackground = true;
 
             UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:Sebounet");
+            byte[] msg = Encoding.Default.GetBytes("nick:trog");
             udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
             udpClient.Close();
 
@@ -249,7 +248,20 @@ namespace PositronNova
                         }
 
                         // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!!!
-
+                        
+                        //UdpClient udpClient = new UdpClient();
+                        //udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
+                        //udpClient.Close();
+                        //foreach (var unit in unitList)
+                        //{
+                        //    if (unit.Friendly)
+                        //    {
+                        //        BinaryFormatter bin = new BinaryFormatter();
+                        //        Stream stream = new NetworkStream(new Socket());
+                        //        bin.Serialize(stream, unit.position);
+                        //        udpClient.Send(()bin, 1024, "10.3.140.222", 1234);
+                        //    }
+                        //}
 
                         text.KBInput(Keyboard.GetState());
                     }
