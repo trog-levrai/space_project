@@ -17,6 +17,9 @@ namespace PositronNova
 
     public class Bullet : sprite
     {
+        System.TimeSpan frequenceSpawnFumee;
+        System.TimeSpan spawnLast;
+
         BulletType bulletType;
         Unit target;
         public BulletType BulletType
@@ -63,12 +66,11 @@ namespace PositronNova
                     break;
                 case BulletType.Missile:
                     texture = TextureManager.missile_t;
+                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 5);
                     speed = 12;
                     damage = 25;
                     break;
             }
-
-            textureOrigine = new Vector2(texture.Width / 2, texture.Height / 2);
             textureData = new Color[texture.Width * texture.Height];
             texture.GetData(textureData);
         }
@@ -77,6 +79,17 @@ namespace PositronNova
 
         public void Update(GameTime gameTime)
         {
+            if (bulletType == BulletType.Missile)
+            {
+                spawnLast = spawnLast.Add(gameTime.ElapsedGameTime);
+
+                if (frequenceSpawnFumee <= spawnLast)
+                {
+                    spawnLast = new TimeSpan(0);
+                    PositronNova.AddEffect(new EffectBullet(position - new Vector2(texture.Width / 2, texture.Height / 2), EffectType.MissileFumee));
+                }
+            }
+
             Deplacement();
             Destruction();
             HitTarget();
@@ -84,7 +97,7 @@ namespace PositronNova
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, position, null, Color.White, textureRotation, textureOrigine, 1f, SpriteEffects.None, 0);
+            sb.Draw(texture, position, null, Color.White, textureRotation, centre, 1f, SpriteEffects.None, 0);
         }
 
         // METHODES

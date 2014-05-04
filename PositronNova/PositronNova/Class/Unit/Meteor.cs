@@ -12,7 +12,7 @@ namespace PositronNova
     {
         private Texture2D tex;
         private Random rand = new Random();
-                private int frameSquare;
+        private int frameSquare;
         private double tempsActFrameSwitch;
         private double tempsPreFrameSwitch;
         private bool frameReaderSwitch = true;

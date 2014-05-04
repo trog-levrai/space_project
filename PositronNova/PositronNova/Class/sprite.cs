@@ -62,14 +62,14 @@ namespace PositronNova
         //}
 
         public Texture2D texture;
+        public Rectangle hitbox;
         public Vector2 position;
-        public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture
+        public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture :o)
         protected Vector2 direction;
         protected Vector2 destination;
 
         protected float speed;
 
-        protected Vector2 textureOrigine;
         protected float textureRotation;
 
         public Color[] textureData; //Pour les collisions Pix/Pix 
@@ -79,9 +79,7 @@ namespace PositronNova
         public sprite(Vector2 pos)
         {
             position = pos;
-            //direction = Vector2.Zero;
             speed = 0;
-            //LoadContent(content, cont);
         }
 
         public sprite(Vector2 origine, Vector2 destination) // Pour les bullet
@@ -155,7 +153,7 @@ namespace PositronNova
 
         public virtual void DrawRot(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, Color.White, textureRotation, textureOrigine, 1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position, null, Color.White, textureRotation, centre, 1f, SpriteEffects.None, 0);
         }
     }
 }

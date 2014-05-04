@@ -37,6 +37,7 @@ namespace PositronNova
         // WORLD ELEMENTS
         static List<Unit> unitList = new List<Unit>();
         static List<Bullet> bulletList = new List<Bullet>();
+        static List<EffectBullet> effectBulletList = new List<EffectBullet>();
 
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
@@ -243,7 +244,19 @@ namespace PositronNova
                             if (bulletList[i].destruc)
                             {
                                 bulletList.RemoveAt(i);
-                                i--;
+                                if (i > 0)
+                                    i--;
+                            }
+                        }
+
+                        for (int i = 0; i < effectBulletList.Count; i++)
+                        {
+                            effectBulletList[i].Update(gameTime);
+                            if (effectBulletList[i].destruc)
+                            {
+                                effectBulletList.RemoveAt(i);
+                                if (i > 0)
+                                    i--;
                             }
                         }
 
@@ -301,6 +314,8 @@ namespace PositronNova
                             unit.Draw(spriteBatch);
                         foreach (Bullet bullet in bulletList) // Affichage des bullets :p
                             bullet.Draw(spriteBatch);
+                        foreach (EffectBullet effect in effectBulletList)
+                            effect.Draw(spriteBatch);
 
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                     }
@@ -346,6 +361,11 @@ namespace PositronNova
         static public void AddBullet(Bullet bullet)
         {
             bulletList.Add(bullet);
+        }
+
+        static public void AddEffect(EffectBullet effect)
+        {
+            effectBulletList.Add(effect);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace PositronNova.Class
     static public class TextureManager
     {
         static public Texture2D littleCinetique_t, cinetique_t, laser_t, ion_t, plasma_t, missile_t;
+        public static Texture2D fumee_t;
 
         static public void ContentLoad(ContentManager content)
         {
@@ -19,6 +20,8 @@ namespace PositronNova.Class
             ion_t = content.Load<Texture2D>("img\\IonBullet");
             plasma_t = content.Load<Texture2D>("img\\PlasmaBullet");
             missile_t = content.Load<Texture2D>("img\\Missile");
+
+            fumee_t = content.Load<Texture2D>("img\\MissileFumee");
         }
     }
 }

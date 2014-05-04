@@ -19,9 +19,9 @@ namespace PositronNova.Class.Unit
     public class Unit : sprite
     {
         // Sound et tir
-        protected System.TimeSpan fireRate;
-        protected System.TimeSpan last;
-        protected SoundEffect laserSound;
+        System.TimeSpan fireRate;
+        System.TimeSpan last;
+        SoundEffect laserSound;
         Bullet localBullet;
         BulletType weaponType;
 
@@ -115,7 +115,7 @@ namespace PositronNova.Class.Unit
                     texture = content.Load<Texture2D>("img\\Destroyer");
                     last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 0, 300);
-                    weaponType = BulletType.Cinetique;
+                    weaponType = BulletType.Laser;
                     pv_max = 40;
                     pv = pv_max;
                     speed = 0.1f;
@@ -124,7 +124,7 @@ namespace PositronNova.Class.Unit
                     texture = content.Load<Texture2D>("img\\Corvette");
                     last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 0, 400);
-                    weaponType = BulletType.Laser;
+                    weaponType = BulletType.Ion;
                     pv_max = 60;
                     pv = pv_max;
                     speed = 0.05f;
@@ -133,7 +133,7 @@ namespace PositronNova.Class.Unit
                     texture = content.Load<Texture2D>("img\\Croiseur");
                     last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 0, 500);
-                    weaponType = BulletType.Ion;
+                    weaponType = BulletType.Plasma;
                     pv_max = 110;
                     pv = pv_max;
                     speed = 0.05f;
@@ -142,7 +142,7 @@ namespace PositronNova.Class.Unit
                     texture = content.Load<Texture2D>("img\\Cuirasse");
                     last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 0, 600);
-                    weaponType = BulletType.Plasma;
+                    weaponType = BulletType.Missile;
                     pv_max = 150;
                     pv = pv_max;
                     speed = 0.05f;
