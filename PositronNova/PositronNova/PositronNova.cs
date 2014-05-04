@@ -227,7 +227,7 @@ namespace PositronNova
                             unitList[i].Update(gameTime);
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
-                                text.addString("[Game] : " + unitList[i].Name + " A été détruit !");
+                                text.addString("[Game] : " + unitList[i].Name + " has been destroyed !");
                                 unitList.RemoveAt(i);
                                 if (i > 0)
                                     i--;
@@ -284,12 +284,13 @@ namespace PositronNova
                     if (activeScreen == actionScreen)
                     {
                         actionScreen.Draw(gameTime);
-                        spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
 
                         foreach (var unit in unitList) //Affichage des unites si vous n'aviez pas compris
                             unit.Draw(spriteBatch);
                         foreach (Bullet bullet in bulletList) // Affichage des bullets :p
                             bullet.Draw(spriteBatch);
+
+                        spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                     }
                     break;
             }
