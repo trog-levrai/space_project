@@ -5,79 +5,108 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PositronNova.Class;
+using PositronNova.Class.Unit;
 
-namespace PositronNova.Class
+namespace PositronNova
 {
-    enum bulletType
+    public enum BulletType
     {
-        cinetique, laser, ion, plasma, missile
+        LittleCinetique, Cinetique, Laser, Ion, Plasma, Missile
     };
 
-    class Bullet : sprite
+    public class Bullet : sprite
     {
-        bulletType bulletType;
+        BulletType bulletType;
+        Unit target;
+        public BulletType BulletType
+        {
+            get { return bulletType; }
+        }
+
         public bool destruc = false;
         int damage;
 
-        static string assetName;
+        ///////////////////////////////// CONSTRUCTEURS
 
-        // CONSTRUCTEURS
-
-        public Bullet(Vector2 position, float rotation, ContentManager content, string assetName)
-            : base(position, rotation, content, assetName)
+        public Bullet(Vector2 origine, Unit target, BulletType bulletType)
+            : base(origine, target.centre)
         {
-            
-        }
+            this.target = target;
+            this.bulletType = bulletType;
+            switch (bulletType)
+            {
+                case BulletType.LittleCinetique:
+                    texture = TextureManager.littleCinetique_t;
+                    speed = 4;
+                    damage = 1;
+                    break;
+                case BulletType.Cinetique:
+                    texture = TextureManager.cinetique_t;
+                    speed = 4;
+                    damage = 5;
+                    break;
+                case BulletType.Laser:
+                    texture = TextureManager.laser_t;
+                    speed = 6;
+                    damage = 10;
+                    break;
+                case BulletType.Ion:
+                    texture = TextureManager.ion_t;
+                    speed = 8;
+                    damage = 15;
+                    break;
+                case BulletType.Plasma:
+                    texture = TextureManager.plasma_t;
+                    speed = 10;
+                    damage = 20;
+                    break;
+                case BulletType.Missile:
+                    texture = TextureManager.missile_t;
+                    speed = 12;
+                    damage = 25;
+                    break;
+            }
 
-        //public Bullet(Vector2 position, float rotation, bulletType bt, ContentManager content)
-        //    : base(position, rotation, content, assetName)
-        //{
-        //    bulletType = bt;
-        //    switch (bulletType)
-        //    {
-        //        case bulletType.cinetique:
-        //            damage = 5;
-        //            assetName = "Laser";
-        //            break;
-        //        case bulletType.laser:
-        //            damage = 10;
-        //            break;
-        //        case bulletType.ion:
-        //            damage = 15;
-        //            break;
-        //        case bulletType.plasma:
-        //            damage = 20;
-        //            break;
-        //        case bulletType.missile:
-        //            damage = 25;
-        //            break;
-        //    }
-        //}
-
-        // METHODES
-
-        void deplacement()
-        {
-            Position += Direction * Speed;
-        }
-
-        void Destruction()
-        {
-            if (Position.X < 0 || Position.X + Texture.Width > PositronNova.BackgroundTexture.Width || Position.Y < 0 || Position.Y + Texture.Height > PositronNova.BackgroundTexture.Height)
-                destruc = true;
+            textureOrigine = new Vector2(texture.Width / 2, texture.Height / 2);
+            textureData = new Color[texture.Width * texture.Height];
+            texture.GetData(textureData);
         }
 
         //UPDATE & DRAW
 
         public void Update(GameTime gameTime)
         {
-            deplacement();
+            Deplacement();
             Destruction();
+            HitTarget();
         }
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(Texture, Position, null, Color.White, textureRotation, textureOrigine, 1f, SpriteEffects.None, 0);
+            sb.Draw(texture, position, null, Color.White, textureRotation, textureOrigine, 1f, SpriteEffects.None, 0);
+        }
+
+        // METHODES
+
+        void Deplacement()
+        {
+            position += direction * speed;
+        }
+
+        void Destruction()
+        {
+            if (position.X < 0 || position.X + texture.Width > PositronNova.BackgroundTexture.Width || position.Y < 0 || position.Y + texture.Height > PositronNova.BackgroundTexture.Height)
+                destruc = true;
+        }
+
+        void HitTarget()
+        {
+            if (target != null && target.Pv > 0 && Physique.IntersectPixel(texture, position, textureData, target.texture, target.position, target.textureData))
+            {
+                target.Pv -= damage;
+                destruc = true;
+            }
         }
     }
 }

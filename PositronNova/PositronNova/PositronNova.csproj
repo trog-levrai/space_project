@@ -110,6 +110,7 @@
     <Compile Include="Class\Camera2d.cs" />
     <Compile Include="Class\Bullet.cs" />
     <Compile Include="Class\Physique.cs" />
+    <Compile Include="Class\TextureManager.cs" />
     <Compile Include="Class\Unit\explosion.cs" />
     <Compile Include="Class\Unit\Unit.cs" />
     <Compile Include="Class\Chat.cs" />

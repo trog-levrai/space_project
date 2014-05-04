@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using PositronNova.Class.Unit;
+using PositronNova.Class;
 
 namespace PositronNova
 {
@@ -35,10 +36,9 @@ namespace PositronNova
             get { return backgroundTexture; }
         }
 
-
         // WORLD ELEMENTS
-        //public List<Unit> unitList = new List<Unit>();
-        //public List<Bullet> bulletList = new List<Bullet>();
+        static List<Unit> unitList = new List<Unit>();
+        static List<Bullet> bulletList = new List<Bullet>();
 
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
@@ -47,11 +47,9 @@ namespace PositronNova
         StartScreen startScreen;
         ActionScreen actionScreen;
 
-        private Unit[] units;
-        private Fighter nyan;
-        private Destroyer ennemy;
-
         Camera2d _camera;
+
+        Random rand = new Random();
 
         private SpriteFont chat;
         private Chat text;
@@ -95,13 +93,12 @@ namespace PositronNova
             //Les deux lignes suivantes sont là pour une histoire de FPS. A modifier quand on saura faire donc...
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
-            
 
-            nyan = new Fighter("Chasseur", Content, new Vector2(500,300), true);
-            ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
-            units = new Unit[2];
-            units[0] = nyan;
-            units[1] = ennemy;
+            backgroundTexture = Content.Load<Texture2D>("Background");
+
+            genUnit(20, true);
+            genUnit(20, false);
+
             text = new Chat();
             vidPlayer = new VideoPlayer();
 
@@ -110,7 +107,7 @@ namespace PositronNova
             _thEcoute.IsBackground = true;
 
             UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:Polo");
+            byte[] msg = Encoding.Default.GetBytes("nick:Sebounet");
             udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
             udpClient.Close();
 
@@ -138,8 +135,10 @@ namespace PositronNova
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            TextureManager.ContentLoad(Content);
 
-            backgroundTexture = Content.Load<Texture2D>("Background");
+            foreach (Unit unit in unitList)
+                unit.LoadContent(Content);
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
@@ -185,11 +184,14 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
-            Vector2 movement = Vector2.Zero;
+
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            //    this.Exit();
+            
+            //Vector2 movement = Vector2.Zero;
+
             switch (CurrentGameState)
             {
                 case GameState.Video:
@@ -219,38 +221,29 @@ namespace PositronNova
                         _camera.Update1(gameTime, keyboardState, mouse);
                         _camera.Update2(gameTime, keyboardState, mouse);
 
-                        Unit selected = null;
-                        foreach (var unit in units)
+                        for (int i = 0; i < unitList.Count; i++)
                         {
-                            if (unit.Friendly)
+                            unitList[i].HandleInput(keyboardState, mouse);
+                            unitList[i].Update(gameTime);
+                            if (unitList[i].Destruction())
                             {
-                                if (unit.sprite.Selected)
-                                {
-                                    selected = unit;
-                                }
+                                unitList.RemoveAt(i);
+                                if (i > 0)
+                                    i--;
                             }
+                            for (int j = 0; j < unitList.Count - 1; j++)
+                                if (i != j && unitList[i].CollisionInterVaisseau(unitList[j]))
+                                    unitList[i].moving = false;
+
                         }
-                        foreach (var unit in units)
+
+                        for (int i = 0; i < bulletList.Count; i++)
                         {
-                            unit.Update(gameTime);
-                            if (unit.Friendly)
+                            bulletList[i].Update(gameTime);
+                            if (bulletList[i].destruc)
                             {
-                                unit.sprite.HandleInput(Keyboard.GetState(), Mouse.GetState());
-                            }
-                            else
-                            {
-                                if (unit.sprite.GetEnnemy(Mouse.GetState()) && selected != null)
-                                {
-                                    selected.Ennemy = unit;
-                                    selected.sprite.Selected = true;
-                                }
-                                else
-                                {
-                                    if (selected != null && selected.Ennemy == unit && Mouse.GetState().LeftButton == ButtonState.Pressed)
-                                    {
-                                        selected.Ennemy = null;
-                                    }
-                                }
+                                bulletList.RemoveAt(i);
+                                i--;
                             }
                         }
 
@@ -261,36 +254,6 @@ namespace PositronNova
                     }
                     break;
             }
-
-
-
-            /*if (keyboardState.IsKeyDown(Keys.Left))
-
-                movement.X--;
-
-            if (keyboardState.IsKeyDown(Keys.Right))
-
-                movement.X++;
-
-            if (keyboardState.IsKeyDown(Keys.Up))
-
-                movement.Y--;
-
-            if (keyboardState.IsKeyDown(Keys.Down))
-
-                movement.Y++;
-
-            _camera.Pos += movement * 20;
-
-            //PageDown et PageUp pour le zoom
-
-            if (keyboardState.IsKeyDown(Keys.PageDown))
-
-                _camera.Zoom -= 0.05f;
-
-            if (keyboardState.IsKeyDown(Keys.PageUp))
-
-                _camera.Zoom += 0.05f;*/
 
             base.Update(gameTime);
 
@@ -306,12 +269,12 @@ namespace PositronNova
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
 
-            vidTexture = vidPlayer.GetTexture();
-            spriteBatch.Draw(vidTexture, vidRectangle, Color.White);
-
             switch (CurrentGameState)
             {
-
+                case GameState.Video:
+                    vidTexture = vidPlayer.GetTexture();
+                    spriteBatch.Draw(vidTexture, vidRectangle, Color.White);
+                    break;
                 case GameState.Game:
                     if (activeScreen == startScreen)
                     {
@@ -321,11 +284,11 @@ namespace PositronNova
                     {
                         actionScreen.Draw(gameTime);
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
-                        //Affichage des unites si vous n'aviez pas compris
-                        foreach (var unit in units)
-                        {
-                            unit.Draw(spriteBatch, gameTime);
-                        }
+
+                        foreach (var unit in unitList) //Affichage des unites si vous n'aviez pas compris
+                            unit.Draw(spriteBatch);
+                        foreach (Bullet bullet in bulletList) // Affichage des bullets :p
+                            bullet.Draw(spriteBatch);
                     }
                     break;
             }
@@ -335,11 +298,40 @@ namespace PositronNova
             //base.Draw(gameTime);
         }
 
+        //////////////////////////////////////////////////////METHODES/////////////////////////////////////////////////////
+
         private bool CheckKey(Keys theKey)
         {
             return
             keyboardState.IsKeyUp(theKey) &&
             oldKeyboardState.IsKeyDown(theKey);
+        }
+
+        void genUnit(int nombre, bool friendly)
+        {
+            for (int i = 0; i < nombre; i++)
+            {
+                unitList.Add(new Unit("RandomName", new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1), friendly));
+                //if (unitList.Count > 1)    
+                //for (int j = 0; j < i; j++)
+                //        while (Physique.IntersectPixel(unitList[j].texture, unitList[j].position, unitList[j].textureData, unitList[i].texture, unitList[i].position, unitList[i].textureData))
+                //            unitList[j].position = new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200));
+            }
+            foreach (Unit unit in unitList)
+                unit.Init();
+        }
+
+        static public Unit GetEnnemy()
+        {
+            foreach (Unit unit in unitList)
+                if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 & Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
+                    return unit;
+            return null;
+        }
+
+        static public void AddBullet(Bullet bullet)
+        {
+            bulletList.Add(bullet);
         }
     }
 }
