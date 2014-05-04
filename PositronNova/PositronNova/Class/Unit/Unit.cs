@@ -29,6 +29,10 @@ namespace PositronNova.Class.Unit
         private Color color;
         private SpriteFont _font;
         private string name;
+        public string Name
+        {
+            get { return name; }
+        }
         UnitType unitType;
 
         public bool moving = false;

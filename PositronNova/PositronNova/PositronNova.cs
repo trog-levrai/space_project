@@ -225,8 +225,9 @@ namespace PositronNova
                         {
                             unitList[i].HandleInput(keyboardState, mouse);
                             unitList[i].Update(gameTime);
-                            if (unitList[i].Destruction())
+                            if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
+                                text.addString("[Game] : " + unitList[i].Name + " A été détruit !");
                                 unitList.RemoveAt(i);
                                 if (i > 0)
                                     i--;
