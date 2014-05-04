@@ -60,6 +60,8 @@ namespace PositronNova
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
+            text = new Chat(this);
+
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
             graphics.PreferredBackBufferHeight = winHeight;
         }
@@ -99,7 +101,6 @@ namespace PositronNova
             genUnit(20, true);
             genUnit(20, false);
 
-            text = new Chat();
             vidPlayer = new VideoPlayer();
 
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));

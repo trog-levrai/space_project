@@ -18,14 +18,16 @@ namespace PositronNova
         private bool tab;
         private int rank;
         private string input;
+        Game game;
         private Regex regex;
         private KBInput kb;
         private string[] texts;
-        public Chat()
+        public Chat(Game game)
         {
             regex = new Regex(@"[;(\-)pdosx]*");
             tab = false;
             rank = 0;
+            this.game = game;
             input = "";
             kb = new KBInput();
             texts = new string[10] {"", "", "", "", "", "", "", "", "", ""};
@@ -87,7 +89,7 @@ namespace PositronNova
         private Vector2 position;
         public Vector2 GetPosition()
         {
-            position = new Vector2(Camera2d.Origine.X, PositronNova.winHeight - 14*rank + Camera2d.Origine.Y);
+            position = new Vector2(Camera2d.Origine.X, game.Window.ClientBounds.Height - 14*rank + Camera2d.Origine.Y);
             return position;
         }
         //Génère le texte à afficher
