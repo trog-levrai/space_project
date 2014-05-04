@@ -109,12 +109,17 @@ namespace PositronNova
             _thEcoute.Start(text);
             _thEcoute.IsBackground = true;
 
+            UdpClient udpClient = new UdpClient();
+            byte[] msg = Encoding.Default.GetBytes("nick:Polo");
+            udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
+            udpClient.Close();
+
             base.Initialize();
         }
         private static void Ecouter(Object txt)
         {
             //On crée le serveur en lui spécifiant le port sur lequel il devra écouter.
-            UdpClient serveur = new UdpClient(5035);
+            UdpClient serveur = new UdpClient(1234);
             //Création d'une boucle infinie qui aura pour tâche d'écouter.
             while (true)
             {
@@ -161,10 +166,7 @@ namespace PositronNova
             vid = Content.Load<Video>("Video\\Vid");
             vidRectangle = new Rectangle(GraphicsDevice.Viewport.X, GraphicsDevice.Viewport.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             vidPlayer.Play(vid);
-            UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:trog");
-            udpClient.Send(msg, 9, "10.3.140.222", 1234);
-            udpClient.Close();
+
             // TODO: use this.Content to load your game content here
         }
         /// <summary>
