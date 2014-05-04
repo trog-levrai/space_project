@@ -95,16 +95,14 @@ namespace PositronNova
             //Les deux lignes suivantes sont là pour une histoire de FPS. A modifier quand on saura faire donc...
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
-
+            
 
             nyan = new Fighter("Chasseur", Content, new Vector2(500,300), true);
             ennemy = new Destroyer("Mechant", Content, new Vector2(300,300), false);
             units = new Unit[2];
             units[0] = nyan;
             units[1] = ennemy;
-
             text = new Chat();
-
             vidPlayer = new VideoPlayer();
 
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
@@ -163,7 +161,10 @@ namespace PositronNova
             vid = Content.Load<Video>("Video\\Vid");
             vidRectangle = new Rectangle(GraphicsDevice.Viewport.X, GraphicsDevice.Viewport.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             vidPlayer.Play(vid);
-
+            UdpClient udpClient = new UdpClient();
+            byte[] msg = Encoding.Default.GetBytes("nick:trog");
+            udpClient.Send(msg, 9, "10.3.140.222", 1234);
+            udpClient.Close();
             // TODO: use this.Content to load your game content here
         }
         /// <summary>
@@ -187,7 +188,6 @@ namespace PositronNova
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             Vector2 movement = Vector2.Zero;
-
             switch (CurrentGameState)
             {
                 case GameState.Video:
