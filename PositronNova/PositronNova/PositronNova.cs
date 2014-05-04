@@ -22,6 +22,7 @@ namespace PositronNova
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Game game;
 
         static public int winWidth = 800, winHeight = 600; // Accessible pour les autres classes...
         //Gestion des images...
@@ -45,6 +46,11 @@ namespace PositronNova
         GameScreen activeScreen;
         StartScreen startScreen;
         ActionScreen actionScreen;
+        OptionScreen optionScreen;
+        PauseScreen pauseScreen;
+        bool action = false;
+
+        private Song _song;
 
         Camera2d _camera;
 
@@ -55,6 +61,7 @@ namespace PositronNova
 
         public PositronNova()
         {
+            game = new Game();
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -142,10 +149,16 @@ namespace PositronNova
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
+            _song = Content.Load<Song>("sounds\\AMB_Espace nébuleuse");
+            MediaPlayer.Play(_song);
+            MediaPlayer.Pause();
+            MediaPlayer.Volume = 1.0f;
+
             startScreen = new StartScreen(
                 this,
                 spriteBatch,
                 Content.Load<SpriteFont>("menufont"),
+                Content.Load<SpriteFont>("titlefont"),
                 Content.Load<Texture2D>("BackgroudMenu"));
             Components.Add(startScreen);
             startScreen.Hide();
@@ -157,7 +170,25 @@ namespace PositronNova
             Components.Add(actionScreen);
             actionScreen.Hide();
 
+            optionScreen = new OptionScreen(
+                this,
+                spriteBatch,
+                Content.Load<SpriteFont>("optionfont"),
+                Content.Load<Texture2D>("BackgroudMenu"),
+                graphics);
+            Components.Add(optionScreen);
+            optionScreen.Hide();
+
+            pauseScreen = new PauseScreen(
+                this,
+                spriteBatch,
+                Content.Load<SpriteFont>("optionfont"),
+                Content.Load<Texture2D>("PauseScreen"));
+            Components.Add(pauseScreen);
+            pauseScreen.Hide();
+
             activeScreen = startScreen;
+            startScreen.SelectedIndex = 1;
             activeScreen.Show();
 
             chat = Content.Load<SpriteFont>("chat");
@@ -186,7 +217,7 @@ namespace PositronNova
         {
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
-
+            Vector2 movement = Vector2.Zero;
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             //    this.Exit();
             
@@ -201,25 +232,144 @@ namespace PositronNova
                     break;
                 case GameState.Game:
                     vidPlayer.Stop();
+                    MediaPlayer.Resume();
+
+#region StartScreen
                     if (activeScreen == startScreen)
                     {
                         _camera.Update2(gameTime, keyboardState, mouse);
-                        if (CheckKey(Keys.Enter))
+                        if (keyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                         {
-                            if (startScreen.SelectedIndex == 0)
+                            if (startScreen.SelectedIndex == 1)
                             {
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
                             }
                             if (startScreen.SelectedIndex == 2)
+                            {
+                                action = false;
+                                activeScreen.Hide();
+                                activeScreen = optionScreen;
+                                activeScreen.Show();
+                            }
+                            if (startScreen.SelectedIndex == 3)
                                 this.Exit();
                         }
                     }
+#endregion
+
+                    keyboardState = Keyboard.GetState();
+
+                    if (activeScreen == optionScreen)
+                    {
+                        if (CheckKey(Keys.Escape) && action == false)
+                        {
+                            activeScreen.Hide();
+                            activeScreen = startScreen;
+                            activeScreen.Show();
+                        }
+                        if (CheckKey(Keys.Escape) && action == true)
+                        {
+                            activeScreen.Hide();
+                            activeScreen = pauseScreen;
+                            activeScreen.Show();
+                        }
+                        if (optionScreen.SelectedIndex == 0)
+                        {
+                            if (optionScreen.SselectedIndex == 0 && keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
+                                    {
+                                        
+                                        Window.BeginScreenDeviceChange(true);
+
+                                        graphics.IsFullScreen = true;
+                                        Window.EndScreenDeviceChange(Window.ScreenDeviceName);
+                                    }
+                                    if (optionScreen.SselectedIndex == 1 && CheckKey(Keys.Space))
+                                    {
+                                        Window.BeginScreenDeviceChange(false);
+                                        graphics.PreferredBackBufferWidth = winWidth;
+                                        graphics.PreferredBackBufferHeight = winHeight;
+                                        graphics.IsFullScreen = false;
+                                        Window.EndScreenDeviceChange(Window.ScreenDeviceName);
+                                    }
+                                
+                            
+                        }
+                        if (optionScreen.SelectedIndex == 1)
+                        {
+                            if (optionScreen.SselectedIndex == 2 && keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
+                            {
+                                MediaPlayer.Volume -= 0.1f;
+                                if (MediaPlayer.Volume < 0f)
+                                    MediaPlayer.Volume = 0f;
+                            }
+                            if(optionScreen.SselectedIndex == 3 && keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
+                            {
+                                MediaPlayer.Volume += 0.1f;
+                                if (MediaPlayer.Volume > 1.0f)
+                                    MediaPlayer.Volume = 1.0f;
+                            }
+                        }
+                        if (optionScreen.SelectedIndex == 2 && CheckKey(Keys.Space) && !action)
+                        {
+                            activeScreen.Hide();
+                            activeScreen = startScreen;
+                            activeScreen.Show();
+                        }
+                        if (optionScreen.SelectedIndex == 2 && keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Enter) && action)
+                        {
+                            activeScreen.Hide();
+                            activeScreen = actionScreen;
+                            activeScreen.Show();
+                        }
+
+                    }
+
+                    keyboardState = Keyboard.GetState();
+                    
+#region PauseScreen
+                    if (activeScreen == pauseScreen)
+                    {
+                        if (CheckKey(Keys.Escape) || (pauseScreen.SelectedIndex == 0 && CheckKey(Keys.Enter)))
+                        {
+                            activeScreen.Hide();
+                            activeScreen = actionScreen;
+                            activeScreen.Show();
+                        }
+                        if (CheckKey(Keys.Enter))
+                        {
+                            if (pauseScreen.SelectedIndex == 1)
+                            {
+                                action = true;
+                                activeScreen.Hide();
+                                activeScreen = optionScreen;
+                                activeScreen.Show();
+                            }
+                            if (pauseScreen.SelectedIndex == 2)
+                            {
+                                activeScreen.Hide();
+                                activeScreen = startScreen;
+                                activeScreen.Show();
+                            }
+                        }
+                            
+                        
+                    }
+#endregion
+
                     if (activeScreen == actionScreen)
                     {
                         _camera.Update1(gameTime, keyboardState, mouse);
                         _camera.Update2(gameTime, keyboardState, mouse);
+
+                        if (CheckKey(Keys.P))
+                        {
+                            action = true;
+                            activeScreen.Hide();
+                            activeScreen = pauseScreen;
+                            activeScreen.Show();
+                        }
 
                         for (int i = 0; i < unitList.Count; i++)
                         {
@@ -305,6 +455,26 @@ namespace PositronNova
                     if (activeScreen == startScreen)
                     {
                         startScreen.Draw(gameTime);
+                    }
+                    if (activeScreen == optionScreen)
+                    {
+                        optionScreen.Draw(gameTime);
+                        spriteBatch.DrawString(Content.Load<SpriteFont>("optionfont"), (Math.Round(MediaPlayer.Volume * 100, 0)).ToString() + "%",
+                            new Vector2((game.Window.ClientBounds.Width) / 2 + 85, game.Window.ClientBounds.Height / 2 - 12), Color.Red);
+                    }
+                    if (activeScreen == pauseScreen)
+                    {
+                        actionScreen.Draw(gameTime);
+
+                        foreach (var unit in unitList) //Affichage des unites si vous n'aviez pas compris
+                            unit.Draw(spriteBatch);
+                        foreach (Bullet bullet in bulletList) // Affichage des bullets :p
+                            bullet.Draw(spriteBatch);
+                        foreach (EffectBullet effect in effectBulletList)
+                            effect.Draw(spriteBatch);
+
+                        spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
+                        pauseScreen.Draw(gameTime);
                     }
                     if (activeScreen == actionScreen)
                     {

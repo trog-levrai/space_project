@@ -27,7 +27,8 @@ namespace PositronNova
         KeyboardState oldKeyboardState;
 
         SpriteBatch spriteBatch;
-        SpriteFont spriteFont;
+        SpriteFont spriteFont1;
+        SpriteFont spriteFont2;
 
         GamePadState gamePadState;
         GamePadState oldGamePadState;
@@ -48,9 +49,13 @@ namespace PositronNova
         //    get { return height; }
         //}
 
-        Vector2 position;
-        float width = 0f;
-        float height = 0f;
+        Vector2 position1;
+        float width1 = 0f;
+        float height1 = 0f;
+
+        Vector2 position2;
+        float width2 = 0f;
+        float height2 = 0f;
 
         public int SelectedIndex
         {
@@ -67,11 +72,12 @@ namespace PositronNova
             }
         }
 
-        public MenuComponent(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, string[] menuItems)
+        public MenuComponent(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont1, SpriteFont spriteFont2, string[] menuItems)
             : base(game)
         {
             this.spriteBatch = spriteBatch;
-            this.spriteFont = spriteFont;
+            this.spriteFont1 = spriteFont1;
+            this.spriteFont2 = spriteFont2;
             this.menuItems = menuItems;
             MeasureMenu();
             // TODO: Construct any child components here
@@ -79,21 +85,31 @@ namespace PositronNova
 
         private void MeasureMenu()
         {
-            height = 0;
-            width = 0;
+            height1 = 0;
+            width1 = 0;
 
             foreach (string item in menuItems)
             {
-                Vector2 size = spriteFont.MeasureString(item);
-                if (size.X > width)
+                Vector2 size1 = spriteFont1.MeasureString(item);
+                if (size1.X > width1)
                 {
-                    width = size.X;
+                    width1 = size1.X;
                 }
-                height += spriteFont.LineSpacing + 5;
+                height1 += spriteFont1.LineSpacing + 5;
             }
 
-            position = new Vector2((Game.Window.ClientBounds.Width - width) / 2,
-                (Game.Window.ClientBounds.Height - height)/2);
+            position1 = new Vector2((Game.Window.ClientBounds.Width - width1) / 2,
+                (Game.Window.ClientBounds.Height - height1)/2 + 100);
+
+            height2 = 0;
+            width2 = 0;
+
+            Vector2 size2 = spriteFont2.MeasureString(menuItems[0]);
+            if (size2.X > width2)
+                width2 = size2.X;
+            height2 += spriteFont2.LineSpacing + 5;
+
+            position2 = new Vector2((Game.Window.ClientBounds.Width - width2) / 2, 10);
         }
 
         /// <summary>
@@ -126,13 +142,13 @@ namespace PositronNova
                 selectedIndex++;
                 if (selectedIndex == menuItems.Length)
                 {
-                    selectedIndex = 0;
+                    selectedIndex = 1;
                 }
             }
             if (checkKey(Keys.Up))
             {
                 selectedIndex--;
-                if (selectedIndex < 0)
+                if (selectedIndex < 1)
                 {
                     selectedIndex = menuItems.Length - 1;
                 }
@@ -147,23 +163,24 @@ namespace PositronNova
         {
             base.Draw(gameTime);
 
-            Vector2 location = position;
+            Vector2 location = position2;
             Color tint;
-
-            for (int i = 0; i < menuItems.Length; i++)
-            {
-                if (i == selectedIndex)
+            spriteBatch.DrawString(spriteFont2, menuItems[0], location, Color.Red);
+            location = position1;
+                for (int i = 1; i < menuItems.Length; i++)
                 {
-                    tint = hilite;
+                    if (i == selectedIndex)
+                    {
+                        tint = hilite;
+                    }
+                    else
+                    {
+                        tint = normal;
+                    }
+                    spriteBatch.DrawString(
+                    spriteFont1, menuItems[i], location, tint);
+                    location.Y += spriteFont1.LineSpacing + 5;
                 }
-                else
-                {
-                    tint = normal;
-                }
-                spriteBatch.DrawString(
-                spriteFont, menuItems[i], location, tint);
-                location.Y += spriteFont.LineSpacing + 5;
-            }
         }
 
     }

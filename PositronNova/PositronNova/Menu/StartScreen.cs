@@ -19,11 +19,11 @@ namespace PositronNova
             set { menuComponent.SelectedIndex = value; }
         }
 
-        public StartScreen(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, Texture2D image)
+        public StartScreen(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont1, SpriteFont spriteFont2, Texture2D image)
             :base(game, spriteBatch)
         {
-            string[] menuItems = {"Start Game", "Options", "End Game"};
-            menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
+            string[] menuItems = {"PositronNova", "Start Game", "Options", "End Game"};
+            menuComponent = new MenuComponent(game, spriteBatch, spriteFont1, spriteFont2, menuItems);
 
             Components.Add(menuComponent);
             this.image = image;

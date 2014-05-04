@@ -18,12 +18,18 @@ namespace PositronNova
     public abstract class GameScreen : Microsoft.Xna.Framework.DrawableGameComponent
     {
         List<GameComponent> components = new List<GameComponent>();
+        List<GameComponent> componentsoption = new List<GameComponent>();
         protected Game game;
         protected SpriteBatch spriteBatch;
 
         public List<GameComponent> Components
         {
             get { return components; }
+        }
+
+        public List<GameComponent> Componentsoption
+        {
+            get { return componentsoption; }
         }
 
 
@@ -63,6 +69,11 @@ namespace PositronNova
                     component.Update(gameTime);
                 }
             }
+            foreach (GameComponent component in componentsoption)
+            {
+                if (component.Enabled == true)
+                    component.Update(gameTime);
+            }
         }
 
         public override void  Draw(GameTime gameTime)
@@ -72,6 +83,14 @@ namespace PositronNova
             {
                 if (component is DrawableGameComponent &&
                     ((DrawableGameComponent) component).Visible)
+                {
+                    ((DrawableGameComponent)component).Draw(gameTime);
+                }
+            }
+            foreach (GameComponent component in componentsoption)
+            {
+                if (component is DrawableGameComponent &&
+                    ((DrawableGameComponent)component).Visible)
                 {
                     ((DrawableGameComponent)component).Draw(gameTime);
                 }
@@ -91,6 +110,14 @@ namespace PositronNova
                     ((DrawableGameComponent) component).Visible = true;
                 }
             }
+            foreach (GameComponent component in componentsoption)
+            {
+                component.Enabled = true;
+                if (component is DrawableGameComponent)
+                {
+                    ((DrawableGameComponent)component).Visible = true;
+                }
+            }
         }
 
         public virtual void Hide()
@@ -104,6 +131,14 @@ namespace PositronNova
                 if (component is DrawableGameComponent)
                 {
                     ((DrawableGameComponent) component).Visible = false;
+                }
+            }
+            foreach (GameComponent component in componentsoption)
+            {
+                component.Enabled = false;
+                if (component is DrawableGameComponent)
+                {
+                    ((DrawableGameComponent)component).Visible = false;
                 }
             }
         }
