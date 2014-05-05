@@ -420,6 +420,11 @@ namespace PositronNova
                         {
                             unitList[i].HandleInput(keyboardState, mouse);
                             unitList[i].Update(gameTime);
+                            if (!unitList[i].Friendly && unitList[0].Friendly)
+                            {
+                                unitList[i].Ennemy = unitList[0];
+                                unitList[i].HasTarget = true;
+                            }
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
                                 if (unitList[i].Friendly)

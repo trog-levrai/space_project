@@ -37,8 +37,11 @@ namespace PositronNova.Class.Unit
 
         public bool moving = false;
         bool selected;
-        bool hasTarget;
-
+        private bool hasTarget;
+        public bool HasTarget
+        {
+            set { hasTarget = value; }
+        }
         private Texture2D selection;
         private Texture2D cible;
 
@@ -180,7 +183,6 @@ namespace PositronNova.Class.Unit
         public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
-
             if (hasTarget && last >= fireRate)
             {
                 shoot();
