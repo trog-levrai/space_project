@@ -66,9 +66,9 @@ namespace PositronNova
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
                 {
-                    byte[] msg = Encoding.Default.GetBytes(input);
+                    byte[] msg = Encoding.Default.GetBytes("t:" + input);
                     UdpClient udpClient = new UdpClient();
-                    udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
+                    udpClient.Send(msg, msg.Length, "10.3.141.74", 1234);
                     udpClient.Close();
                     addString(input);
                     input = "";

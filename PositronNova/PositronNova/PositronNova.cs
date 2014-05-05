@@ -58,7 +58,7 @@ namespace PositronNova
 
         private SpriteFont chat;
         private Chat text;
-
+        private static string ennemyName = "";
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -105,7 +105,6 @@ namespace PositronNova
 
             genUnit(20, true);
             genUnit(20, false);
-
             vidPlayer = new VideoPlayer();
 
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
@@ -114,7 +113,7 @@ namespace PositronNova
 
             UdpClient udpClient = new UdpClient();
             byte[] msg = Encoding.Default.GetBytes("nick:trog");
-            udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
+            udpClient.Send(msg, msg.Length, "10.3.141.74", 1234);
             udpClient.Close();
 
             base.Initialize();
@@ -123,13 +122,20 @@ namespace PositronNova
         {
             //On crée le serveur en lui spécifiant le port sur lequel il devra écouter.
             UdpClient serveur = new UdpClient(1234);
+            UdpClient online = new UdpClient(4321);
             //Création d'une boucle infinie qui aura pour tâche d'écouter.
             while (true)
             {
                 IPEndPoint client = null;
                 byte[] data = serveur.Receive(ref client);
+                byte[] gonline = online.Receive(ref client);
                 string message = Encoding.Default.GetString(data);
-                ((Chat) txt).addString(message);
+                if (message.StartsWith("nick:"))
+                    ennemyName = message.Substring(5);
+                else
+                {
+                    ((Chat) txt).addString(ennemyName + " dit: " + message);
+                }
             }
         }
 
