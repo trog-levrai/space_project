@@ -120,11 +120,7 @@ namespace PositronNova
             _thEcoute.IsBackground = true;
 
             UdpClient udpClient = new UdpClient();
-<<<<<<< HEAD
             byte[] msg = Encoding.Default.GetBytes("nick:trog");
-=======
-            byte[] msg = Encoding.Default.GetBytes("nick:Polo");
->>>>>>> 3a554ce4b361353f160d9844a1a8249f27b358ff
             udpClient.Send(msg, msg.Length, "10.3.141.74", 1234);
             udpClient.Close();
 
@@ -147,13 +143,11 @@ namespace PositronNova
         {
             //On crée le serveur en lui spécifiant le port sur lequel il devra écouter.
             UdpClient serveur = new UdpClient(1234);
-            UdpClient online = new UdpClient(4321);
             //Création d'une boucle infinie qui aura pour tâche d'écouter.
             while (true)
             {
                 IPEndPoint client = null;
                 byte[] data = serveur.Receive(ref client);
-                byte[] gonline = online.Receive(ref client);
                 string message = Encoding.Default.GetString(data);
                 if (message.StartsWith("nick:"))
                     ennemyName = message.Substring(5);
