@@ -39,15 +39,15 @@ Content\img\Vaisseau_1.xnb
 Content\img\Vaisseau_1B.xnb
 Content\img\Vaisseau_1_Lourd.xnb
 Content\img\Viseur.xnb
+Content\img\MissileFumee.xnb
+Content\PauseScreen.xnb
 Content\Affichage_mouse.xnb
 Content\chat.xnb
 Content\menufont.xnb
-Content\sounds\laser.xnb
-Content\Video\Vid.xnb
-Content\img\MissileFumee.xnb
-Content\PauseScreen.xnb
 Content\optionfont.xnb
 Content\titlefont.xnb
+Content\sounds\laser.xnb
 Content\sounds\AMB_Espace nébuleuse.xnb
-Content\Video\Vid.wmv
+Content\Video\Vid.xnb
 Content\sounds\AMB_Espace nébuleuse.wma
+Content\Video\Vid.wmv

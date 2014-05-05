@@ -61,7 +61,6 @@ namespace PositronNova
 
         public PositronNova()
         {
-            game = new Game();
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -263,6 +262,7 @@ namespace PositronNova
 
                     if (activeScreen == optionScreen)
                     {
+                        _camera.Update2(gameTime, keyboardState, mouse);
                         if (CheckKey(Keys.Escape) && action == false)
                         {
                             activeScreen.Hide();
@@ -331,6 +331,7 @@ namespace PositronNova
 #region PauseScreen
                     if (activeScreen == pauseScreen)
                     {
+                        _camera.Update2(gameTime, keyboardState, mouse);
                         if (CheckKey(Keys.Escape) || (pauseScreen.SelectedIndex == 0 && CheckKey(Keys.Enter)))
                         {
                             activeScreen.Hide();
@@ -341,6 +342,7 @@ namespace PositronNova
                         {
                             if (pauseScreen.SelectedIndex == 1)
                             {
+                                Camera2d.Origine = new Vector2(0, 0);
                                 action = true;
                                 activeScreen.Hide();
                                 activeScreen = optionScreen;
@@ -349,6 +351,7 @@ namespace PositronNova
                             if (pauseScreen.SelectedIndex == 2)
                             {
                                 activeScreen.Hide();
+                                Camera2d.Origine = new Vector2(0, 0);
                                 activeScreen = startScreen;
                                 activeScreen.Show();
                             }
@@ -460,7 +463,7 @@ namespace PositronNova
                     {
                         optionScreen.Draw(gameTime);
                         spriteBatch.DrawString(Content.Load<SpriteFont>("optionfont"), (Math.Round(MediaPlayer.Volume * 100, 0)).ToString() + "%",
-                            new Vector2((game.Window.ClientBounds.Width) / 2 + 85, game.Window.ClientBounds.Height / 2 - 12), Color.Red);
+                            new Vector2((PositronNova.winWidth) / 2 + 85, PositronNova.winHeight / 2 - 12), Color.Red);
                     }
                     if (activeScreen == pauseScreen)
                     {

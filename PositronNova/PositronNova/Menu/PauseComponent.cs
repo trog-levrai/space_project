@@ -94,7 +94,7 @@ namespace PositronNova
                 height += spriteFont.LineSpacing + 5;
             }
 
-            position = new Vector2((Game.Window.ClientBounds.Width - width) / 2,
+            position = new Vector2((Game.Window.ClientBounds.Width - width) / 2 + Camera2d.Origine.X,
                 (Game.Window.ClientBounds.Height - height) / 2);
         }
 
@@ -150,9 +150,9 @@ namespace PositronNova
             base.Draw(gameTime);
 
             Vector2 location = position;
-            location.X = Game.Window.ClientBounds.Width / 2 - 100;
+            location.X = (Game.Window.ClientBounds.Width / 2 - 100) + Camera2d.Origine.X;
             Color tint;
-
+            location.Y += Camera2d.Origine.Y;
             for (int i = 0; i < pauseItems.Length; i++)
             {
                 if (i == selectedIndex)

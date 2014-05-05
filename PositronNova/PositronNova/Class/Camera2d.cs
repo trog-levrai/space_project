@@ -26,6 +26,7 @@ namespace PositronNova
         static public Vector2 Origine
         {
             get { return origine; }
+            set { origine = value; }
         }
 
         KeyboardState keyRepeat;
