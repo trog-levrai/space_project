@@ -111,9 +111,6 @@ namespace PositronNova
 
             backgroundTexture = Content.Load<Texture2D>("Background");
 
-            genUnit(20, true);
-            genUnit(20, false);
-
             vidPlayer = new VideoPlayer();
 
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
@@ -168,9 +165,6 @@ namespace PositronNova
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             TextureManager.ContentLoad(Content);
-
-            foreach (Unit unit in unitList)
-                unit.LoadContent(Content);
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
@@ -267,6 +261,28 @@ namespace PositronNova
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
+
+                                for (int i = 0; i < unitList.Count; i++) //
+                                {
+                                    unitList.RemoveAt(i);
+                                    i--;
+                                }
+                                for (int i = 0; i < bulletList.Count; i++)
+                                { 
+                                    bulletList.RemoveAt(i);
+                                    i--;
+                                }
+                                for (int i = 0; i < effectBulletList.Count; i++)
+                                {
+                                    effectBulletList.RemoveAt(i);
+                                    i--;
+                                }
+
+                                genUnit(20, true);
+                                genUnit(20, false);
+
+                                foreach (Unit unit in unitList)
+                                    unit.LoadContent(Content);
                             }
                             if (startScreen.SelectedIndex == 3)
                             {
@@ -420,7 +436,8 @@ namespace PositronNova
                         for (int i = 0; i < unitList.Count; i++)
                         {
                             unitList[i].HandleInput(keyboardState, mouse);
-                            unitList[i].Update(gameTime);
+                            if (unitList != null)
+                                unitList[i].Update(gameTime);
                             if (!unitList[i].Friendly && unitList[0].Friendly)
                             {
                                 unitList[i].Ennemy = unitList[0];
