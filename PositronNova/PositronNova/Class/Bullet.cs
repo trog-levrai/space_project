@@ -61,14 +61,14 @@ namespace PositronNova
                     break;
                 case BulletType.Plasma:
                     texture = TextureManager.plasma_t;
-                    speed = 10;
+                    speed = 8;
                     damage = 20;
                     break;
                 case BulletType.Missile:
                     texture = TextureManager.missile_t;
-                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 5);
+                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 2);
                     speed = 12;
-                    damage = 25;
+                    damage = 50;
                     break;
             }
             textureData = new Color[texture.Width * texture.Height];

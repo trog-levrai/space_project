@@ -402,8 +402,7 @@ namespace PositronNova
                             if (bulletList[i].destruc)
                             {
                                 bulletList.RemoveAt(i);
-                                if (i > 0)
-                                    i--;
+                                i--;
                             }
                         }
 
@@ -413,8 +412,7 @@ namespace PositronNova
                             if (effectBulletList[i].destruc)
                             {
                                 effectBulletList.RemoveAt(i);
-                                if (i > 0)
-                                    i--;
+                                i--;
                             }
                         }
 
