@@ -121,7 +121,7 @@ namespace PositronNova
 
             UdpClient udpClient = new UdpClient();
             byte[] msg = Encoding.Default.GetBytes("nick:trog");
-            udpClient.Send(msg, msg.Length, "10.3.141.74", 1234);
+            udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
             udpClient.Close();
 
             engine = new AudioEngine("Content\\sounds\\Playsong.xgs");

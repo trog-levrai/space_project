@@ -158,7 +158,7 @@ namespace PositronNova.Class.Unit
         public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState/*, Vector2 Pos*/)
         {
             //Ce code est magique, ne pas trop toucher SVP :-) effectivement trop bien ce code :o) GG !
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed && friendly)
             {
                 selected = Math.Abs(mouseState.X - (position.X + texture.Width / 2) + Camera2d.Origine.X) <= texture.Width / 2 & Math.Abs(mouseState.Y - (position.Y + texture.Height / 2) + Camera2d.Origine.Y) <= texture.Height / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
             }
