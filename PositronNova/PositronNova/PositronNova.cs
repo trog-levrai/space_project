@@ -113,6 +113,7 @@ namespace PositronNova
 
             genUnit(20, true);
             genUnit(20, false);
+
             vidPlayer = new VideoPlayer();
 
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
@@ -427,6 +428,7 @@ namespace PositronNova
                             }
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
+                                effectBulletList.Add(new EffectBullet(unitList[i].position, EffectType.GrosseExplosion));
                                 if (unitList[i].Friendly)
                                     text.addString("f:" + unitList[i].Name + " has been destroyed !");
                                 else
@@ -448,7 +450,7 @@ namespace PositronNova
                             bulletList[i].Update(gameTime);
                             if (bulletList[i].destruc)
                             {
-                                if (bulletList[i].BulletType == BulletType.Missile)
+                                //if (bulletList[i].BulletType == BulletType.Missile)
                                     effectBulletList.Add(new EffectBullet(bulletList[i].position, EffectType.Explosion));
                                 bulletList.RemoveAt(i);
                                 i--;
