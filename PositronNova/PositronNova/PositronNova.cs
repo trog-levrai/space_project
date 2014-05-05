@@ -173,15 +173,7 @@ namespace PositronNova
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
-
-
-
-            //_song_menu = Content.Load<Song>("sounds\\MENU_Menu cosmique");
-            //MediaPlayer.Play(_song_menu);
-            //MediaPlayer.Pause();
-            //_song_jeu = Content.Load<Song>("sounds\\AMB_Espace nébuleuse");
-            //MediaPlayer.Volume = 1.0f;
-
+            #region LoadScreen
             startScreen = new StartScreen(
                 this,
                 spriteBatch,
@@ -214,6 +206,7 @@ namespace PositronNova
                 Content.Load<Texture2D>("PauseScreen"));
             Components.Add(pauseScreen);
             pauseScreen.Hide();
+            #endregion
 
             activeScreen = startScreen;
             startScreen.SelectedIndex = 1;
@@ -289,6 +282,7 @@ namespace PositronNova
 
                     keyboardState = Keyboard.GetState();
 
+#region OptionScreen
                     if (activeScreen == optionScreen)
                     {
                         if (action)
@@ -367,7 +361,7 @@ namespace PositronNova
                         }
 
                     }
-
+#endregion
                     keyboardState = Keyboard.GetState();
                     
 #region PauseScreen
