@@ -120,7 +120,7 @@ namespace PositronNova
             _thEcoute.IsBackground = true;
 
             UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:trog");
+            byte[] msg = Encoding.Default.GetBytes("nick:Polo");
             udpClient.Send(msg, msg.Length, "10.3.141.74", 1234);
             udpClient.Close();
 
@@ -261,20 +261,20 @@ namespace PositronNova
                         _camera.Update2(gameTime, keyboardState, mouse);
                         if (keyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                         {
-                            if (startScreen.SelectedIndex == 1)
+                            if (startScreen.SelectedIndex == 2)
                             {
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
                             }
-                            if (startScreen.SelectedIndex == 2)
+                            if (startScreen.SelectedIndex == 3)
                             {
                                 action = false;
                                 activeScreen.Hide();
                                 activeScreen = optionScreen;
                                 activeScreen.Show();
                             }
-                            if (startScreen.SelectedIndex == 3)
+                            if (startScreen.SelectedIndex == 4)
                                 this.Exit();
                         }
                     }

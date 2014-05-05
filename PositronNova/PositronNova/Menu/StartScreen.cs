@@ -22,7 +22,7 @@ namespace PositronNova
         public StartScreen(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont1, SpriteFont spriteFont2, Texture2D image)
             :base(game, spriteBatch)
         {
-            string[] menuItems = {"PositronNova", "Start Game", "Settings", "End Game"};
+            string[] menuItems = {"PositronNova", "Solo", "Multiplayer", "Settings", "End Game"};
             menuComponent = new MenuComponent(game, spriteBatch, spriteFont1, spriteFont2, menuItems);
 
             Components.Add(menuComponent);
