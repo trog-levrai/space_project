@@ -27,7 +27,7 @@ namespace PositronNova
         public PauseScreen(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, Texture2D image)
             : base(game, spriteBatch)
         {
-            string[] pauseItems = { "Resume", "Options", "Quit" };
+            string[] pauseItems = { "Resume", "Settings", "Quit" };
             pauseComponent = new PauseComponent(game, spriteBatch, spriteFont, pauseItems);
 
             Components.Add(pauseComponent);

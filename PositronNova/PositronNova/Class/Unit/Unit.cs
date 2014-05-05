@@ -109,25 +109,25 @@ namespace PositronNova.Class.Unit
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
                     pv = pv_max;
-                    speed = 0.15f;
+                    speed = 2.2f;
                     break;
                 case UnitType.Destroyer:
                     texture = content.Load<Texture2D>("img\\Destroyer");
                     last = new TimeSpan(0);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 300);
-                    weaponType = BulletType.Laser;
+                    fireRate = new TimeSpan(0, 0, 0, 0, 200);
+                    weaponType = BulletType.Cinetique;
                     pv_max = 40;
                     pv = pv_max;
-                    speed = 0.1f;
+                    speed = 1.9f;
                     break;
                 case UnitType.Corvette:
                     texture = content.Load<Texture2D>("img\\Corvette");
                     last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 0, 400);
-                    weaponType = BulletType.Ion;
+                    weaponType = BulletType.Laser;
                     pv_max = 60;
                     pv = pv_max;
-                    speed = 0.05f;
+                    speed = 1.6f;
                     break;
                 case UnitType.Croiseur:
                     texture = content.Load<Texture2D>("img\\Croiseur");
@@ -136,16 +136,16 @@ namespace PositronNova.Class.Unit
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
                     pv = pv_max;
-                    speed = 0.05f;
+                    speed = 1.3f;
                     break;
                 case UnitType.Cuirasse:
                     texture = content.Load<Texture2D>("img\\Cuirasse");
                     last = new TimeSpan(0);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 600);
+                    fireRate = new TimeSpan(0, 0, 0, 2);
                     weaponType = BulletType.Missile;
-                    pv_max = 150;
+                    pv_max = 250;
                     pv = pv_max;
-                    speed = 0.05f;
+                    speed = 1f;
                     break;
             }
 
@@ -194,18 +194,6 @@ namespace PositronNova.Class.Unit
                 position.Y <= 5 || position.Y + texture.Height >= PositronNova.BackgroundTexture.Height - 5)
                 moving = false;
 
-            //On ne prend les touches que si c'est un allie
-            //if (friendly)
-            //{
-            //    //Le but du test est de savoir si il s'est bien ecoule au moins une seconde
-            //    if (enn != null && last >= fireRate)
-            //    {
-            //        KeyboardState keyboardState = Keyboard.GetState();
-            //        attack(enn);
-            //        last = new TimeSpan(0);
-            //    }
-            //}
-
             base.Update(gt);
         }
 
@@ -226,17 +214,6 @@ namespace PositronNova.Class.Unit
 
             base.Draw(spriteBatch);
         }
-        //Methode ultra basique pour l'attaque
-        //Il va falloir rajouter plein de trucs du genre une portee de tir
-        //Un systeme pour selectionner les ennemis a abatre, etc
-        //public void attack(Unit enn)
-        //{
-        //    if (enn.Pv > 0)
-        //    {
-        //        enn.Pv -= damage;
-        //        laserSound.Play();
-        //    }
-        //}
 
         /////////////////////////////////// METHODES //////////////////////////
 
@@ -273,14 +250,12 @@ namespace PositronNova.Class.Unit
             }
             else
             {
-                speed = 0;
                 destination = position;
             }
 
             if (position != destination)
             {
                 moving = true;
-                speed = 2f;
             }
             else
                 moving = false;

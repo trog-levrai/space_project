@@ -47,7 +47,10 @@ Content\menufont.xnb
 Content\optionfont.xnb
 Content\titlefont.xnb
 Content\sounds\laser.xnb
-Content\sounds\AMB_Espace nébuleuse.xnb
 Content\Video\Vid.xnb
-Content\sounds\AMB_Espace nébuleuse.wma
+Content\sounds\Espace.xnb
+Content\sounds\Menu.xnb
 Content\Video\Vid.wmv
+Content\sounds\Playsong.xgs
+Content\sounds\Wave Bank.xwb
+Content\sounds\Sound Bank.xsb
