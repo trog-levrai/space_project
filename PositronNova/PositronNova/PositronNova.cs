@@ -96,7 +96,6 @@ namespace PositronNova
         private GameState CurrentGameState = GameState.Video;
 
 
-
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -122,8 +121,8 @@ namespace PositronNova
             _thEcoute.IsBackground = true;
 
             UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:trog");
-            udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
+            byte[] msg = Encoding.Default.GetBytes("nick:Polo");
+            udpClient.Send(msg, msg.Length, "10.3.141.74", 1234);
             udpClient.Close();
 
             engine = new AudioEngine("Content\\sounds\\Playsong.xgs");
