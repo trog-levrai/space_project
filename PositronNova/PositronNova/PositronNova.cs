@@ -120,7 +120,7 @@ namespace PositronNova
             _thEcoute.IsBackground = true;
 
             UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:trog");
+            byte[] msg = Encoding.Default.GetBytes("nick:Anonymous");
             udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
             udpClient.Close();
 
@@ -173,15 +173,7 @@ namespace PositronNova
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
-
-
-
-            //_song_menu = Content.Load<Song>("sounds\\MENU_Menu cosmique");
-            //MediaPlayer.Play(_song_menu);
-            //MediaPlayer.Pause();
-            //_song_jeu = Content.Load<Song>("sounds\\AMB_Espace nébuleuse");
-            //MediaPlayer.Volume = 1.0f;
-
+            #region LoadScreen
             startScreen = new StartScreen(
                 this,
                 spriteBatch,
@@ -214,6 +206,7 @@ namespace PositronNova
                 Content.Load<Texture2D>("PauseScreen"));
             Components.Add(pauseScreen);
             pauseScreen.Hide();
+            #endregion
 
             activeScreen = startScreen;
             startScreen.SelectedIndex = 1;
@@ -268,20 +261,20 @@ namespace PositronNova
                         _camera.Update2(gameTime, keyboardState, mouse);
                         if (keyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                         {
-                            if (startScreen.SelectedIndex == 1)
+                            if (startScreen.SelectedIndex == 2)
                             {
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
                             }
-                            if (startScreen.SelectedIndex == 2)
+                            if (startScreen.SelectedIndex == 3)
                             {
                                 action = false;
                                 activeScreen.Hide();
                                 activeScreen = optionScreen;
                                 activeScreen.Show();
                             }
-                            if (startScreen.SelectedIndex == 3)
+                            if (startScreen.SelectedIndex == 4)
                                 this.Exit();
                         }
                     }
@@ -289,6 +282,7 @@ namespace PositronNova
 
                     keyboardState = Keyboard.GetState();
 
+#region OptionScreen
                     if (activeScreen == optionScreen)
                     {
                         if (action)
@@ -367,7 +361,7 @@ namespace PositronNova
                         }
 
                     }
-
+#endregion
                     keyboardState = Keyboard.GetState();
                     
 #region PauseScreen
