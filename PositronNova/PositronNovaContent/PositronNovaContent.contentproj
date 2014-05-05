@@ -333,10 +333,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="sounds\AMB_Espace nébuleuse.mp3">
-      <Name>AMB_Espace nébuleuse</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
+    <Compile Include="sounds\Playsong.xap">
+      <Name>Playsong</Name>
+      <Importer>XactImporter</Importer>
+      <Processor>XactProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="sounds\Espace.wav">
+      <Name>Espace</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="sounds\Menu.wav">
+      <Name>Menu</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

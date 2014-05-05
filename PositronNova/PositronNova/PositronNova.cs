@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using PositronNova.Class.Unit;
 using PositronNova.Class;
+using Microsoft.Xna.Framework.Audio;
 
 namespace PositronNova
 {
@@ -50,7 +51,15 @@ namespace PositronNova
         PauseScreen pauseScreen;
         bool action = false;
 
-        private Song _song;
+        //private Song _song_jeu;
+        //private Song _song_menu;
+
+        AudioEngine engine;
+        SoundBank soundBank;
+        WaveBank waveBank;
+        Cue cue;
+        Cue cue1;
+        float musicVolume = 1.0f;
 
         Camera2d _camera;
 
@@ -117,6 +126,19 @@ namespace PositronNova
             udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
             udpClient.Close();
 
+            engine = new AudioEngine("Content\\sounds\\Playsong.xgs");
+            soundBank = new SoundBank(engine, "Content\\sounds\\Sound Bank.xsb");
+            waveBank = new WaveBank(engine, "Content\\sounds\\Wave Bank.xwb");
+
+            cue = soundBank.GetCue("Menu");
+            cue.Play();
+            cue.Pause();
+
+            cue1 = soundBank.GetCue("Espace");
+            cue1.Play();
+            cue1.Pause();
+
+
             base.Initialize();
         }
         private static void Ecouter(Object txt)
@@ -148,10 +170,14 @@ namespace PositronNova
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
-            _song = Content.Load<Song>("sounds\\AMB_Espace nébuleuse");
-            MediaPlayer.Play(_song);
-            MediaPlayer.Pause();
-            MediaPlayer.Volume = 1.0f;
+
+
+
+            //_song_menu = Content.Load<Song>("sounds\\MENU_Menu cosmique");
+            //MediaPlayer.Play(_song_menu);
+            //MediaPlayer.Pause();
+            //_song_jeu = Content.Load<Song>("sounds\\AMB_Espace nébuleuse");
+            //MediaPlayer.Volume = 1.0f;
 
             startScreen = new StartScreen(
                 this,
@@ -221,7 +247,7 @@ namespace PositronNova
             //    this.Exit();
             
             //Vector2 movement = Vector2.Zero;
-
+            engine.Update();
             switch (CurrentGameState)
             {
                 case GameState.Video:
@@ -231,7 +257,7 @@ namespace PositronNova
                     break;
                 case GameState.Game:
                     vidPlayer.Stop();
-                    MediaPlayer.Resume();
+                    cue.Resume();
 
 #region StartScreen
                     if (activeScreen == startScreen)
@@ -262,6 +288,16 @@ namespace PositronNova
 
                     if (activeScreen == optionScreen)
                     {
+                        if (action)
+                        {
+                            cue.Pause();
+                            cue1.Resume();
+                        }
+                        if (!action)
+                        {
+                            cue1.Pause();
+                            cue.Resume();
+                        }
                         _camera.Update2(gameTime, keyboardState, mouse);
                         if (CheckKey(Keys.Escape) && action == false)
                         {
@@ -300,16 +336,19 @@ namespace PositronNova
                         {
                             if (optionScreen.SselectedIndex == 2 && keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
                             {
-                                MediaPlayer.Volume -= 0.1f;
-                                if (MediaPlayer.Volume < 0f)
-                                    MediaPlayer.Volume = 0f;
+                                musicVolume -= 0.1f;
+                                if (musicVolume < 0f)
+                                    musicVolume = 0f;
+                                engine.GetCategory("Default").SetVolume(musicVolume);
                             }
                             if(optionScreen.SselectedIndex == 3 && keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
                             {
-                                MediaPlayer.Volume += 0.1f;
-                                if (MediaPlayer.Volume > 1.0f)
-                                    MediaPlayer.Volume = 1.0f;
+                                musicVolume += 0.1f;
+                                if (musicVolume > 1.0f)
+                                    musicVolume = 1.0f;
+                                engine.GetCategory("Default").SetVolume(musicVolume);
                             }
+
                         }
                         if (optionScreen.SelectedIndex == 2 && CheckKey(Keys.Space) && !action)
                         {
@@ -331,6 +370,8 @@ namespace PositronNova
 #region PauseScreen
                     if (activeScreen == pauseScreen)
                     {
+                        cue.Pause();
+                        cue1.Resume();
                         _camera.Update2(gameTime, keyboardState, mouse);
                         if (CheckKey(Keys.Escape) || (pauseScreen.SelectedIndex == 0 && CheckKey(Keys.Enter)))
                         {
@@ -352,6 +393,8 @@ namespace PositronNova
                             {
                                 activeScreen.Hide();
                                 Camera2d.Origine = new Vector2(0, 0);
+                                cue1.Pause();
+                                cue.Resume();
                                 activeScreen = startScreen;
                                 activeScreen.Show();
                             }
@@ -363,6 +406,8 @@ namespace PositronNova
 
                     if (activeScreen == actionScreen)
                     {
+                        cue.Pause();
+                        cue1.Resume();
                         _camera.Update1(gameTime, keyboardState, mouse);
                         _camera.Update2(gameTime, keyboardState, mouse);
 
@@ -462,7 +507,7 @@ namespace PositronNova
                     if (activeScreen == optionScreen)
                     {
                         optionScreen.Draw(gameTime);
-                        spriteBatch.DrawString(Content.Load<SpriteFont>("optionfont"), (Math.Round(MediaPlayer.Volume * 100, 0)).ToString() + "%",
+                        spriteBatch.DrawString(Content.Load<SpriteFont>("optionfont"), (Math.Round(musicVolume * 100, 0)).ToString() + "%",
                             new Vector2((PositronNova.winWidth) / 2 + 85, PositronNova.winHeight / 2 - 12), Color.Red);
                     }
                     if (activeScreen == pauseScreen)
