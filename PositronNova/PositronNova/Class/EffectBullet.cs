@@ -9,7 +9,7 @@ namespace PositronNova.Class
 {
     public enum EffectType
     {
-        MissileFumee
+        MissileFumee, Explosion
     };
 
     public class EffectBullet : sprite
@@ -31,6 +31,10 @@ namespace PositronNova.Class
                     texture = TextureManager.fumee_t;
                     tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
                     break;
+                case EffectType.Explosion:
+                    texture = TextureManager.explosion_t;
+                    tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
+                    break;
             }
         }
 
@@ -38,8 +42,8 @@ namespace PositronNova.Class
         {
             duree = duree.Add(gameTime.ElapsedGameTime);
 
-            if (effect == EffectType.MissileFumee)
-            {
+            //if (effect == EffectType.MissileFumee)
+            //{
                 if (tempsDeVie <= duree)
                 {
                     duree = new TimeSpan(0);
@@ -48,7 +52,7 @@ namespace PositronNova.Class
 
                 if (frameSquare == (texture.Width / texture.Height))
                     destruc = true;
-            }
+           // }
         }
 
         public override void Draw(SpriteBatch sb)
