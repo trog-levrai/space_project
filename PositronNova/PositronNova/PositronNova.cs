@@ -425,7 +425,12 @@ namespace PositronNova
                             unitList[i].Update(gameTime);
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
-                                text.addString("[Game] : " + unitList[i].Name + " has been destroyed !");
+                                if (unitList[i].Friendly)
+                                    text.addString("f:" + unitList[i].Name + " has been destroyed !");
+                                else
+                                {
+                                    text.addString("e:" + unitList[i].Name + " has been destroyed !");
+                                }
                                 unitList.RemoveAt(i);
                                 if (i > 0)
                                     i--;
@@ -534,7 +539,7 @@ namespace PositronNova
                             bullet.Draw(spriteBatch);
                         foreach (EffectBullet effect in effectBulletList)
                             effect.Draw(spriteBatch);
-
+                        //Affiche le chat
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                     }
                     break;
@@ -556,9 +561,10 @@ namespace PositronNova
 
         void genUnit(int nombre, bool friendly)
         {
+            string[] names = new string[] {"Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Baptiste"};
             for (int i = 0; i < nombre; i++)
             {
-                unitList.Add(new Unit("RandomName", new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1), friendly));
+                unitList.Add(new Unit(names[i], new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1), friendly));
                 //if (unitList.Count > 1)    
                 //for (int j = 0; j < i; j++)
                 //        while (Physique.IntersectPixel(unitList[j].texture, unitList[j].position, unitList[j].textureData, unitList[i].texture, unitList[i].position, unitList[i].textureData))

@@ -100,7 +100,17 @@ namespace PositronNova
             {
                 if (text != "")
                 {
-                    ans += "<" + text + ">\n";
+                    if (text.StartsWith("f:"))
+                        ans += text.Substring(2) + " (Booo)\n";
+                    else
+                    {
+                        if (text.StartsWith("e:"))
+                            ans += text.Substring(2) + " (Yayy)\n";
+                        else
+                        {
+                            ans += "<" + text + ">\n";
+                        }
+                    }
                 }
             }
             return ans;
