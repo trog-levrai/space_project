@@ -46,17 +46,14 @@ namespace PositronNova.Class
         {
             duree = duree.Add(gameTime.ElapsedGameTime);
 
-            //if (effect == EffectType.MissileFumee)
-            //{
-                if (tempsDeVie <= duree)
-                {
-                    duree = new TimeSpan(0);
-                    frameSquare++;
-                }
+            if (tempsDeVie <= duree)
+            {
+                duree = new TimeSpan(0);
+                frameSquare++;
+            }
 
-                if (frameSquare == (texture.Width / texture.Height))
-                    destruc = true;
-           // }
+            if (frameSquare == (texture.Width / texture.Height))
+                destruc = true;
         }
 
         public override void Draw(SpriteBatch sb)
