@@ -262,7 +262,7 @@ namespace PositronNova
                         _camera.Update2(gameTime, keyboardState, mouse);
                         if (keyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                         {
-                            if (startScreen.SelectedIndex == )
+                            if (startScreen.SelectedIndex == 1)
                             {
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
