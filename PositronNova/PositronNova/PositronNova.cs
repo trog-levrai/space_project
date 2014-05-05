@@ -111,9 +111,6 @@ namespace PositronNova
 
             backgroundTexture = Content.Load<Texture2D>("Background");
 
-            genUnit(20, true);
-            genUnit(20, false);
-
             vidPlayer = new VideoPlayer();
 
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
@@ -267,6 +264,28 @@ namespace PositronNova
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
+
+                                for (int i = 0; i < unitList.Count; i++)
+                                {
+                                    unitList.RemoveAt(i);
+                                    i--;
+                                }
+                                for (int i = 0; i < bulletList.Count; i++)
+                                {
+                                    bulletList.RemoveAt(i);
+                                    i--;
+                                }
+                                for (int i = 0; i < effectBulletList.Count; i++)
+                                {
+                                    effectBulletList.RemoveAt(i);
+                                    i--;
+                                }
+
+                                genUnit(20, true);
+                                genUnit(20, false);
+
+                                foreach (Unit unit in unitList)
+                                    unit.LoadContent(Content);
                             }
                             if (startScreen.SelectedIndex == 3)
                             {
