@@ -20,6 +20,8 @@ namespace PositronNova.Class.Unit
     {
         // Sound et tir
         private int range;
+        public int Range
+        { get { return range;  } }
         System.TimeSpan fireRate;
         System.TimeSpan last;
         SoundEffect laserSound;
@@ -175,9 +177,13 @@ namespace PositronNova.Class.Unit
             }
             if (mouseState.RightButton == ButtonState.Pressed && selected)
             {
-                enn = PositronNova.GetEnnemy();
+                enn = PositronNova.GetEnnemy(friendly);
                 if (enn != null)
-                    hasTarget = enn.Friendly != friendly;
+                    hasTarget = Math.Pow(position.X - enn.getPosition().X, 2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2);
+                else
+                {
+                    hasTarget = false;
+                }
                 if (!hasTarget)
                 {
                     destination = new Vector2(mouseState.X - texture.Width / 2 + Camera2d.Origine.X, mouseState.Y - texture.Height / 2 + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
@@ -262,13 +268,7 @@ namespace PositronNova.Class.Unit
             {
                 destination = position;
             }
-
-            if (position != destination)
-            {
-                moving = true;
-            }
-            else
-                moving = false;
+            moving = position != destination;
         }
 
         void shoot()

@@ -262,7 +262,7 @@ namespace PositronNova
                         _camera.Update2(gameTime, keyboardState, mouse);
                         if (keyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                         {
-                            if (startScreen.SelectedIndex == 2)
+                            if (startScreen.SelectedIndex == 1)
                             {
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
@@ -578,11 +578,12 @@ namespace PositronNova
                 unit.Init();
         }
 
-        static public Unit GetEnnemy()
+        static public Unit GetEnnemy(bool friend)
         {
             foreach (Unit unit in unitList)
-                if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 & Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
-                    return unit;
+                if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
+                    if (unit.Friendly != friend)
+                        return unit;
             return null;
         }
 
