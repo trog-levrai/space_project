@@ -390,9 +390,9 @@ namespace PositronNova
                                 if (i > 0)
                                     i--;
                             }
-                            for (int j = 0; j < unitList.Count - 1; j++)
-                                if (i != j && unitList[i].CollisionInterVaisseau(unitList[j]))
-                                    unitList[i].moving = false;
+                            //for (int j = 0; j < unitList.Count - 1; j++)
+                            //    if (i != j && unitList[i].CollisionInterVaisseau(unitList[j]))
+                            //        unitList[i].moving = false;
 
                         }
 
