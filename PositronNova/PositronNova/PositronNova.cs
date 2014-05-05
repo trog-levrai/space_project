@@ -494,7 +494,7 @@ namespace PositronNova
                             bullet.Draw(spriteBatch);
                         foreach (EffectBullet effect in effectBulletList)
                             effect.Draw(spriteBatch);
-
+                        //Affiche le chat
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                     }
                     break;
