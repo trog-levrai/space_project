@@ -448,6 +448,8 @@ namespace PositronNova
                             bulletList[i].Update(gameTime);
                             if (bulletList[i].destruc)
                             {
+                                if (bulletList[i].BulletType == BulletType.Missile)
+                                    effectBulletList.Add(new EffectBullet(bulletList[i].position, EffectType.Explosion));
                                 bulletList.RemoveAt(i);
                                 i--;
                             }
