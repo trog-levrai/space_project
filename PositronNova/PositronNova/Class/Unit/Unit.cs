@@ -19,6 +19,7 @@ namespace PositronNova.Class.Unit
     public class Unit : sprite
     {
         // Sound et tir
+        private int range;
         System.TimeSpan fireRate;
         System.TimeSpan last;
         SoundEffect laserSound;
@@ -95,7 +96,6 @@ namespace PositronNova.Class.Unit
 
             base.Init();
         }
-
         public void LoadContent(ContentManager content)
         {
             _font = content.Load<SpriteFont>("Affichage_mouse");
@@ -113,6 +113,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 10;
                     pv = pv_max;
                     speed = 2.2f;
+                    range = 200;
                     break;
                 case UnitType.Destroyer:
                     texture = content.Load<Texture2D>("img\\Destroyer");
@@ -122,6 +123,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 40;
                     pv = pv_max;
                     speed = 1.9f;
+                    range = 300;
                     break;
                 case UnitType.Corvette:
                     texture = content.Load<Texture2D>("img\\Corvette");
@@ -131,6 +133,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 60;
                     pv = pv_max;
                     speed = 1.6f;
+                    range = 400;
                     break;
                 case UnitType.Croiseur:
                     texture = content.Load<Texture2D>("img\\Croiseur");
@@ -140,6 +143,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 110;
                     pv = pv_max;
                     speed = 1.3f;
+                    range = 500;
                     break;
                 case UnitType.Cuirasse:
                     texture = content.Load<Texture2D>("img\\Cuirasse");
@@ -149,6 +153,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 250;
                     pv = pv_max;
                     speed = 1f;
+                    range = 600;
                     break;
             }
 
@@ -157,7 +162,10 @@ namespace PositronNova.Class.Unit
             textureData = new Color[texture.Width * texture.Height];
             texture.GetData(textureData);
         }
-
+        public Vector2 getPosition()
+        {
+            return position;
+        }
         public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState/*, Vector2 Pos*/)
         {
             //Ce code est magique, ne pas trop toucher SVP :-) effectivement trop bien ce code :o) GG !
@@ -183,7 +191,7 @@ namespace PositronNova.Class.Unit
         public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
-            if (hasTarget && last >= fireRate)
+            if (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.getPosition().X,2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2))
             {
                 shoot();
                 last = new TimeSpan(0);
