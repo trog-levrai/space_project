@@ -40,8 +40,6 @@ Content\img\Vaisseau_1_Lourd.xnb
 Content\img\Viseur.xnb
 Content\img\MissileFumee.xnb
 Content\PauseScreen.xnb
-Content\img\Explosion.xnb
-Content\img\boom.xnb
 Content\Affichage_mouse.xnb
 Content\chat.xnb
 Content\menufont.xnb
@@ -51,6 +49,8 @@ Content\sounds\laser.xnb
 Content\Video\Vid.xnb
 Content\sounds\Espace.xnb
 Content\sounds\Menu.xnb
+Content\img\Explosion.xnb
+Content\img\boom.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

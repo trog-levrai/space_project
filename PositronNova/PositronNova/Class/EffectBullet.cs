@@ -9,7 +9,7 @@ namespace PositronNova.Class
 {
     public enum EffectType
     {
-        MissileFumee, Explosion
+        MissileFumee, Explosion, GrosseExplosion
     };
 
     public class EffectBullet : sprite
@@ -33,6 +33,10 @@ namespace PositronNova.Class
                     break;
                 case EffectType.Explosion:
                     texture = TextureManager.explosion_t;
+                    tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
+                    break;
+                case EffectType.GrosseExplosion:
+                    texture = TextureManager.grosseExplosion_t;
                     tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
                     break;
             }
