@@ -22,7 +22,8 @@ namespace PositronNova.Class
             missile_t = content.Load<Texture2D>("img\\Missile");
 
             fumee_t = content.Load<Texture2D>("img\\MissileFumee");
-            explosion_t = content.Load<Texture2D>("img\\Explosion");
+            explosion_t = content.Load<Texture2D>("img\\boom");
+            
         }
     }
 }
