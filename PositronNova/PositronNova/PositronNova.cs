@@ -334,8 +334,8 @@ namespace PositronNova
                                     {
                                         
                                         Window.BeginScreenDeviceChange(true);
-
                                         graphics.IsFullScreen = true;
+                                        graphics.SynchronizeWithVerticalRetrace = true;
                                         Window.EndScreenDeviceChange(Window.ScreenDeviceName);
                                     }
                                     if (optionScreen.SselectedIndex == 1 && CheckKey(Keys.Space))
@@ -344,6 +344,7 @@ namespace PositronNova
                                         graphics.PreferredBackBufferWidth = winWidth;
                                         graphics.PreferredBackBufferHeight = winHeight;
                                         graphics.IsFullScreen = false;
+                                        graphics.SynchronizeWithVerticalRetrace = true;
                                         Window.EndScreenDeviceChange(Window.ScreenDeviceName);
                                     }
                                 
