@@ -39,13 +39,13 @@ namespace PositronNova
 
         public void Update1(GameTime gt, KeyboardState keyboard, MouseState mouse)
         {
-            if ((keyboard.IsKeyDown(Keys.Up) || mouse.Y <= 0) && origine.Y > 0)
+            if ((keyboard.IsKeyDown(Keys.Up) || mouse.Y <= 1) && origine.Y > 0)
                 origine = new Vector2(origine.X, origine.Y - 10);
-            if ((keyboard.IsKeyDown(Keys.Down) || mouse.Y >= PositronNova.winHeight) && origine.Y + PositronNova.winHeight < PositronNova.BackgroundTexture.Height)
+            if ((keyboard.IsKeyDown(Keys.Down) || mouse.Y >= PositronNova.winHeight - 1) && origine.Y + PositronNova.winHeight < PositronNova.BackgroundTexture.Height)
                 origine = new Vector2(origine.X, origine.Y + 10);
-            if ((keyboard.IsKeyDown(Keys.Left) || mouse.X <= 0) && origine.X > 0)
+            if ((keyboard.IsKeyDown(Keys.Left) || mouse.X <= 1) && origine.X > 0)
                 origine = new Vector2(origine.X - 10, origine.Y);
-            if ((keyboard.IsKeyDown(Keys.Right) || mouse.X >= PositronNova.winWidth) && origine.X + PositronNova.winWidth < PositronNova.BackgroundTexture.Width)
+            if ((keyboard.IsKeyDown(Keys.Right) || mouse.X >= PositronNova.winWidth - 1) && origine.X + PositronNova.winWidth < PositronNova.BackgroundTexture.Width)
                 origine = new Vector2(origine.X + 10, origine.Y);
 
             if (keyboard.IsKeyDown(Keys.PageUp) && keyRepeat.IsKeyUp(Keys.PageUp)) // ZOOM : Pas opérationnel !!! Mais ça fonctionne ;)
