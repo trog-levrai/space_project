@@ -24,7 +24,8 @@ namespace PositronNova.Class.Unit
         { get { return range;  } }
         System.TimeSpan fireRate;
         System.TimeSpan last;
-        SoundEffect laserSound;
+
+        SoundEffect deathNoise;
         Bullet localBullet;
         BulletType weaponType;
 
@@ -101,7 +102,7 @@ namespace PositronNova.Class.Unit
         public void LoadContent(ContentManager content)
         {
             _font = content.Load<SpriteFont>("Affichage_mouse");
-            laserSound = content.Load<SoundEffect>("sounds\\laser");
+            deathNoise = content.Load<SoundEffect>("sounds\\shipDeath");
             selection = content.Load<Texture2D>("img\\SelectionCarre");
             cible = content.Load<Texture2D>("img\\TargetCarre");
 
@@ -198,13 +199,15 @@ namespace PositronNova.Class.Unit
         public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
-            if (hasTarget && last >= fireRate && enn != null /*&& Math.Pow(position.X - enn.getPosition().X,2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2)*/)
+            if (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.getPosition().X,2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2))
             {
                 shoot();
                 last = new TimeSpan(0);
             }
 
             deplacement(gt);
+            if (Destruction())
+                deathNoise.Play();
 
             // Bords du background
             if (position.X <= 5 || position.X + texture.Width >= PositronNova.BackgroundTexture.Width - 5 ||
@@ -278,6 +281,8 @@ namespace PositronNova.Class.Unit
             {
                 localBullet = new Bullet(centre, enn, weaponType);
                 PositronNova.AddBullet(localBullet);
+                if (weaponType == BulletType.Missile)
+                    Manager.missileLaunch_s.Play();
             }
             else
                 hasTarget = false;

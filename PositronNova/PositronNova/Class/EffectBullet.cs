@@ -28,15 +28,15 @@ namespace PositronNova.Class
             switch (effect)
             {
                 case EffectType.MissileFumee:
-                    texture = TextureManager.fumee_t;
+                    texture = Manager.fumee_t;
                     tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
                     break;
                 case EffectType.Explosion:
-                    texture = TextureManager.explosion_t;
+                    texture = Manager.explosion_t;
                     tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
                     break;
                 case EffectType.GrosseExplosion:
-                    texture = TextureManager.grosseExplosion_t;
+                    texture = Manager.grosseExplosion_t;
                     tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
                     break;
             }

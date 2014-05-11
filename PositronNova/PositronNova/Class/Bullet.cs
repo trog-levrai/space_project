@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PositronNova.Class;
 using PositronNova.Class.Unit;
+using Microsoft.Xna.Framework.Audio;
 
 namespace PositronNova
 {
@@ -20,6 +21,7 @@ namespace PositronNova
         System.TimeSpan frequenceSpawnFumee;
         System.TimeSpan spawnLast;
 
+        SoundEffect hitNoise;
         BulletType bulletType;
         Unit target;
         public BulletType BulletType
@@ -27,7 +29,8 @@ namespace PositronNova
             get { return bulletType; }
         }
 
-        public bool destruc = false;
+        public bool destruc = false; //
+        bool hitTarget = false; // Degeulasse mais c'est en attendant
         int damage;
 
         ///////////////////////////////// CONSTRUCTEURS
@@ -40,32 +43,34 @@ namespace PositronNova
             switch (bulletType)
             {
                 case BulletType.LittleCinetique:
-                    texture = TextureManager.littleCinetique_t;
+                    texture = Manager.littleCinetique_t;
                     speed = 4;
                     damage = 1;
                     break;
                 case BulletType.Cinetique:
-                    texture = TextureManager.cinetique_t;
+                    texture = Manager.cinetique_t;
                     speed = 4;
                     damage = 5;
                     break;
                 case BulletType.Laser:
-                    texture = TextureManager.laser_t;
+                    texture = Manager.laser_t;
+                    //hitNoise = Manager.laserHit_s;
                     speed = 6;
                     damage = 10;
                     break;
                 case BulletType.Ion:
-                    texture = TextureManager.ion_t;
+                    texture = Manager.ion_t;
                     speed = 8;
                     damage = 15;
                     break;
                 case BulletType.Plasma:
-                    texture = TextureManager.plasma_t;
+                    texture = Manager.plasma_t;
                     speed = 8;
                     damage = 20;
                     break;
                 case BulletType.Missile:
-                    texture = TextureManager.missile_t;
+                    texture = Manager.missile_t;
+                    hitNoise = Manager.missileHit_s;
                     frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 2);
                     speed = 12;
                     damage = 50;
@@ -93,6 +98,9 @@ namespace PositronNova
             Deplacement();
             Destruction();
             HitTarget();
+            if (hitTarget && hitNoise != null)
+                hitNoise.Play();
+            
         }
 
         public void Draw(SpriteBatch sb)
@@ -119,6 +127,7 @@ namespace PositronNova
             {
                 target.Pv -= damage;
                 destruc = true;
+                hitTarget = true;
             }
         }
     }

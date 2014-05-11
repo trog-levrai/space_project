@@ -42,6 +42,8 @@ Content\img\MissileFumee.xnb
 Content\PauseScreen.xnb
 Content\img\Explosion.xnb
 Content\img\boom.xnb
+Content\img\Chasseur2.xnb
+Content\img\Bombardier.xnb
 Content\Affichage_mouse.xnb
 Content\chat.xnb
 Content\menufont.xnb
@@ -51,8 +53,14 @@ Content\sounds\laser.xnb
 Content\Video\Vid.xnb
 Content\sounds\Espace.xnb
 Content\sounds\Menu.xnb
-Content\img\Chasseur2.xnb
-Content\img\Bombardier.xnb
+Content\sounds\cinetiqueFire.xnb
+Content\sounds\explose2.xnb
+Content\sounds\laserFire1.xnb
+Content\sounds\laserFire2.xnb
+Content\sounds\laserHit.xnb
+Content\sounds\missileHit.xnb
+Content\sounds\MissileLaunch.xnb
+Content\sounds\shipDeath.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

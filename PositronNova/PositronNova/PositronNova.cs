@@ -164,7 +164,7 @@ namespace PositronNova
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            TextureManager.ContentLoad(Content);
+            Manager.ContentLoad(Content);
 
             foreach (Unit unit in unitList)
                 unit.LoadContent(Content);
