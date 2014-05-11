@@ -68,7 +68,7 @@ namespace PositronNova
                 {
                     byte[] msg = Encoding.Default.GetBytes(input);
                     UdpClient udpClient = new UdpClient();
-                    udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
+                    udpClient.Send(msg, msg.Length, "10.45.3.241", 1234);
                     udpClient.Close();
                     addString(input);
                     input = "";

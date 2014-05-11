@@ -13,7 +13,7 @@ namespace PositronNova.Class.Unit
 {
     public enum UnitType
     {
-        Chasseur, Destroyer, Corvette, Croiseur, Cuirasse
+        Chasseur, Bombardier, Corvette, Destroyer, Croiseur, Cuirasse
     };
 
     public class Unit : sprite
@@ -108,56 +108,57 @@ namespace PositronNova.Class.Unit
             switch (unitType)
             {
                 case UnitType.Chasseur:
-                    texture = content.Load<Texture2D>("img\\Chasseur");
-                    last = new TimeSpan(0);
+                    texture = content.Load<Texture2D>("img\\Chasseur2");
                     fireRate = new TimeSpan(0, 0, 0, 0, 100);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
-                    pv = pv_max;
                     speed = 2.2f;
                     range = 200;
                     break;
-                case UnitType.Destroyer:
-                    texture = content.Load<Texture2D>("img\\Destroyer");
-                    last = new TimeSpan(0);
+                case UnitType.Bombardier:
+                    texture = content.Load<Texture2D>("img\\Bombardier");
                     fireRate = new TimeSpan(0, 0, 0, 0, 200);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
-                    pv = pv_max;
                     speed = 1.9f;
                     range = 300;
                     break;
                 case UnitType.Corvette:
                     texture = content.Load<Texture2D>("img\\Corvette");
-                    last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 0, 400);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
-                    pv = pv_max;
                     speed = 1.6f;
                     range = 400;
                     break;
+                case UnitType.Destroyer:
+                    texture = content.Load<Texture2D>("img\\Destroyer");
+                    fireRate = new TimeSpan(0, 0, 0, 0, 300);
+                    weaponType = BulletType.Cinetique;
+                    pv_max = 90;
+                    speed = 1.4f;
+                    range = 450;
+                    break;
                 case UnitType.Croiseur:
                     texture = content.Load<Texture2D>("img\\Croiseur");
-                    last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 0, 500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
-                    pv = pv_max;
                     speed = 1.3f;
                     range = 500;
                     break;
                 case UnitType.Cuirasse:
                     texture = content.Load<Texture2D>("img\\Cuirasse");
-                    last = new TimeSpan(0);
                     fireRate = new TimeSpan(0, 0, 0, 2);
                     weaponType = BulletType.Missile;
                     pv_max = 250;
-                    pv = pv_max;
                     speed = 1f;
                     range = 600;
                     break;
             }
+
+            last = new TimeSpan(0);
+            pv = pv_max;
 
             centre = position + new Vector2(texture.Width / 2, texture.Height / 2);
 
@@ -197,7 +198,7 @@ namespace PositronNova.Class.Unit
         public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
-            if (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.getPosition().X,2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2))
+            if (hasTarget && last >= fireRate && enn != null /*&& Math.Pow(position.X - enn.getPosition().X,2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2)*/)
             {
                 shoot();
                 last = new TimeSpan(0);

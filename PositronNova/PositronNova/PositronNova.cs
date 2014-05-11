@@ -118,8 +118,8 @@ namespace PositronNova
             _thEcoute.IsBackground = true;
 
             UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:Anonymous");
-            udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
+            byte[] msg = Encoding.Default.GetBytes("nick:Biatch");
+            udpClient.Send(msg, msg.Length, "10.45.3.241", 1234);
             udpClient.Close();
 
             engine = new AudioEngine("Content\\sounds\\Playsong.xgs");
