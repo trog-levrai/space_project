@@ -71,21 +71,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\Chasseur_1B.PNG">
+    <Compile Include="img\ships\Chasseur_1B.PNG">
       <Name>Chasseur_1B</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\Destroyer_1B.png">
+    <Compile Include="img\ships\Destroyer_1B.png">
       <Name>Destroyer_1B</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\Vaisseau_1_LourdB.png">
+    <Compile Include="img\ships\Vaisseau_1_LourdB.png">
       <Name>Vaisseau_1_LourdB</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -153,12 +153,12 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Bullet.png">
+    <Compile Include="img\bullets\Bullet.png">
       <Name>Bullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Chasseur.PNG">
+    <Compile Include="img\ships\Chasseur.PNG">
       <Name>Chasseur</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -168,22 +168,22 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Corvette.png">
+    <Compile Include="img\ships\Corvette.png">
       <Name>Corvette</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Croiseur.png">
+    <Compile Include="img\ships\Croiseur.png">
       <Name>Croiseur</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Cuirasse.png">
+    <Compile Include="img\ships\Cuirasse.png">
       <Name>Cuirasse</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Destroyer.png">
+    <Compile Include="img\ships\Destroyer.png">
       <Name>Destroyer</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -193,17 +193,17 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\IonBullet.png">
+    <Compile Include="img\bullets\IonBullet.png">
       <Name>IonBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\LaserBullet.png">
+    <Compile Include="img\bullets\LaserBullet.png">
       <Name>LaserBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\LittleBullet.png">
+    <Compile Include="img\bullets\LittleBullet.png">
       <Name>LittleBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -213,7 +213,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Missile.png">
+    <Compile Include="img\bullets\Missile.png">
       <Name>Missile</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -228,7 +228,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\PlasmaBullet.png">
+    <Compile Include="img\bullets\PlasmaBullet.png">
       <Name>PlasmaBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -278,17 +278,17 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Vaisseau_1.png">
+    <Compile Include="img\ships\Vaisseau_1.png">
       <Name>Vaisseau_1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Vaisseau_1B.png">
+    <Compile Include="img\ships\Vaisseau_1B.png">
       <Name>Vaisseau_1B</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Vaisseau_1_Lourd.png">
+    <Compile Include="img\ships\Vaisseau_1_Lourd.png">
       <Name>Vaisseau_1_Lourd</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -300,7 +300,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\MissileFumee.png">
+    <Compile Include="img\effects\MissileFumee.png">
       <Name>MissileFumee</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -345,26 +345,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\Explosion.png">
+    <Compile Include="img\effects\Explosion.png">
       <Name>Explosion</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\boom.png">
+    <Compile Include="img\effects\boom.png">
       <Name>boom</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\Chasseur2.png">
+    <Compile Include="img\ships\Chasseur2.png">
       <Name>Chasseur2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Bombardier.png">
+    <Compile Include="img\ships\Bombardier.png">
       <Name>Bombardier</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -410,6 +410,28 @@
       <Name>shipDeath</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="img\effects\Burst.png">
+      <Name>Burst</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="img\effects\Explosion2.png">
+      <Name>Explosion2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="img\effects\ExplosionLaser.png">
+      <Name>ExplosionLaser</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="img\effects\ExplosionMk3.png">
+      <Name>ExplosionMk3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

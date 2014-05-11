@@ -17,16 +17,16 @@ namespace PositronNova.Class
 
         static public void ContentLoad(ContentManager content)
         {
-            littleCinetique_t = content.Load<Texture2D>("img\\LittleBullet");
-            cinetique_t = content.Load<Texture2D>("img\\Bullet");
-            laser_t = content.Load<Texture2D>("img\\LaserBullet"); // Pour l'instant...
-            ion_t = content.Load<Texture2D>("img\\IonBullet");
-            plasma_t = content.Load<Texture2D>("img\\PlasmaBullet");
-            missile_t = content.Load<Texture2D>("img\\Missile");
+            littleCinetique_t = content.Load<Texture2D>("img\\bullets\\LittleBullet");
+            cinetique_t = content.Load<Texture2D>("img\\bullets\\Bullet");
+            laser_t = content.Load<Texture2D>("img\\bullets\\LaserBullet"); // Pour l'instant...
+            ion_t = content.Load<Texture2D>("img\\bullets\\IonBullet");
+            plasma_t = content.Load<Texture2D>("img\\bullets\\PlasmaBullet");
+            missile_t = content.Load<Texture2D>("img\\bullets\\Missile");
 
-            fumee_t = content.Load<Texture2D>("img\\MissileFumee");
-            explosion_t = content.Load<Texture2D>("img\\Explosion");
-            grosseExplosion_t = content.Load<Texture2D>("img\\boom");
+            fumee_t = content.Load<Texture2D>("img\\effects\\MissileFumee");
+            explosion_t = content.Load<Texture2D>("img\\effects\\Explosion");
+            grosseExplosion_t = content.Load<Texture2D>("img\\effects\\ExplosionMk3");
 
             laserFire_s = content.Load<SoundEffect>("sounds\\laserFire2");
             laserHit_s = content.Load<SoundEffect>("sounds\\laserHit");

@@ -109,7 +109,7 @@ namespace PositronNova.Class.Unit
             switch (unitType)
             {
                 case UnitType.Chasseur:
-                    texture = content.Load<Texture2D>("img\\Chasseur2");
+                    texture = content.Load<Texture2D>("img\\ships\\Chasseur2");
                     fireRate = new TimeSpan(0, 0, 0, 0, 100);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
@@ -117,7 +117,7 @@ namespace PositronNova.Class.Unit
                     range = 200;
                     break;
                 case UnitType.Bombardier:
-                    texture = content.Load<Texture2D>("img\\Bombardier");
+                    texture = content.Load<Texture2D>("img\\ships\\Bombardier");
                     fireRate = new TimeSpan(0, 0, 0, 0, 200);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
@@ -125,7 +125,7 @@ namespace PositronNova.Class.Unit
                     range = 300;
                     break;
                 case UnitType.Corvette:
-                    texture = content.Load<Texture2D>("img\\Corvette");
+                    texture = content.Load<Texture2D>("img\\ships\\Corvette");
                     fireRate = new TimeSpan(0, 0, 0, 0, 400);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
@@ -133,7 +133,7 @@ namespace PositronNova.Class.Unit
                     range = 400;
                     break;
                 case UnitType.Destroyer:
-                    texture = content.Load<Texture2D>("img\\Destroyer");
+                    texture = content.Load<Texture2D>("img\\ships\\Destroyer");
                     fireRate = new TimeSpan(0, 0, 0, 0, 300);
                     weaponType = BulletType.Cinetique;
                     pv_max = 90;
@@ -141,7 +141,7 @@ namespace PositronNova.Class.Unit
                     range = 450;
                     break;
                 case UnitType.Croiseur:
-                    texture = content.Load<Texture2D>("img\\Croiseur");
+                    texture = content.Load<Texture2D>("img\\ships\\Croiseur");
                     fireRate = new TimeSpan(0, 0, 0, 0, 500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
@@ -149,7 +149,7 @@ namespace PositronNova.Class.Unit
                     range = 500;
                     break;
                 case UnitType.Cuirasse:
-                    texture = content.Load<Texture2D>("img\\Cuirasse");
+                    texture = content.Load<Texture2D>("img\\ships\\Cuirasse");
                     fireRate = new TimeSpan(0, 0, 0, 2);
                     weaponType = BulletType.Missile;
                     pv_max = 250;
