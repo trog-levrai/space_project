@@ -109,12 +109,13 @@
   <ItemGroup>
     <Compile Include="Class\Camera2d.cs" />
     <Compile Include="Class\Bullet.cs" />
+    <Compile Include="Class\Client.cs" />
     <Compile Include="Class\EffectBullet.cs" />
     <Compile Include="Class\Physique.cs" />
     <Compile Include="Class\Manager.cs" />
     <Compile Include="Class\Unit\Unit.cs" />
-    <Compile Include="Class\Chat.cs" />
-    <Compile Include="Class\KBInput.cs" />
+    <Compile Include="Class\Chat\Chat.cs" />
+    <Compile Include="Class\Chat\KBInput.cs" />
     <Compile Include="Class\Unit\Meteor.cs" />
     <Compile Include="Menu\ActionScreen.cs" />
     <Compile Include="Menu\GameScreen.cs" />
@@ -167,9 +168,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Class\Chat\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
