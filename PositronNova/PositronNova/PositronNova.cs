@@ -24,7 +24,7 @@ namespace PositronNova
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        static public int winWidth = 1366, winHeight = 768; // Accessible pour les autres classes...
+        static public int winWidth = 1920, winHeight = 1080; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
         private static Thread _thEcoute;
@@ -61,6 +61,7 @@ namespace PositronNova
         Cue cue;
         Cue cue1;
         float musicVolume = 1.0f;
+        Texture2D ui;
 
         Camera2d _camera;
 
@@ -218,6 +219,8 @@ namespace PositronNova
             vid = Content.Load<Video>("Video\\Vid");
             vidRectangle = new Rectangle(GraphicsDevice.Viewport.X, GraphicsDevice.Viewport.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             vidPlayer.Play(vid);
+
+            ui = Content.Load<Texture2D>(@"UI-motif");
 
             // TODO: use this.Content to load your game content here
         }
@@ -529,6 +532,9 @@ namespace PositronNova
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
 
+            
+
+
             switch (CurrentGameState)
             {
                 case GameState.Video:
@@ -563,7 +569,7 @@ namespace PositronNova
                     if (activeScreen == actionScreen)
                     {
                         actionScreen.Draw(gameTime);
-
+                        spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                         foreach (var unit in unitList) //Affichage des unites si vous n'aviez pas compris
                             unit.Draw(spriteBatch);
                         foreach (Bullet bullet in bulletList) // Affichage des bullets :p

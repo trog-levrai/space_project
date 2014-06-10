@@ -1,13 +1,18 @@
 Content\img\nyan.xnb
 Content\img\background.xnb
-Content\img\ships\Chasseur_1B.xnb
-Content\img\ships\Destroyer_1B.xnb
-Content\img\ships\Vaisseau_1_LourdB.xnb
 Content\img\cercle-vert2.xnb
 Content\img\wallpaper2.xnb
 Content\img\Bouton.xnb
 Content\BackgroudMenu.xnb
 Content\Background.xnb
+Content\Affichage_mouse.xnb
+Content\chat.xnb
+Content\menufont.xnb
+Content\sounds\laser.xnb
+Content\Video\Vid.xnb
+Content\img\ships\Chasseur_1B.xnb
+Content\img\ships\Destroyer_1B.xnb
+Content\img\ships\Vaisseau_1_LourdB.xnb
 Content\img\BarreRessources.xnb
 Content\img\bullets\Bullet.xnb
 Content\img\ships\Chasseur.xnb
@@ -48,13 +53,9 @@ Content\img\effects\Burst.xnb
 Content\img\effects\Explosion2.xnb
 Content\img\effects\ExplosionLaser.xnb
 Content\img\effects\ExplosionMk3.xnb
-Content\Affichage_mouse.xnb
-Content\chat.xnb
-Content\menufont.xnb
+Content\img\life.xnb
 Content\optionfont.xnb
 Content\titlefont.xnb
-Content\sounds\laser.xnb
-Content\Video\Vid.xnb
 Content\sounds\Espace.xnb
 Content\sounds\Menu.xnb
 Content\sounds\cinetiqueFire.xnb
@@ -65,7 +66,7 @@ Content\sounds\laserHit.xnb
 Content\sounds\missileHit.xnb
 Content\sounds\MissileLaunch.xnb
 Content\sounds\shipDeath.xnb
-Content\img\life.xnb
+Content\UI-motif.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb
