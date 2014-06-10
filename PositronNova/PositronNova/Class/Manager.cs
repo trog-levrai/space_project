@@ -12,6 +12,7 @@ namespace PositronNova.Class
     {
         static public Texture2D littleCinetique_t, cinetique_t, laser_t, ion_t, plasma_t, missile_t;
         public static Texture2D fumee_t, explosion_t, grosseExplosion_t;
+        static public Texture2D lifeBrick_t;
 
         public static SoundEffect missileLaunch_s, missileHit_s, laserFire_s, laserHit_s;
 
@@ -27,6 +28,8 @@ namespace PositronNova.Class
             fumee_t = content.Load<Texture2D>("img\\effects\\MissileFumee");
             explosion_t = content.Load<Texture2D>("img\\effects\\Explosion");
             grosseExplosion_t = content.Load<Texture2D>("img\\effects\\ExplosionMk3");
+
+            lifeBrick_t = content.Load<Texture2D>("img\\life");
 
             laserFire_s = content.Load<SoundEffect>("sounds\\laserFire2");
             laserHit_s = content.Load<SoundEffect>("sounds\\laserHit");

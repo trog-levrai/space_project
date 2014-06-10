@@ -49,18 +49,18 @@ namespace PositronNova.Class.Unit
         private Texture2D selection;
         private Texture2D cible;
 
-        protected int damage;
-        protected int pv_max;
+        int pv_max;
         public int Pv_max
         {
             get { return pv_max; }
         }
-        protected int pv;
+        int pv;
         public int Pv
         {
             get { return pv; }
             set { pv = value; }
         }
+        HealthBar lifeBar;
 
         // Cible
         private Unit enn;
@@ -169,6 +169,8 @@ namespace PositronNova.Class.Unit
             last = new TimeSpan(0);
             pv = pv_max;
 
+            lifeBar = new HealthBar(pv, texture.Width);
+
             hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
@@ -225,14 +227,14 @@ namespace PositronNova.Class.Unit
                 position.Y <= 5 || position.Y + texture.Height >= PositronNova.BackgroundTexture.Height - 5)
                 moving = false;
 
-            texture.GetData(textureData);
+            //texture.GetData(textureData);
+            lifeBar.Update(pv);
 
             base.Update(gt);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 15), color);
             //Mettre "|| !friendly" pour tester l'effet de la methode attack
             if (direction.X > 0)
             {
@@ -249,8 +251,12 @@ namespace PositronNova.Class.Unit
                 spriteBatch.Draw(texture, position, Color.White);
             }
             isSelected(spriteBatch);
+            spriteBatch.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
             if (selected)
-                spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
+            {
+                lifeBar.Draw(spriteBatch, (int)position.X - 4, (int)position.Y - 10);
+                //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
+            }
             //aUneCible(spriteBatch);
 
             base.Draw(spriteBatch);
@@ -262,10 +268,10 @@ namespace PositronNova.Class.Unit
         {
             if (selected)
             {
-                sb.Draw(selection, position + new Vector2(-7, -7), new Rectangle(0, 0, 13, 13), Color.White);
-                sb.Draw(selection, position + new Vector2(texture.Width - 7, -7), new Rectangle(13, 0, 13, 13), Color.White);
-                sb.Draw(selection, position + new Vector2(-7, texture.Height - 7), new Rectangle(0, 13, 13, 13), Color.White);
-                sb.Draw(selection, position + new Vector2(texture.Width - 7, texture.Height - 7), new Rectangle(13, 13, 13, 13), Color.White);
+                sb.Draw(selection, position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
+                sb.Draw(selection, position + new Vector2(texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
+                sb.Draw(selection, position + new Vector2(-4, texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
+                sb.Draw(selection, position + new Vector2(texture.Width - 4, texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
                 aUneCible(sb);
             }
         }
@@ -275,10 +281,10 @@ namespace PositronNova.Class.Unit
             if (hasTarget)
                 if (enn != null && enn.pv > 0)
                 {
-                    sb.Draw(cible, enn.position + new Vector2(-7, -7), new Rectangle(0, 0, 13, 13), Color.White);
-                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 7, -7), new Rectangle(13, 0, 13, 13), Color.White);
-                    sb.Draw(cible, enn.position + new Vector2(-7, enn.texture.Height - 7), new Rectangle(0, 13, 13, 13), Color.White);
-                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 7, enn.texture.Height - 7), new Rectangle(13, 13, 13, 13), Color.White);
+                    sb.Draw(cible, enn.position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
+                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
+                    sb.Draw(cible, enn.position + new Vector2(-4, enn.texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
+                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 4, enn.texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
                 }
         }
 
