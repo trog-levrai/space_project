@@ -287,8 +287,7 @@ namespace PositronNova
                                     i--;
                                 }
 
-                                genUnit(20, true);
-                                genUnit(20, false);
+                                genUnit(10);
 
                                 ressources = Ressources.getStartRessources();
 
@@ -451,7 +450,7 @@ namespace PositronNova
                         {
                             unitList[i].HandleInput(keyboardState, mouse);
                             unitList[i].Update(gameTime);
-                            if (!unitList[i].Friendly && unitList[0].Friendly)
+                            if (unitList[i].Side == UnitSide.Alien && unitList[0].Side == UnitSide.Humain)
                             {
                                 unitList[i].Ennemy = unitList[0];
                                 unitList[i].HasTarget = true;
@@ -459,7 +458,7 @@ namespace PositronNova
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
-                                if (unitList[i].Friendly)
+                                if (unitList[i].Side == UnitSide.Humain)
                                     text.addString("f:" + unitList[i].Name + " has been destroyed !");
                                 else
                                 {
@@ -595,16 +594,13 @@ namespace PositronNova
             oldKeyboardState.IsKeyDown(theKey);
         }
 
-        void genUnit(int nombre, bool friendly)
+        void genUnit(int nombre)
         {
             string[] names = new string[] {"Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Baptiste"};
             for (int i = 0; i < nombre; i++)
             {
-                unitList.Add(new Unit(names[i], new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1), friendly));
-                //if (unitList.Count > 1)    
-                //for (int j = 0; j < i; j++)
-                //        while (Physique.IntersectPixel(unitList[j].texture, unitList[j].position, unitList[j].textureData, unitList[i].texture, unitList[i].position, unitList[i].textureData))
-                //            unitList[j].position = new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200));
+                unitList.Add(new Unit(names[i], new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1)));
+                unitList.Add(new Unit(new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), /*(UnitType)rand.Next((int)UnitType.AntiCorps, (int)*/UnitType.Neurone /*+ 1*/));
             }
             foreach (Unit unit in unitList)
                 unit.Init();
@@ -614,7 +610,7 @@ namespace PositronNova
         {
             foreach (Unit unit in unitList)
                 if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
-                    if (unit.Friendly != friend)
+                    if (unit.Side == UnitSide.Alien)
                         return unit;
             return null;
         }

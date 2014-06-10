@@ -100,7 +100,13 @@ namespace PositronNova
             Destruction();
             HitTarget();
             if (hitTarget && hitNoise != null)
-                hitNoise.Play();
+                if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
+                    position.X + centre.X > Camera2d.Origine.X &&
+                    position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                    position.Y + centre.Y > Camera2d.Origine.Y)
+                {
+                    hitNoise.Play();
+                }
             
             base.Update(gameTime);
         }

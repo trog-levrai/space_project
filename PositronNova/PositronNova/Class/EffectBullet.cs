@@ -16,7 +16,6 @@ namespace PositronNova.Class
     {
         EffectType effect;
         public bool destruc = false;
-        int frameSquare;
 
         System.TimeSpan tempsDeVie;
         System.TimeSpan duree;

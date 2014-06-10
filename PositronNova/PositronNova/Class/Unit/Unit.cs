@@ -11,9 +11,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PositronNova.Class.Unit
 {
+    public enum UnitSide
+    {
+        Humain, Alien
+    };
+
     public enum UnitType
     {
-        Chasseur, Bombardier, Corvette, Destroyer, Croiseur, Cuirasse
+        Chasseur, Bombardier, Corvette, Destroyer, Croiseur, Cuirasse,
+        AntiCorps, Virus, Neurone
     };
 
     public class Unit : sprite
@@ -21,7 +27,7 @@ namespace PositronNova.Class.Unit
         // Sound et tir
         private int range;
         public int Range
-        { get { return range;  } }
+        { get { return range; } }
         System.TimeSpan fireRate;
         System.TimeSpan last;
 
@@ -38,8 +44,9 @@ namespace PositronNova.Class.Unit
             get { return name; }
         }
         UnitType unitType;
+        UnitSide side;
+        public UnitSide Side { get { return side; } }
 
-        public bool moving = false;
         bool selected;
         private bool hasTarget;
         public bool HasTarget
@@ -72,26 +79,24 @@ namespace PositronNova.Class.Unit
 
         private static Ressources requiredResources = new Ressources(0, 0);
 
-        //oui moi aussi :o)
-        private bool friendly;
-        public bool Friendly
-        {
-            get { return friendly; }
-        }
-
         //////////////////////////////////// CONSTRUCTEURS /////////////////////////////////////
 
-        public Unit(String name, Vector2 position, UnitType unitType, bool friendly)
+        public Unit(Vector2 position, UnitType type)
+            : base(position)
+        {
+            unitType = type;
+        }
+
+        public Unit(String name, Vector2 position, UnitType type)
             : base(position)
         {
             this.name = name;
-            this.unitType = unitType;
-            this.friendly = friendly;
+            unitType = type;
         }
 
         public override void Init()
         {
-            if (friendly)
+            if (side == UnitSide.Humain)
                 color = Color.Aqua;
             else
                 color = Color.IndianRed;
@@ -111,6 +116,7 @@ namespace PositronNova.Class.Unit
             switch (unitType)
             {
                 case UnitType.Chasseur:
+                    side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Chasseur2");
                     fireRate = new TimeSpan(0, 0, 0, 0, 300);
                     weaponType = BulletType.LittleCinetique;
@@ -120,6 +126,7 @@ namespace PositronNova.Class.Unit
                     requiredResources = new Ressources(10, 5);
                     break;
                 case UnitType.Bombardier:
+                    side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Bombardier");
                     fireRate = new TimeSpan(0, 0, 0, 0, 500);
                     weaponType = BulletType.Cinetique;
@@ -129,6 +136,7 @@ namespace PositronNova.Class.Unit
                     requiredResources = new Ressources(40, 50);
                     break;
                 case UnitType.Corvette:
+                    side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Corvette");
                     fireRate = new TimeSpan(0, 0, 0, 0, 700);
                     weaponType = BulletType.Laser;
@@ -138,6 +146,7 @@ namespace PositronNova.Class.Unit
                     requiredResources = new Ressources(15, 10);
                     break;
                 case UnitType.Destroyer:
+                    side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Destroyer");
                     fireRate = new TimeSpan(0, 0, 0, 0, 900);
                     weaponType = BulletType.Cinetique;
@@ -147,6 +156,7 @@ namespace PositronNova.Class.Unit
                     requiredResources = new Ressources(20, 15);
                     break;
                 case UnitType.Croiseur:
+                    side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Croiseur");
                     fireRate = new TimeSpan(0, 0, 0, 0, 1200);
                     weaponType = BulletType.Plasma;
@@ -156,6 +166,7 @@ namespace PositronNova.Class.Unit
                     requiredResources = new Ressources(25, 20);
                     break;
                 case UnitType.Cuirasse:
+                    side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Cuirasse");
                     fireRate = new TimeSpan(0, 0, 0, 2);
                     weaponType = BulletType.Missile;
@@ -164,6 +175,25 @@ namespace PositronNova.Class.Unit
                     range = 600;
                     requiredResources = new Ressources(80, 110);
                     break;
+                case UnitType.AntiCorps:
+                    side = UnitSide.Alien;
+                    break;
+                case UnitType.Virus:
+                    side = UnitSide.Alien;
+                    break;
+                case UnitType.Neurone:
+                    side = UnitSide.Alien;
+                    texture = content.Load<Texture2D>("img\\alienShips\\Neurone");
+                    nbFrame = 3;
+                    frameWidth = 40;
+                    frameHeight = 40;
+                    timeToNextFrame = new TimeSpan(0, 0, 0, 0, 100);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 300);
+                    weaponType = BulletType.LittleCinetique;
+                    pv_max = 100;
+                    speed = 2f;
+                    range = 400;
+                    break;
             }
 
             last = new TimeSpan(0);
@@ -171,30 +201,25 @@ namespace PositronNova.Class.Unit
 
             lifeBar = new HealthBar(pv, texture.Width);
 
-            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            //hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
             textureData = new Color[texture.Width * texture.Height];
             texture.GetData(textureData);
         }
 
-        public Vector2 getPosition()
-        {
-            return position;
-        }
-
         public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState/*, Vector2 Pos*/)
         {
             //Ce code est magique, ne pas trop toucher SVP :-) effectivement trop bien ce code :o) GG !
-            if (mouseState.LeftButton == ButtonState.Pressed && friendly)
+            if (mouseState.LeftButton == ButtonState.Pressed && side == UnitSide.Humain)
             {
                 selected = Math.Abs(mouseState.X - (position.X + texture.Width / 2) + Camera2d.Origine.X) <= texture.Width / 2 & Math.Abs(mouseState.Y - (position.Y + texture.Height / 2) + Camera2d.Origine.Y) <= texture.Height / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
             }
             if (mouseState.RightButton == ButtonState.Pressed && selected)
             {
-                enn = PositronNova.GetEnnemy(friendly);
+                enn = PositronNova.GetEnnemy(side == UnitSide.Humain);
                 if (enn != null)
-                    hasTarget = Math.Pow(position.X - enn.getPosition().X, 2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2);
+                    hasTarget = Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2);
                 else
                 {
                     hasTarget = false;
@@ -212,7 +237,7 @@ namespace PositronNova.Class.Unit
         public override void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
-            if (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.getPosition().X,2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2))
+            if (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2))
             {
                 shoot();
                 last = new TimeSpan(0);
@@ -220,7 +245,13 @@ namespace PositronNova.Class.Unit
 
             deplacement(gt);
             if (Destruction())
-                deathNoise.Play();
+                if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
+                        position.X + centre.X > Camera2d.Origine.X &&
+                        position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                        position.Y + centre.Y > Camera2d.Origine.Y)
+                {
+                    deathNoise.Play();
+                }
 
             // Bords du background
             if (position.X <= 5 || position.X + texture.Width >= PositronNova.BackgroundTexture.Width - 5 ||
@@ -230,36 +261,61 @@ namespace PositronNova.Class.Unit
             //texture.GetData(textureData);
             lifeBar.Update(pv);
 
+            // Update du changement de frame
+            frameTimer = frameTimer.Add(gt.ElapsedGameTime);
+
+            if (timeToNextFrame <= frameTimer)
+            {
+                frameTimer = new TimeSpan(0);
+                if (frameSquare == 0)
+                    reverseFrame = false;
+                else if (frameSquare == nbFrame - 1)
+                    reverseFrame = true;
+
+                if (reverseFrame)
+                    frameSquare--;
+                else
+                    frameSquare++;
+            }
+
             base.Update(gt);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch sb)
         {
             //Mettre "|| !friendly" pour tester l'effet de la methode attack
-            if (direction.X > 0)
+            if (side == UnitSide.Humain)
             {
-                //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.FlipHorizontally, 0);
-                spriteBatch.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.FlipHorizontally, 0);
-            }
-            else if (direction.X < 0)
-            {
-                //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
+                if (direction.X > 0)
+                {
+                    //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.FlipHorizontally, 0);
+                    sb.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.FlipHorizontally, 0);
+                }
+                else if (direction.X < 0)
+                {
+                    //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.None, 0);
+                    sb.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
+                }
+                else
+                {
+                    sb.Draw(texture, position, Color.White);
+                }
+
+                isSelected(sb);
+                sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
+
+                if (selected)
+                {
+                    lifeBar.Draw(sb, (int)position.X - 4, (int)position.Y - 10);
+                    //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
+                }
             }
             else
             {
-                spriteBatch.Draw(texture, position, Color.White);
+                sb.Draw(texture, position, new Rectangle(frameHeight * frameSquare, 0, frameHeight, frameHeight), Color.White);
             }
-            isSelected(spriteBatch);
-            spriteBatch.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
-            if (selected)
-            {
-                lifeBar.Draw(spriteBatch, (int)position.X - 4, (int)position.Y - 10);
-                //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
-            }
-            //aUneCible(spriteBatch);
 
-            base.Draw(spriteBatch);
+            base.Draw(sb);
         }
 
         /////////////////////////////////// METHODES //////////////////////////
@@ -318,7 +374,13 @@ namespace PositronNova.Class.Unit
                 localBullet = new Bullet(position + centre, enn, weaponType);
                 PositronNova.AddBullet(localBullet);
                 if (weaponType == BulletType.Missile)
-                    Manager.missileLaunch_s.Play();
+                    if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
+                        position.X + centre.X > Camera2d.Origine.X &&
+                        position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                        position.Y + centre.Y > Camera2d.Origine.Y)
+                    {
+                        Manager.missileLaunch_s.Play();
+                    }
             }
             else
                 hasTarget = false;

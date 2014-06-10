@@ -48,6 +48,8 @@ Content\img\effects\Burst.xnb
 Content\img\effects\Explosion2.xnb
 Content\img\effects\ExplosionLaser.xnb
 Content\img\effects\ExplosionMk3.xnb
+Content\img\life.xnb
+Content\UI-motif.xnb
 Content\Affichage_mouse.xnb
 Content\chat.xnb
 Content\menufont.xnb
@@ -65,8 +67,7 @@ Content\sounds\laserHit.xnb
 Content\sounds\missileHit.xnb
 Content\sounds\MissileLaunch.xnb
 Content\sounds\shipDeath.xnb
-Content\img\life.xnb
-Content\UI-motif.xnb
+Content\img\alienShips\Neurone.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

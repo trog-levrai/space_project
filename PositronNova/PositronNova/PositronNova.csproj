@@ -114,10 +114,9 @@
     <Compile Include="Class\Physique.cs" />
     <Compile Include="Class\Manager.cs" />
     <Compile Include="Class\Ressources\Ressources.cs" />
-    <Compile Include="Class\Unit\Unit.cs" />
     <Compile Include="Class\Chat.cs" />
     <Compile Include="Class\KBInput.cs" />
-    <Compile Include="Class\Unit\Meteor.cs" />
+    <Compile Include="Class\Unit\Unit.cs" />
     <Compile Include="Menu\ActionScreen.cs" />
     <Compile Include="Menu\GameScreen.cs" />
     <Compile Include="Menu\MenuComponent.cs" />

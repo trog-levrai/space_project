@@ -72,6 +72,16 @@ namespace PositronNova
 
         protected float textureRotation;
 
+        // Animation
+        protected System.TimeSpan timeToNextFrame;
+        protected System.TimeSpan frameTimer;
+        protected int frameSquare = 0;
+        protected int nbFrame;
+        protected int frameWidth, frameHeight;
+        protected bool reverseFrame = false;
+
+        public bool moving = false;
+
         public Color[] textureData; //Pour les collisions Pix/Pix 
 
         ////////////////////////// CONSTRUCTEURS
@@ -148,7 +158,7 @@ namespace PositronNova
         /// <param name="gameTime">Le GameTime de la frame</param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(texture, position, Color.White);
+
         }
 
         public virtual void DrawRot(SpriteBatch spriteBatch)
