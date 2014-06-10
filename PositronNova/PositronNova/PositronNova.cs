@@ -287,6 +287,8 @@ namespace PositronNova
                                 genUnit(20, true);
                                 genUnit(20, false);
 
+                                ressources = Ressources.getStartRessources();
+
                                 foreach (Unit unit in unitList)
                                     unit.LoadContent(Content);
                             }
