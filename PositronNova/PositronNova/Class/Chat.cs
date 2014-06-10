@@ -89,7 +89,7 @@ namespace PositronNova
         private Vector2 position;
         public Vector2 GetPosition()
         {
-            position = new Vector2(Camera2d.Origine.X, game.Window.ClientBounds.Height - 14*rank + Camera2d.Origine.Y);
+            position = new Vector2(Camera2d.Origine.X + 20, game.Window.ClientBounds.Height - 14*rank -20+ Camera2d.Origine.Y);
             return position;
         }
         //Génère le texte à afficher
