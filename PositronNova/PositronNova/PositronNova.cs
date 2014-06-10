@@ -24,7 +24,7 @@ namespace PositronNova
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        static public int winWidth = 800, winHeight = 600; // Accessible pour les autres classes...
+        static public int winWidth = 1366, winHeight = 768; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
         private static Thread _thEcoute;
@@ -39,6 +39,8 @@ namespace PositronNova
         static List<Unit> unitList = new List<Unit>();
         static List<Bullet> bulletList = new List<Bullet>();
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
+
+        Ressources ressources;
 
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
@@ -77,6 +79,7 @@ namespace PositronNova
 
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
             graphics.PreferredBackBufferHeight = winHeight;
+            graphics.IsFullScreen = true;
         }
 
 
@@ -133,6 +136,7 @@ namespace PositronNova
             cue1.Play();
             cue1.Pause();
 
+            ressources = Ressources.getStartRessources();
 
             base.Initialize();
         }
@@ -428,6 +432,8 @@ namespace PositronNova
                         _camera.Update1(gameTime, keyboardState, mouse);
                         _camera.Update2(gameTime, keyboardState, mouse);
 
+                        ressources.Update(gameTime);
+
                         if (CheckKey(Keys.P))
                         {
                             action = true;
@@ -564,6 +570,7 @@ namespace PositronNova
                             effect.Draw(spriteBatch);
                         //Affiche le chat
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
+                        spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
                     }
                     break;
             }
