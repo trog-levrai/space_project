@@ -30,8 +30,8 @@ namespace PositronNova
         SpriteFont spriteFont1;
         SpriteFont spriteFont2;
 
-        GamePadState gamePadState;
-        GamePadState oldGamePadState;
+        //GamePadState gamePadState;
+        //GamePadState oldGamePadState;
 
         //public Vector2 Position
         //{

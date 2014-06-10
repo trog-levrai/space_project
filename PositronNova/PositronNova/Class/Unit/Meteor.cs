@@ -10,23 +10,23 @@ namespace PositronNova
 {
     class Meteor
     {
-        private Texture2D tex;
-        private Random rand = new Random();
-        private int frameSquare;
-        private double tempsActFrameSwitch;
-        private double tempsPreFrameSwitch;
-        private bool frameReaderSwitch = true;
+        //private Texture2D tex;
+        //private Random rand = new Random();
+        //private int frameSquare;
+        //private double tempsActFrameSwitch;
+        //private double tempsPreFrameSwitch;
+        //private bool frameReaderSwitch = true;
 
-        private int direction;
-        private Vector2 position;
-        private Vector2 speed;
-        private int moveTime;
+        //private int direction;
+        //private Vector2 position;
+        //private Vector2 speed;
+        //private int moveTime;
 
-        private double tempsActuel = 0;
-        private double tempsPrecedent = 0;
+        //private double tempsActuel = 0;
+        //private double tempsPrecedent = 0;
 
-        private int tempsMouvMin = 2;
-        private int tempsMouvMax = 6;
+        //private int tempsMouvMin = 2;
+        //private int tempsMouvMax = 6;
 
         ////METHODS
         //public void zomScreenBounds()

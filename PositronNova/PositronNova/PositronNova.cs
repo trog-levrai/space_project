@@ -23,7 +23,6 @@ namespace PositronNova
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Game game;
 
         static public int winWidth = 800, winHeight = 600; // Accessible pour les autres classes...
         //Gestion des images...
@@ -448,7 +447,7 @@ namespace PositronNova
                             }
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
-                                effectBulletList.Add(new EffectBullet(unitList[i].position, EffectType.GrosseExplosion));
+                                effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
                                 if (unitList[i].Friendly)
                                     text.addString("f:" + unitList[i].Name + " has been destroyed !");
                                 else
@@ -471,7 +470,7 @@ namespace PositronNova
                             if (bulletList[i].destruc)
                             {
                                 //if (bulletList[i].BulletType == BulletType.Missile)
-                                    effectBulletList.Add(new EffectBullet(bulletList[i].position, EffectType.Explosion));
+                                    effectBulletList.Add(new EffectBullet(bulletList[i].position + bulletList[i].centre, EffectType.Explosion));
                                 bulletList.RemoveAt(i);
                                 i--;
                             }
@@ -568,8 +567,6 @@ namespace PositronNova
                     }
                     break;
             }
-
-
             spriteBatch.End();
             //base.Draw(gameTime);
         }

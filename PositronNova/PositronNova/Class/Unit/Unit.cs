@@ -110,7 +110,7 @@ namespace PositronNova.Class.Unit
             {
                 case UnitType.Chasseur:
                     texture = content.Load<Texture2D>("img\\ships\\Chasseur2");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 100);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 300);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
                     speed = 2.2f;
@@ -118,15 +118,15 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Bombardier:
                     texture = content.Load<Texture2D>("img\\ships\\Bombardier");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 200);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 500);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
                     speed = 1.9f;
                     range = 300;
-                    break;
+                    break;  
                 case UnitType.Corvette:
                     texture = content.Load<Texture2D>("img\\ships\\Corvette");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 400);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 700);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
                     speed = 1.6f;
@@ -134,7 +134,7 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Destroyer:
                     texture = content.Load<Texture2D>("img\\ships\\Destroyer");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 300);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 900);
                     weaponType = BulletType.Cinetique;
                     pv_max = 90;
                     speed = 1.4f;
@@ -142,7 +142,7 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Croiseur:
                     texture = content.Load<Texture2D>("img\\ships\\Croiseur");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 500);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 1200);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
                     speed = 1.3f;
@@ -161,15 +161,18 @@ namespace PositronNova.Class.Unit
             last = new TimeSpan(0);
             pv = pv_max;
 
-            centre = position + new Vector2(texture.Width / 2, texture.Height / 2);
+            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
             textureData = new Color[texture.Width * texture.Height];
             texture.GetData(textureData);
         }
+
         public Vector2 getPosition()
         {
             return position;
         }
+
         public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState/*, Vector2 Pos*/)
         {
             //Ce code est magique, ne pas trop toucher SVP :-) effectivement trop bien ce code :o) GG !
@@ -196,7 +199,7 @@ namespace PositronNova.Class.Unit
             }
         }
 
-        public void Update(GameTime gt)
+        public override void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
             if (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.getPosition().X,2) + Math.Pow(position.Y - enn.getPosition().Y, 2) <= Math.Pow(range, 2))
@@ -214,6 +217,8 @@ namespace PositronNova.Class.Unit
                 position.Y <= 5 || position.Y + texture.Height >= PositronNova.BackgroundTexture.Height - 5)
                 moving = false;
 
+            texture.GetData(textureData);
+
             base.Update(gt);
         }
 
@@ -222,11 +227,19 @@ namespace PositronNova.Class.Unit
             spriteBatch.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 15), color);
             //Mettre "|| !friendly" pour tester l'effet de la methode attack
             if (direction.X > 0)
-                spriteBatch.Draw(texture, centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), Vector2.Zero + new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.FlipHorizontally, 0);
+            {
+                //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.FlipHorizontally, 0);
+            }
             else if (direction.X < 0)
-                spriteBatch.Draw(texture, centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), Vector2.Zero + new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
+            {
+                //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
+            }
             else
+            {
                 spriteBatch.Draw(texture, position, Color.White);
+            }
             isSelected(spriteBatch);
             if (selected)
                 spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
@@ -241,7 +254,10 @@ namespace PositronNova.Class.Unit
         {
             if (selected)
             {
-                sb.Draw(selection, new Vector2(centre.X - selection.Width / 2, centre.Y - selection.Height / 2), Color.White);
+                sb.Draw(selection, position + new Vector2(-7, -7), new Rectangle(0, 0, 13, 13), Color.White);
+                sb.Draw(selection, position + new Vector2(texture.Width - 7, -7), new Rectangle(13, 0, 13, 13), Color.White);
+                sb.Draw(selection, position + new Vector2(-7, texture.Height - 7), new Rectangle(0, 13, 13, 13), Color.White);
+                sb.Draw(selection, position + new Vector2(texture.Width - 7, texture.Height - 7), new Rectangle(13, 13, 13, 13), Color.White);
                 aUneCible(sb);
             }
         }
@@ -250,7 +266,12 @@ namespace PositronNova.Class.Unit
         {
             if (hasTarget)
                 if (enn != null && enn.pv > 0)
-                    sb.Draw(cible, enn.centre - new Vector2(cible.Width / 2, cible.Height / 2), Color.White);
+                {
+                    sb.Draw(cible, enn.position + new Vector2(-7, -7), new Rectangle(0, 0, 13, 13), Color.White);
+                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 7, -7), new Rectangle(13, 0, 13, 13), Color.White);
+                    sb.Draw(cible, enn.position + new Vector2(-7, enn.texture.Height - 7), new Rectangle(0, 13, 13, 13), Color.White);
+                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 7, enn.texture.Height - 7), new Rectangle(13, 13, 13, 13), Color.White);
+                }
         }
 
         void deplacement(GameTime gameTime)
@@ -263,7 +284,8 @@ namespace PositronNova.Class.Unit
                 direction = new Vector2(destination.X - position.X, destination.Y - position.Y);
                 direction.Normalize();
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
-                centre += direction * speed;
+                //hitbox.X = (int)position.X + (int)texture.Width / 2;
+                //hitbox.Y = (int)position.Y + (int)texture.Height / 2;
 
                 if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
@@ -279,7 +301,7 @@ namespace PositronNova.Class.Unit
         {
             if (enn != null && enn.pv > 0)
             {
-                localBullet = new Bullet(centre, enn, weaponType);
+                localBullet = new Bullet(position + centre, enn, weaponType);
                 PositronNova.AddBullet(localBullet);
                 if (weaponType == BulletType.Missile)
                     Manager.missileLaunch_s.Play();

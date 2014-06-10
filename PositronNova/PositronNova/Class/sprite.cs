@@ -92,7 +92,7 @@ namespace PositronNova
             else
                 textureRotation = (float)Math.Atan((destination.Y - origine.Y) / (destination.X - origine.X)) + (float)Math.PI; // En rajoutant pi on passe de l'autre côté ^^
 
-            position = new Vector2(origine.X + direction.X, origine.Y + direction.Y);
+            position = origine;
 
             //speed = 0;
             //LoadContent(content, cont);

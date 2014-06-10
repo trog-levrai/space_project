@@ -58,7 +58,7 @@ namespace PositronNova.Class
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, position, new Rectangle(frameSquare * texture.Height, 0, texture.Height, texture.Height), Color.White);
+            sb.Draw(texture, position - new Vector2(texture.Height / 2, texture.Height / 2), new Rectangle(frameSquare * texture.Height, 0, texture.Height, texture.Height), Color.White);
         }
 
     }

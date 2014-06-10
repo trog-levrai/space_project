@@ -36,7 +36,7 @@ namespace PositronNova
         ///////////////////////////////// CONSTRUCTEURS
 
         public Bullet(Vector2 origine, Unit target, BulletType bulletType)
-            : base(origine, target.centre)
+            : base(origine, target.position + target.centre)
         {
             this.target = target;
             this.bulletType = bulletType;
@@ -76,13 +76,14 @@ namespace PositronNova
                     damage = 50;
                     break;
             }
+            centre = new Vector2(texture.Width / 2, texture.Height / 2);
             textureData = new Color[texture.Width * texture.Height];
             texture.GetData(textureData);
         }
 
         //UPDATE & DRAW
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (bulletType == BulletType.Missile)
             {
@@ -91,7 +92,7 @@ namespace PositronNova
                 if (frequenceSpawnFumee <= spawnLast)
                 {
                     spawnLast = new TimeSpan(0);
-                    PositronNova.AddEffect(new EffectBullet(position - new Vector2(texture.Width / 2, texture.Height / 2), EffectType.MissileFumee));
+                    PositronNova.AddEffect(new EffectBullet(position + centre, EffectType.MissileFumee));
                 }
             }
 
@@ -101,11 +102,12 @@ namespace PositronNova
             if (hitTarget && hitNoise != null)
                 hitNoise.Play();
             
+            base.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch sb)
+        public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, position, null, Color.White, textureRotation, centre, 1f, SpriteEffects.None, 0);
+            sb.Draw(texture, position + centre, null, Color.White, textureRotation, centre, 1f, SpriteEffects.None, 0);
         }
 
         // METHODES

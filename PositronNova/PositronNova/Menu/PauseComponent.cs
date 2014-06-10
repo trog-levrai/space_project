@@ -29,8 +29,8 @@ namespace PositronNova
         SpriteBatch spriteBatch;
         SpriteFont spriteFont;
 
-        GamePadState gamePadState;
-        GamePadState oldGamePadState;
+        //GamePadState gamePadState;
+        //GamePadState oldGamePadState;
 
         //public Vector2 Position
         //{

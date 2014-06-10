@@ -14,7 +14,7 @@ namespace PositronNova
     {
         //Capte le texte
         //Le code sera à compléter pour l'implémentation de l'autocomplete pour shell
-        private MatchCollection foo;
+        //private MatchCollection foo;
         private bool tab;
         private int rank;
         private string input;
