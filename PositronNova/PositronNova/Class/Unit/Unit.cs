@@ -70,6 +70,8 @@ namespace PositronNova.Class.Unit
             set { enn = value; }
         }
 
+        private static Ressources requiredResources = new Ressources(0, 0);
+
         //oui moi aussi :o)
         private bool friendly;
         public bool Friendly
@@ -115,6 +117,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 10;
                     speed = 2.2f;
                     range = 200;
+                    requiredResources = new Ressources(10, 5);
                     break;
                 case UnitType.Bombardier:
                     texture = content.Load<Texture2D>("img\\ships\\Bombardier");
@@ -123,6 +126,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 40;
                     speed = 1.9f;
                     range = 300;
+                    requiredResources = new Ressources(40, 50);
                     break;
                 case UnitType.Corvette:
                     texture = content.Load<Texture2D>("img\\ships\\Corvette");
@@ -131,6 +135,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 60;
                     speed = 1.6f;
                     range = 400;
+                    requiredResources = new Ressources(15, 10);
                     break;
                 case UnitType.Destroyer:
                     texture = content.Load<Texture2D>("img\\ships\\Destroyer");
@@ -139,6 +144,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 90;
                     speed = 1.4f;
                     range = 450;
+                    requiredResources = new Ressources(20, 15);
                     break;
                 case UnitType.Croiseur:
                     texture = content.Load<Texture2D>("img\\ships\\Croiseur");
@@ -147,6 +153,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 110;
                     speed = 1.3f;
                     range = 500;
+                    requiredResources = new Ressources(25, 20);
                     break;
                 case UnitType.Cuirasse:
                     texture = content.Load<Texture2D>("img\\ships\\Cuirasse");
@@ -155,6 +162,7 @@ namespace PositronNova.Class.Unit
                     pv_max = 250;
                     speed = 1f;
                     range = 600;
+                    requiredResources = new Ressources(80, 110);
                     break;
             }
 
