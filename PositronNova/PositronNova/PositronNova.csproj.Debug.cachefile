@@ -31,14 +31,6 @@ Content\sounds\laser.xnb
 Content\Video\Vid.xnb
 Content\sounds\Espace.xnb
 Content\sounds\Menu.xnb
-Content\sounds\cinetiqueFire.xnb
-Content\sounds\explose2.xnb
-Content\sounds\laserFire1.xnb
-Content\sounds\laserFire2.xnb
-Content\sounds\laserHit.xnb
-Content\sounds\missileHit.xnb
-Content\sounds\MissileLaunch.xnb
-Content\sounds\shipDeath.xnb
 Content\img\ships\Chasseur_1B.xnb
 Content\img\ships\Destroyer_1B.xnb
 Content\img\ships\Vaisseau_1_LourdB.xnb
@@ -65,6 +57,14 @@ Content\img\effects\Burst.xnb
 Content\img\effects\Explosion2.xnb
 Content\img\effects\ExplosionLaser.xnb
 Content\img\effects\ExplosionMk3.xnb
+Content\sounds\cinetiqueFire.xnb
+Content\sounds\explose2.xnb
+Content\sounds\laserFire1.xnb
+Content\sounds\laserFire2.xnb
+Content\sounds\laserHit.xnb
+Content\sounds\missileHit.xnb
+Content\sounds\MissileLaunch.xnb
+Content\sounds\shipDeath.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

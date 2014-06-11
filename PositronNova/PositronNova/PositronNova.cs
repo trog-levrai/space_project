@@ -73,7 +73,7 @@ namespace PositronNova
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            client = new  Client("trog", "10.3.141.104", 1234, );
+            client = new  Client("trog", "94.23.56.31", 1234);
             text = new Chat(this);
 
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
@@ -108,7 +108,7 @@ namespace PositronNova
             //Les deux lignes suivantes sont là pour une histoire de FPS. A modifier quand on saura faire donc...
             IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;
-
+            
             backgroundTexture = Content.Load<Texture2D>("Background");
 
             vidPlayer = new VideoPlayer();
@@ -119,7 +119,7 @@ namespace PositronNova
 
             UdpClient udpClient = new UdpClient();
             byte[] msg = Encoding.Default.GetBytes("nick:Biatch");
-            udpClient.Send(msg, msg.Length, "10.45.3.241", 1234);
+            udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
             udpClient.Close();
 
             engine = new AudioEngine("Content\\sounds\\Playsong.xgs");
@@ -264,7 +264,7 @@ namespace PositronNova
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
-
+                                client.Connect();
                                 for (int i = 0; i < unitList.Count; i++)
                                 {
                                     unitList.RemoveAt(i);

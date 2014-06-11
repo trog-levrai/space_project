@@ -28,16 +28,7 @@ namespace PositronNova.Class
         //Methode de connection au serveur
         public void Connect()
         {
-            sock.Connect(host, 1234);
-            if (Receive() == "accepted")
-            {
-                Send(name);
-            }
-            else
-            {
-                System.Threading.Thread.Sleep(1000);
-                Connect();
-            }
+            Send(name);
         }
         public void Send(string message)
         {
