@@ -485,20 +485,6 @@ namespace PositronNova
                         }
 
                         // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!!!
-                        
-                        //UdpClient udpClient = new UdpClient();
-                        //udpClient.Send(msg, msg.Length, "10.3.140.222", 1234);
-                        //udpClient.Close();
-                        //foreach (var unit in unitList)
-                        //{
-                        //    if (unit.Friendly)
-                        //    {
-                        //        BinaryFormatter bin = new BinaryFormatter();
-                        //        Stream stream = new NetworkStream(new Socket());
-                        //        bin.Serialize(stream, unit.position);
-                        //        udpClient.Send(()bin, 1024, "10.3.140.222", 1234);
-                        //    }
-                        //}
 
                         client.chat.KBInput(Keyboard.GetState());
                     }
