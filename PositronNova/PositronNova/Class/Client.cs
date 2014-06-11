@@ -15,27 +15,28 @@ namespace PositronNova.Class
         public Socket sock;
         StreamReader clientReader;
         StreamWriter clientWriter;
-        public Client(String name, String host, int port, Socket sock)
+        public Client(String name, String host, int port)
         {
             this.name = name;
             this.host = host;
             this.port = port;
-            this.sock = sock;
+            sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sock.Connect(host, port);
             this.clientReader = new StreamReader(new NetworkStream(sock));
             this.clientWriter = new StreamWriter(new NetworkStream(sock));
         }
         //Methode de connection au serveur
-        public void Connect(string nick)
+        public void Connect()
         {
-            sock.Connect("94.23.56.31", 1234);
+            sock.Connect(host, 1234);
             if (Receive() == "accepted")
             {
-                Send("nick");
+                Send(name);
             }
             else
             {
                 System.Threading.Thread.Sleep(1000);
-                Connect(nick);
+                Connect();
             }
         }
         public void Send(string message)

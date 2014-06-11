@@ -24,7 +24,7 @@ namespace PositronNova
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Game game;
-
+        private Client client;
         static public int winWidth = 800, winHeight = 600; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
@@ -73,7 +73,7 @@ namespace PositronNova
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
+            client = new  Client("trog", "10.3.141.104", 1234, );
             text = new Chat(this);
 
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
