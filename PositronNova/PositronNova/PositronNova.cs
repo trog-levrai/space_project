@@ -66,16 +66,13 @@ namespace PositronNova
         Random rand = new Random();
 
         private SpriteFont chat;
-        private Chat text;
         private static string ennemyName = "";
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            client = new  Client("trog", "94.23.56.31", 1234);
-            text = new Chat(this);
-
+            client = new  Client("trog", "10.3.141.104", 1234, this);
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
             graphics.PreferredBackBufferHeight = winHeight;
         }
@@ -113,14 +110,14 @@ namespace PositronNova
 
             vidPlayer = new VideoPlayer();
 
-            _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
-            _thEcoute.Start(text);
-            _thEcoute.IsBackground = true;
+            //_thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
+            //_thEcoute.Start(text);
+            //_thEcoute.IsBackground = true;
 
-            UdpClient udpClient = new UdpClient();
-            byte[] msg = Encoding.Default.GetBytes("nick:Biatch");
-            udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
-            udpClient.Close();
+            //UdpClient udpClient = new UdpClient();
+            //byte[] msg = Encoding.Default.GetBytes("nick:Biatch");
+            //udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
+            //udpClient.Close();
 
             engine = new AudioEngine("Content\\sounds\\Playsong.xgs");
             soundBank = new SoundBank(engine, "Content\\sounds\\Sound Bank.xsb");
@@ -151,7 +148,7 @@ namespace PositronNova
                     ennemyName = message.Substring(5);
                 else
                 {
-                    ((Chat) txt).addString(ennemyName + " dit: " + message);
+                    ((Chat)txt).addString(ennemyName + " dit: " + message);
                 }
             }
         }
@@ -450,10 +447,10 @@ namespace PositronNova
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position, EffectType.GrosseExplosion));
                                 if (unitList[i].Friendly)
-                                    text.addString("f:" + unitList[i].Name + " has been destroyed !");
+                                    client.chat.addString("f:" + unitList[i].Name + " has been destroyed !");
                                 else
                                 {
-                                    text.addString("e:" + unitList[i].Name + " has been destroyed !");
+                                    client.chat.addString("e:" + unitList[i].Name + " has been destroyed !");
                                 }
                                 unitList.RemoveAt(i);
                                 if (i > 0)
@@ -503,7 +500,7 @@ namespace PositronNova
                         //    }
                         //}
 
-                        text.KBInput(Keyboard.GetState());
+                        client.chat.KBInput(Keyboard.GetState());
                     }
                     break;
             }
@@ -550,7 +547,7 @@ namespace PositronNova
                         foreach (EffectBullet effect in effectBulletList)
                             effect.Draw(spriteBatch);
 
-                        spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
+                        spriteBatch.DrawString(chat, client.chat.ReturnString(Keyboard.GetState()), client.chat.GetPosition(), Color.AntiqueWhite);
                         pauseScreen.Draw(gameTime);
                     }
                     if (activeScreen == actionScreen)
@@ -564,7 +561,7 @@ namespace PositronNova
                         foreach (EffectBullet effect in effectBulletList)
                             effect.Draw(spriteBatch);
                         //Affiche le chat
-                        spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
+                        spriteBatch.DrawString(chat, client.chat.ReturnString(Keyboard.GetState()), client.chat.GetPosition(), Color.AntiqueWhite);
                     }
                     break;
             }
