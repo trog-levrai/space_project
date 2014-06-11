@@ -40,7 +40,6 @@ namespace PositronNova
         static List<Unit> unitList = new List<Unit>();
         static List<Bullet> bulletList = new List<Bullet>();
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
-        private NetworkStream ns;
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
 
@@ -449,6 +448,13 @@ namespace PositronNova
                         if (activeScreen == actionScreen_)
                         {
                             client.KBInput(keyboardState);
+                            foreach (var unit in unitList)
+                            {
+                                if (unit.Friendly)
+                                {
+                                    client.SendUnit(unit);
+                                }
+                            }
                         }
                         cue.Pause();
                         cue1.Resume();

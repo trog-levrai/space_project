@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +12,7 @@ namespace PositronNova.Class
     class Client
     {
         public Chat chat;
+        private NetworkStream ns;
         private Thread Writer, Reader;
         public String name { get; private set; }
         String host;
@@ -21,8 +20,10 @@ namespace PositronNova.Class
         public Socket sock;
         StreamReader clientReader;
         StreamWriter clientWriter;
+        private BinaryFormatter format;
         public Client(String name, String host, int port, Game game)
         {
+            format = new BinaryFormatter();
             chat = new Chat(game);
             this.name = name;
             this.host = host;
@@ -55,6 +56,13 @@ namespace PositronNova.Class
         {
             clientWriter.WriteLine(message);
             clientWriter.Flush();
+        }
+        public void SendUnit(Unit.Unit unit)
+        {
+            //On serialise l'unite
+            ns = new NetworkStream(sock);
+            format.Serialize(ns, unit);
+            ns.Flush();
         }
         public void Receive()
         {
