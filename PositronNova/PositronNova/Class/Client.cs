@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace PositronNova.Class
 {
     class Client
     {
         public Chat chat;
-        private static Thread Writer, Reader;
+        private Thread Writer, Reader;
         public String name { get; private set; }
         String host;
         int port;
@@ -29,9 +31,22 @@ namespace PositronNova.Class
             sock.Connect(host, port);
             this.clientReader = new StreamReader(new NetworkStream(sock));
             this.clientWriter = new StreamWriter(new NetworkStream(sock));
+            Writer = new Thread(new ThreadStart(Receive));
             //Writer = new Thread(new ThreadStart(Receive()));
         }
         //Methode de connection au serveur
+        public void KBInput(KeyboardState ks)
+        {
+            if (ks.IsKeyDown(Keys.Enter) && chat.Input != "")
+            {
+                Send(chat.Input);
+                chat.Enter();
+            }
+            else
+            {
+                chat.KBInput(ks);
+            }
+        }
         public void Connect()
         {
             Send(name);
@@ -41,17 +56,18 @@ namespace PositronNova.Class
             clientWriter.WriteLine(message);
             clientWriter.Flush();
         }
-        public string Receive()
+        public void Receive()
         {
-            string message;
+            object data;
             try
             {
-                message = clientReader.ReadLine();
-                return message;
+                string foo;
+                foo = clientReader.ReadLine();
+                chat.addString(foo);
             }
             catch
             {
-                return null;
+                throw new EventLogReadingException("Pas de bol");
             }
         }
     }

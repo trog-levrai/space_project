@@ -18,6 +18,10 @@ namespace PositronNova
         private bool tab;
         private int rank;
         private string input;
+        public string Input
+        {
+            get { return input; }
+        }
         Game game;
         private Regex regex;
         private KBInput kb;
@@ -60,25 +64,18 @@ namespace PositronNova
                 }
             }
         }
+        public void Enter()
+        {
+            addString(input);
+            input = "";
+            kb.current = "";
+            tab = false;
+        }
         public void KBInput(KeyboardState keyboardState)
         {
             if (tab)
             {
-                if (keyboardState.IsKeyDown(Keys.Enter))
-                {
-                    byte[] msg = Encoding.Default.GetBytes(input);
-                    UdpClient udpClient = new UdpClient();
-                    udpClient.Send(msg, msg.Length, "10.45.3.241", 1234);
-                    udpClient.Close();
-                    addString(input);
-                    input = "";
-                    kb.current = "";
-                    tab = false;
-                }
-                else
-                {
-                    input += kb.GetString(keyboardState);
-                }
+                input += kb.GetString(keyboardState);
             }
             else
             {
