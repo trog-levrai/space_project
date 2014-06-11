@@ -40,13 +40,14 @@ namespace PositronNova
         static List<Unit> unitList = new List<Unit>();
         static List<Bullet> bulletList = new List<Bullet>();
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
-
+        private NetworkStream ns;
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
 
         GameScreen activeScreen;
         StartScreen startScreen;
         ActionScreen actionScreen;
+        ActionScreen actionScreen_;
         OptionScreen optionScreen;
         PauseScreen pauseScreen;
         bool action = false;
@@ -114,11 +115,6 @@ namespace PositronNova
             //_thEcoute.Start(text);
             //_thEcoute.IsBackground = true;
 
-            //UdpClient udpClient = new UdpClient();
-            //byte[] msg = Encoding.Default.GetBytes("nick:Biatch");
-            //udpClient.Send(msg, msg.Length, "94.23.56.31", 1234);
-            //udpClient.Close();
-
             engine = new AudioEngine("Content\\sounds\\Playsong.xgs");
             soundBank = new SoundBank(engine, "Content\\sounds\\Sound Bank.xsb");
             waveBank = new WaveBank(engine, "Content\\sounds\\Wave Bank.xwb");
@@ -184,7 +180,12 @@ namespace PositronNova
                 Content.Load<Texture2D>("Background"));
             Components.Add(actionScreen);
             actionScreen.Hide();
-
+            actionScreen_ = new ActionScreen(
+                this,
+                spriteBatch,
+                Content.Load<Texture2D>("Background"));
+            Components.Add(actionScreen_);
+            actionScreen_.Hide();
             optionScreen = new OptionScreen(
                 this,
                 spriteBatch,
@@ -261,7 +262,6 @@ namespace PositronNova
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
                                 activeScreen.Show();
-                                client.Connect();
                                 for (int i = 0; i < unitList.Count; i++)
                                 {
                                     unitList.RemoveAt(i);
@@ -277,10 +277,35 @@ namespace PositronNova
                                     effectBulletList.RemoveAt(i);
                                     i--;
                                 }
-
                                 genUnit(20, true);
                                 genUnit(20, false);
 
+                                foreach (Unit unit in unitList)
+                                    unit.LoadContent(Content);
+                            }
+                            if (startScreen.SelectedIndex == 2)
+                            {
+                                client.Connect();
+                                activeScreen.Hide();
+                                activeScreen = actionScreen;
+                                activeScreen.Show();
+                                for (int i = 0; i < unitList.Count; i++)
+                                {
+                                    unitList.RemoveAt(i);
+                                    i--;
+                                }
+                                for (int i = 0; i < bulletList.Count; i++)
+                                {
+                                    bulletList.RemoveAt(i);
+                                    i--;
+                                }
+                                for (int i = 0; i < effectBulletList.Count; i++)
+                                {
+                                    effectBulletList.RemoveAt(i);
+                                    i--;
+                                }
+                                genUnit(20, true);
+                                genUnit(20, false);
                                 foreach (Unit unit in unitList)
                                     unit.LoadContent(Content);
                             }
@@ -419,8 +444,12 @@ namespace PositronNova
                     }
 #endregion
 
-                    if (activeScreen == actionScreen)
+                    if (activeScreen == actionScreen || activeScreen == actionScreen_)
                     {
+                        if (activeScreen == actionScreen_)
+                        {
+                            client.KBInput(keyboardState);
+                        }
                         cue.Pause();
                         cue1.Resume();
                         _camera.Update1(gameTime, keyboardState, mouse);
@@ -484,9 +513,7 @@ namespace PositronNova
                             }
                         }
 
-                        // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!!!
-
-                        client.KBInput(Keyboard.GetState());
+                        // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!
                     }
                     break;
             }
