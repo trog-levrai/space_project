@@ -61,7 +61,7 @@ namespace PositronNova
             r_energie = Energie;
             r_metal = Metal;
 
-            ressou_rate = new TimeSpan(0, 0, 3);
+            ressou_rate = new TimeSpan(0, 0, 2);
             last = new TimeSpan(0);
         }
 
@@ -75,14 +75,55 @@ namespace PositronNova
             return new Ressources(100, 100);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, int niveau_centrale, int niveau_extracteur)
         {
             last = last.Add(gameTime.ElapsedGameTime);
 
             if (last >= ressou_rate)
             {
-                r_energie += 50;
-                r_metal += 50;
+                switch (niveau_centrale)
+                {
+                    case 1:
+                        r_energie += 2;
+                        break;
+                    case 2:
+                        r_energie += 5;
+                        break;
+                    case 3:
+                        r_energie += 10;
+                        break;
+                    case 4:
+                        r_energie += 20;
+                        break;
+                    case 5:
+                        r_energie += 50;
+                        break;
+                    default :
+                        r_energie += 2;
+                        break;
+                }
+
+                switch (niveau_extracteur)
+                {
+                    case 1:
+                        r_metal += 2;
+                        break;
+                    case 2:
+                        r_metal += 5;
+                        break;
+                    case 3:
+                        r_metal += 10;
+                        break;
+                    case 4:
+                        r_metal += 20;
+                        break;
+                    case 5:
+                        r_metal += 50;
+                        break;
+                    default:
+                        r_metal += 2;
+                        break;
+                }
 
                 last = new TimeSpan(0);
             }

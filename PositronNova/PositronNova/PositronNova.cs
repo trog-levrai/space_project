@@ -42,9 +42,11 @@ namespace PositronNova
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
 
         Ressources ressources;
+        Planete planete;
 
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
+        MouseState oldMouse;
 
         GameScreen activeScreen;
         StartScreen startScreen;
@@ -219,6 +221,14 @@ namespace PositronNova
             activeScreen = startScreen;
             startScreen.SelectedIndex = 1;
             activeScreen.Show();
+
+            planete = new Planete(this,
+                Content.Load<Texture2D>("img\\Planete_1"),
+                Content.Load<Texture2D>("img\\Plus"),
+                Content.Load<Texture2D>("img\\centrale"),
+                Content.Load<Texture2D>("img\\Extracteur"),
+                Content.Load<Texture2D>("img\\Tick"),
+                Content.Load<SpriteFont>("Planete"));
 
             chat = Content.Load<SpriteFont>("chat");
 
@@ -449,7 +459,8 @@ namespace PositronNova
                         _camera.Update1(keyboardState, mouse);
                         _camera.Update2(keyboardState, mouse);
 
-                        ressources.Update(gameTime);
+                        planete.Update(gameTime, mouse, oldMouse);
+                        ressources.Update(gameTime, planete.Niveau_centrale, planete.Niveau_extracteur);
 
                         if (CheckKey(Keys.Escape))
                         {
@@ -539,6 +550,7 @@ namespace PositronNova
             base.Update(gameTime);
 
             oldKeyboardState = keyboardState;
+            oldMouse = mouse;
         }
 
         /// <summary>
@@ -618,6 +630,7 @@ namespace PositronNova
                             fog.Draw(spriteBatch);
 
                         spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
+                        planete.Draw(spriteBatch);
                         //Affiche le chat
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
