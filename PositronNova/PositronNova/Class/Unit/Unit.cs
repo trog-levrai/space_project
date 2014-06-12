@@ -118,7 +118,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Chasseur:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Chasseur2");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 300);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 400);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
                     speed = 2.2f;
@@ -128,7 +128,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Bombardier:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Bombardier");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 500);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 600);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
                     speed = 1.9f;
@@ -138,7 +138,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Corvette:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Corvette");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 700);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 800);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
                     speed = 1.6f;
@@ -148,7 +148,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Destroyer:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Destroyer");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 900);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 1000);
                     weaponType = BulletType.Ion;
                     pv_max = 90;
                     speed = 1.4f;
@@ -158,7 +158,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Croiseur:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Croiseur");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 1200);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 1300);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
                     speed = 1.3f;
@@ -189,8 +189,8 @@ namespace PositronNova.Class.Unit
                     frameWidth = 40;
                     frameHeight = 40;
                     timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 300);
-                    weaponType = BulletType.Laser;
+                    fireRate = new TimeSpan(0, 0, 0, 0, 400);
+                    weaponType = BulletType.BloodSting;
                     pv_max = 60;
                     speed = 2f;
                     range = 400;
@@ -302,15 +302,15 @@ namespace PositronNova.Class.Unit
                     sb.Draw(texture, position, Color.White);
                 }
 
-                
+
                 sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
 
-                
+
             }
             else
             {
                 sb.Draw(textureAnime, position, new Rectangle(frameHeight * frameSquare, 0, frameHeight, frameHeight), Color.White);
-                
+
             }
 
             isSelected(sb);

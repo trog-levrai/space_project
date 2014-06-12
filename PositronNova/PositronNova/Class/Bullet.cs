@@ -13,7 +13,8 @@ namespace PositronNova
 {
     public enum BulletType
     {
-        LittleCinetique, Cinetique, Laser, Ion, Plasma, Missile
+        LittleCinetique, Cinetique, Laser, Ion, Plasma, Missile,
+        BloodSting
     };
 
     public class Bullet : sprite
@@ -75,6 +76,11 @@ namespace PositronNova
                     speed = 12;
                     damage = 50;
                     break;
+                case BulletType.BloodSting:
+                    texture = Manager.bloodSting_t;
+                    speed = 4;
+                    damage = 2;
+                    break;
             }
 
             hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
@@ -109,7 +115,7 @@ namespace PositronNova
                 {
                     hitNoise.Play();
                 }
-            
+
             base.Update(gameTime);
         }
 

@@ -68,7 +68,7 @@ namespace PositronNova
 
         // Brouillard
         BrouillardDeGuerre fog;
-        bool enableFog = true;
+        bool enableFog = false;
 
         Random rand = new Random();
 
@@ -300,7 +300,7 @@ namespace PositronNova
                                 }
 
                                 genHumain(10);
-                                genAlien(30);
+                                genAlien(10);
 
                                 ressources = Ressources.getStartRessources();
 
