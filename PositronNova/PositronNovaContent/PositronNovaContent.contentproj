@@ -381,13 +381,13 @@
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="sounds\laserFire1.wav">
-      <Name>laserFire1</Name>
+    <Compile Include="sounds\plasmaFire.wav">
+      <Name>plasmaFire</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="sounds\laserFire2.wav">
-      <Name>laserFire2</Name>
+    <Compile Include="sounds\laserFire.wav">
+      <Name>laserFire</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -472,6 +472,27 @@
   <ItemGroup>
     <Compile Include="img\bullets\BloodSting.png">
       <Name>BloodSting</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="img\effects\ExplosionPlasma.png">
+      <Name>ExplosionPlasma</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="sounds\plasmaHit.wav">
+      <Name>plasmaHit</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="img\alienShips\Kraken.png">
+      <Name>Kraken</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

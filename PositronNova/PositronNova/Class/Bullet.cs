@@ -46,28 +46,29 @@ namespace PositronNova
                 case BulletType.LittleCinetique:
                     texture = Manager.littleCinetique_t;
                     speed = 4;
-                    damage = 2;
+                    damage = 4;
                     break;
                 case BulletType.Cinetique:
                     texture = Manager.cinetique_t;
-                    speed = 4;
-                    damage = 6;
+                    speed = 6;
+                    damage = 8;
                     break;
                 case BulletType.Laser:
                     texture = Manager.laser_t;
-                    //hitNoise = Manager.laserHit_s;
-                    speed = 6;
-                    damage = 12;
+                    hitNoise = Manager.laserHit_s;
+                    speed = 10;
+                    damage = 20;
                     break;
                 case BulletType.Ion:
                     texture = Manager.ion_t;
-                    speed = 8;
-                    damage = 20;
+                    speed = 10;
+                    damage = 28;
                     break;
                 case BulletType.Plasma:
                     texture = Manager.plasma_t;
-                    speed = 8;
-                    damage = 32;
+                    hitNoise = Manager.plasmaHit_s;
+                    speed = 10;
+                    damage = 35;
                     break;
                 case BulletType.Missile:
                     texture = Manager.missile_t;
@@ -79,7 +80,7 @@ namespace PositronNova
                 case BulletType.BloodSting:
                     texture = Manager.bloodSting_t;
                     speed = 4;
-                    damage = 2;
+                    damage = 4;
                     break;
             }
 

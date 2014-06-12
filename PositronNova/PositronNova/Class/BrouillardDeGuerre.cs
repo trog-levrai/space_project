@@ -31,7 +31,7 @@ namespace PositronNova.Class
             texture = content.Load<Texture2D>("img\\misc\\Brouillard");
         }
 
-        public void Update(GameTime gt, Cell[,] tab, int i, int j, int nbCellX, int nbCellY)
+        public void Update(Cell[,] tab, int i, int j, int nbCellX, int nbCellY)
         {
             for (int z = 0; z < PositronNova.UnitList.Count; z++)
             {
@@ -97,12 +97,12 @@ namespace PositronNova.Class
                 }
         }
 
-        public void Update(GameTime gt)
+        public void Update()
         {
             for (int i = 0; i < largeur / tailleCellX; i++)
                 for (int j = 0; j < hauteur / tailleCellY; j++)
                 {
-                    cellTab[i, j].Update(gt, cellTab, i, j, largeur / tailleCellX, hauteur / tailleCellY);
+                    cellTab[i, j].Update(cellTab, i, j, largeur / tailleCellX, hauteur / tailleCellY);
                 }
         }
 

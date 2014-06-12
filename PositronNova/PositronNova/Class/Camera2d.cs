@@ -37,7 +37,7 @@ namespace PositronNova
             zoom = 1;
         }
 
-        public void Update1(GameTime gt, KeyboardState keyboard, MouseState mouse)
+        public void Update1(KeyboardState keyboard, MouseState mouse)
         {
             if ((keyboard.IsKeyDown(Keys.Up) || mouse.Y <= 1) && origine.Y > 0)
                 origine = new Vector2(origine.X, origine.Y - 10);
@@ -56,7 +56,7 @@ namespace PositronNova
             keyRepeat = Keyboard.GetState();
         }
 
-        public void Update2(GameTime gt, KeyboardState keyboard, MouseState mouse)
+        public void Update2(KeyboardState keyboard, MouseState mouse)
         {
             transforme = Matrix.CreateScale(new Vector3(zoom, zoom, 0)) *
                 Matrix.CreateTranslation(new Vector3(-origine.X, -origine.Y, 0));

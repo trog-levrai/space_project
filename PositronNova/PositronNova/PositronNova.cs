@@ -259,7 +259,7 @@ namespace PositronNova
                 case GameState.Video:
                     if (vidPlayer.State == MediaState.Stopped || (keyboardState.IsKeyDown(Keys.Space)))
                         CurrentGameState = GameState.Game;
-                    _camera.Update2(gameTime, keyboardState, mouse);
+                    _camera.Update2(keyboardState, mouse);
                     break;
                 case GameState.Game:
                     vidPlayer.Stop();
@@ -274,7 +274,7 @@ namespace PositronNova
                             fog.ContentLoad(Content);
                         }
 
-                        _camera.Update2(gameTime, keyboardState, mouse);
+                        _camera.Update2(keyboardState, mouse);
                         if (keyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                         {
                             if (startScreen.SelectedIndex == 1)
@@ -335,7 +335,7 @@ namespace PositronNova
                             cue1.Pause();
                             cue.Resume();
                         }
-                        _camera.Update2(gameTime, keyboardState, mouse);
+                        _camera.Update2(keyboardState, mouse);
                         if (CheckKey(Keys.Escape) && action == false)
                         {
                             activeScreen.Hide();
@@ -410,7 +410,7 @@ namespace PositronNova
                     {
                         cue.Pause();
                         cue1.Resume();
-                        _camera.Update2(gameTime, keyboardState, mouse);
+                        _camera.Update2(keyboardState, mouse);
                         if (CheckKey(Keys.Escape) || (pauseScreen.SelectedIndex == 0 && CheckKey(Keys.Enter)))
                         {
                             activeScreen.Hide();
@@ -446,8 +446,8 @@ namespace PositronNova
                     {
                         cue.Pause();
                         cue1.Resume();
-                        _camera.Update1(gameTime, keyboardState, mouse);
-                        _camera.Update2(gameTime, keyboardState, mouse);
+                        _camera.Update1(keyboardState, mouse);
+                        _camera.Update2(keyboardState, mouse);
 
                         ressources.Update(gameTime);
 
@@ -483,7 +483,7 @@ namespace PositronNova
                             }
 
                             if (enableFog)
-                                fog.Update(gameTime);
+                                fog.Update();
 
                         }
 
@@ -492,7 +492,13 @@ namespace PositronNova
                             bulletList[i].Update(gameTime);
                             if (bulletList[i].destruc)
                             {
-                                //if (bulletList[i].BulletType == BulletType.Missile)
+                                if (bulletList[i].BulletType == BulletType.Missile)
+                                    effectBulletList.Add(new EffectBullet(bulletList[i].position + bulletList[i].centre, EffectType.ExplosionMissile));
+                                else if(bulletList[i].BulletType == BulletType.Laser)
+                                    effectBulletList.Add(new EffectBullet(bulletList[i].position + bulletList[i].centre, EffectType.ExplosionLaser));
+                                else if (bulletList[i].BulletType == BulletType.Plasma)
+                                    effectBulletList.Add(new EffectBullet(bulletList[i].position + bulletList[i].centre, EffectType.ExplosionPlasma));
+                                else
                                     effectBulletList.Add(new EffectBullet(bulletList[i].position + bulletList[i].centre, EffectType.Explosion));
                                 bulletList.RemoveAt(i);
                                 i--;

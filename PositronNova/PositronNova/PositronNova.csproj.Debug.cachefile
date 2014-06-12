@@ -64,13 +64,16 @@ Content\sounds\Espace.xnb
 Content\sounds\Menu.xnb
 Content\sounds\cinetiqueFire.xnb
 Content\sounds\explose2.xnb
-Content\sounds\laserFire1.xnb
-Content\sounds\laserFire2.xnb
 Content\sounds\laserHit.xnb
 Content\sounds\missileHit.xnb
 Content\sounds\MissileLaunch.xnb
 Content\sounds\shipDeath.xnb
 Content\img\bullets\BloodSting.xnb
+Content\img\effects\ExplosionPlasma.xnb
+Content\sounds\plasmaFire.xnb
+Content\sounds\laserFire.xnb
+Content\sounds\plasmaHit.xnb
+Content\img\alienShips\Kraken.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

@@ -118,7 +118,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Chasseur:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Chasseur2");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 400);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 600);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
                     speed = 2.2f;
@@ -128,7 +128,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Bombardier:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Bombardier");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 600);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 900);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
                     speed = 1.9f;
@@ -138,7 +138,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Corvette:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Corvette");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 800);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 1500);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
                     speed = 1.6f;
@@ -148,7 +148,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Destroyer:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Destroyer");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 1000);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 2000);
                     weaponType = BulletType.Ion;
                     pv_max = 90;
                     speed = 1.4f;
@@ -158,7 +158,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Croiseur:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Croiseur");
-                    fireRate = new TimeSpan(0, 0, 0, 0, 1300);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 2500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
                     speed = 1.3f;
@@ -168,7 +168,7 @@ namespace PositronNova.Class.Unit
                 case UnitType.Cuirasse:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Cuirasse");
-                    fireRate = new TimeSpan(0, 0, 0, 2);
+                    fireRate = new TimeSpan(0, 0, 0, 3);
                     weaponType = BulletType.Missile;
                     pv_max = 250;
                     speed = 1f;
@@ -388,14 +388,18 @@ namespace PositronNova.Class.Unit
             {
                 localBullet = new Bullet(position + centre, enn, weaponType);
                 PositronNova.AddBullet(localBullet);
-                if (weaponType == BulletType.Missile)
-                    if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
-                        position.X + centre.X > Camera2d.Origine.X &&
-                        position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
-                        position.Y + centre.Y > Camera2d.Origine.Y)
-                    {
+                if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
+                    position.X + centre.X > Camera2d.Origine.X &&
+                    position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                    position.Y + centre.Y > Camera2d.Origine.Y)
+                {
+                    if (weaponType == BulletType.Missile)
                         Manager.missileLaunch_s.Play();
-                    }
+                    else if (weaponType == BulletType.Laser)
+                        Manager.laserFire_s.Play();
+                    else if (weaponType == BulletType.Plasma)
+                        Manager.plasmaFire_s.Play();
+                }
             }
             else
                 hasTarget = false;
