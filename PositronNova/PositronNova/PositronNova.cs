@@ -226,7 +226,7 @@ namespace PositronNova
             vidRectangle = new Rectangle(GraphicsDevice.Viewport.X, GraphicsDevice.Viewport.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             vidPlayer.Play(vid);
 
-            ui = Content.Load<Texture2D>(@"UI-motif");
+            ui = Content.Load<Texture2D>(@"newUI");
 
             // TODO: use this.Content to load your game content here
         }
@@ -451,7 +451,7 @@ namespace PositronNova
 
                         ressources.Update(gameTime);
 
-                        if (CheckKey(Keys.P))
+                        if (CheckKey(Keys.Escape))
                         {
                             action = true;
                             activeScreen.Hide();

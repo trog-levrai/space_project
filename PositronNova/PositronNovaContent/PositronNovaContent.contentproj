@@ -442,13 +442,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI-motif.png">
-      <Name>UI-motif</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="img\alienShips\Neurone.png">
       <Name>Neurone</Name>
       <Importer>TextureImporter</Importer>
@@ -462,7 +455,13 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="newUI.png">
+      <Name>newUI</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="img\misc\Brouillard.png">
       <Name>Brouillard</Name>

@@ -49,7 +49,6 @@ Content\img\effects\Explosion2.xnb
 Content\img\effects\ExplosionLaser.xnb
 Content\img\effects\ExplosionMk3.xnb
 Content\img\life.xnb
-Content\UI-motif.xnb
 Content\img\alienShips\Neurone.xnb
 Content\img\alienShips\NeuroneSheet.xnb
 Content\img\misc\Brouillard.xnb
@@ -70,6 +69,7 @@ Content\sounds\laserHit.xnb
 Content\sounds\missileHit.xnb
 Content\sounds\MissileLaunch.xnb
 Content\sounds\shipDeath.xnb
+Content\newUI.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb
