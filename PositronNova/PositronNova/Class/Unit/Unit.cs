@@ -149,7 +149,7 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Destroyer");
                     fireRate = new TimeSpan(0, 0, 0, 0, 900);
-                    weaponType = BulletType.Cinetique;
+                    weaponType = BulletType.Ion;
                     pv_max = 90;
                     speed = 1.4f;
                     range = 450;
@@ -184,13 +184,14 @@ namespace PositronNova.Class.Unit
                 case UnitType.Neurone:
                     side = UnitSide.Alien;
                     texture = content.Load<Texture2D>("img\\alienShips\\Neurone");
+                    textureAnime = content.Load<Texture2D>("img\\alienShips\\NeuroneSheet");
                     nbFrame = 3;
                     frameWidth = 40;
                     frameHeight = 40;
-                    timeToNextFrame = new TimeSpan(0, 0, 0, 0, 100);
+                    timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
                     fireRate = new TimeSpan(0, 0, 0, 0, 300);
-                    weaponType = BulletType.LittleCinetique;
-                    pv_max = 100;
+                    weaponType = BulletType.Laser;
+                    pv_max = 60;
                     speed = 2f;
                     range = 400;
                     break;
@@ -201,21 +202,21 @@ namespace PositronNova.Class.Unit
 
             lifeBar = new HealthBar(pv, texture.Width);
 
-            //hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
             textureData = new Color[texture.Width * texture.Height];
             texture.GetData(textureData);
         }
 
-        public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState/*, Vector2 Pos*/)
+        public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState)
         {
             //Ce code est magique, ne pas trop toucher SVP :-) effectivement trop bien ce code :o) GG !
-            if (mouseState.LeftButton == ButtonState.Pressed && side == UnitSide.Humain)
+            if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 selected = Math.Abs(mouseState.X - (position.X + texture.Width / 2) + Camera2d.Origine.X) <= texture.Width / 2 & Math.Abs(mouseState.Y - (position.Y + texture.Height / 2) + Camera2d.Origine.Y) <= texture.Height / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
             }
-            if (mouseState.RightButton == ButtonState.Pressed && selected)
+            if (mouseState.RightButton == ButtonState.Pressed && selected && side == UnitSide.Humain)
             {
                 enn = PositronNova.GetEnnemy(side == UnitSide.Humain);
                 if (enn != null)
@@ -301,18 +302,22 @@ namespace PositronNova.Class.Unit
                     sb.Draw(texture, position, Color.White);
                 }
 
-                isSelected(sb);
+                
                 sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
 
-                if (selected)
-                {
-                    lifeBar.Draw(sb, (int)position.X - 4, (int)position.Y - 10);
-                    //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
-                }
+                
             }
             else
             {
-                sb.Draw(texture, position, new Rectangle(frameHeight * frameSquare, 0, frameHeight, frameHeight), Color.White);
+                sb.Draw(textureAnime, position, new Rectangle(frameHeight * frameSquare, 0, frameHeight, frameHeight), Color.White);
+                
+            }
+
+            isSelected(sb);
+            if (selected)
+            {
+                lifeBar.Draw(sb, (int)position.X - 4, (int)position.Y - 10);
+                //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
             }
 
             base.Draw(sb);
@@ -324,10 +329,20 @@ namespace PositronNova.Class.Unit
         {
             if (selected)
             {
-                sb.Draw(selection, position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
-                sb.Draw(selection, position + new Vector2(texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
-                sb.Draw(selection, position + new Vector2(-4, texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
-                sb.Draw(selection, position + new Vector2(texture.Width - 4, texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
+                if (side == UnitSide.Alien)
+                {
+                    sb.Draw(cible, position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
+                    sb.Draw(cible, position + new Vector2(texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
+                    sb.Draw(cible, position + new Vector2(-4, texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
+                    sb.Draw(cible, position + new Vector2(texture.Width - 4, texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
+                }
+                else
+                {
+                    sb.Draw(selection, position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
+                    sb.Draw(selection, position + new Vector2(texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
+                    sb.Draw(selection, position + new Vector2(-4, texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
+                    sb.Draw(selection, position + new Vector2(texture.Width - 4, texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
+                }
                 aUneCible(sb);
             }
         }
@@ -354,8 +369,8 @@ namespace PositronNova.Class.Unit
                 direction = new Vector2(destination.X - position.X, destination.Y - position.Y);
                 direction.Normalize();
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
-                //hitbox.X = (int)position.X + (int)texture.Width / 2;
-                //hitbox.Y = (int)position.Y + (int)texture.Height / 2;
+                hitbox.X = (int)position.X;
+                hitbox.Y = (int)position.Y;
 
                 if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
@@ -391,10 +406,10 @@ namespace PositronNova.Class.Unit
             return pv <= 0;
         }
 
-        public bool CollisionInterVaisseau(Unit unit)
-        {
-            return (Physique.IntersectPixel(texture, position, textureData, unit.texture, unit.position, unit.textureData));
-        }
+        //public bool CollisionInterVaisseau(Unit unit)
+        //{
+        //    return (Physique.IntersectPixel(texture, position, textureData, unit.texture, unit.position, unit.textureData));
+        //}
     }
 
     //Les dignes heritieres de la class Unit :-)

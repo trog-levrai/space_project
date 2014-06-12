@@ -45,28 +45,28 @@ namespace PositronNova
                 case BulletType.LittleCinetique:
                     texture = Manager.littleCinetique_t;
                     speed = 4;
-                    damage = 1;
+                    damage = 2;
                     break;
                 case BulletType.Cinetique:
                     texture = Manager.cinetique_t;
                     speed = 4;
-                    damage = 5;
+                    damage = 6;
                     break;
                 case BulletType.Laser:
                     texture = Manager.laser_t;
                     //hitNoise = Manager.laserHit_s;
                     speed = 6;
-                    damage = 10;
+                    damage = 12;
                     break;
                 case BulletType.Ion:
                     texture = Manager.ion_t;
                     speed = 8;
-                    damage = 15;
+                    damage = 20;
                     break;
                 case BulletType.Plasma:
                     texture = Manager.plasma_t;
                     speed = 8;
-                    damage = 20;
+                    damage = 32;
                     break;
                 case BulletType.Missile:
                     texture = Manager.missile_t;
@@ -76,6 +76,8 @@ namespace PositronNova
                     damage = 50;
                     break;
             }
+
+            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
             textureData = new Color[texture.Width * texture.Height];
             texture.GetData(textureData);
@@ -121,6 +123,8 @@ namespace PositronNova
         void Deplacement()
         {
             position += direction * speed;
+            hitbox.X = (int)position.X;
+            hitbox.Y = (int)position.Y;
         }
 
         void Destruction()

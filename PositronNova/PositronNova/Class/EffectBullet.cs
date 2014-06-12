@@ -39,6 +39,8 @@ namespace PositronNova.Class
                     tempsDeVie = new TimeSpan(0, 0, 0, 0, 40);
                     break;
             }
+
+            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
         public override void Update(GameTime gameTime)

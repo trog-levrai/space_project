@@ -37,6 +37,7 @@ namespace PositronNova
 
         // WORLD ELEMENTS
         static List<Unit> unitList = new List<Unit>();
+        public static List<Unit> UnitList { get { return unitList; } }
         static List<Bullet> bulletList = new List<Bullet>();
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
 
@@ -65,11 +66,16 @@ namespace PositronNova
 
         Camera2d _camera;
 
+        // Brouillard
+        BrouillardDeGuerre fog;
+        bool enableFog = true;
+
         Random rand = new Random();
 
         private SpriteFont chat;
         private Chat text;
         private static string ennemyName = "";
+
         public PositronNova()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -262,6 +268,12 @@ namespace PositronNova
 #region StartScreen
                     if (activeScreen == startScreen)
                     {
+                        if (enableFog)
+                        {
+                            fog = new BrouillardDeGuerre(100, 100, BackgroundTexture.Width, BackgroundTexture.Height);
+                            fog.ContentLoad(Content);
+                        }
+
                         _camera.Update2(gameTime, keyboardState, mouse);
                         if (keyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                         {
@@ -287,7 +299,8 @@ namespace PositronNova
                                     i--;
                                 }
 
-                                genUnit(10);
+                                genHumain(10);
+                                genAlien(30);
 
                                 ressources = Ressources.getStartRessources();
 
@@ -468,9 +481,9 @@ namespace PositronNova
                                 if (i > 0)
                                     i--;
                             }
-                            //for (int j = 0; j < unitList.Count - 1; j++)
-                            //    if (i != j && unitList[i].CollisionInterVaisseau(unitList[j]))
-                            //        unitList[i].moving = false;
+
+                            if (enableFog)
+                                fog.Update(gameTime);
 
                         }
 
@@ -568,13 +581,37 @@ namespace PositronNova
                     if (activeScreen == actionScreen)
                     {
                         actionScreen.Draw(gameTime);
-                        spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                         foreach (var unit in unitList) //Affichage des unites si vous n'aviez pas compris
-                            unit.Draw(spriteBatch);
+                        {
+                            if (unit.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight || // On dessine que ce qu'il y a dans le scroll (performance) à revoir ><
+                                unit.hitbox.Bottom > Camera2d.Origine.Y ||
+                                unit.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth ||
+                                unit.hitbox.Right > Camera2d.Origine.X)
+                            {
+                                unit.Draw(spriteBatch);
+                            }
+                        }
                         foreach (Bullet bullet in bulletList) // Affichage des bullets :p
-                            bullet.Draw(spriteBatch);
+                            if (bullet.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight || // On dessine que ce qu'il y a dans le scroll (performance) à revoir ><
+                                bullet.hitbox.Bottom > Camera2d.Origine.Y ||
+                                bullet.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth ||
+                                bullet.hitbox.Right > Camera2d.Origine.X)
+                            {
+                                bullet.Draw(spriteBatch);
+                            }
                         foreach (EffectBullet effect in effectBulletList)
-                            effect.Draw(spriteBatch);
+                            if (effect.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight || // On dessine que ce qu'il y a dans le scroll (performance) à revoir ><
+                                effect.hitbox.Bottom > Camera2d.Origine.Y ||
+                                effect.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth ||
+                                effect.hitbox.Right > Camera2d.Origine.X)
+                            {
+                                effect.Draw(spriteBatch);
+                            }
+
+                        if (enableFog)
+                            fog.Draw(spriteBatch);
+
+                        spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                         //Affiche le chat
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
@@ -594,16 +631,27 @@ namespace PositronNova
             oldKeyboardState.IsKeyDown(theKey);
         }
 
-        void genUnit(int nombre)
+        void genHumain(int nombre)
         {
+            Unit localUnit;
             string[] names = new string[] {"Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Baptiste"};
             for (int i = 0; i < nombre; i++)
             {
-                unitList.Add(new Unit(names[i], new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1)));
-                unitList.Add(new Unit(new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), /*(UnitType)rand.Next((int)UnitType.AntiCorps, (int)*/UnitType.Neurone /*+ 1*/));
+                localUnit = new Unit(names[i], new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1));
+                localUnit.Init();
+                unitList.Add(localUnit);
             }
-            foreach (Unit unit in unitList)
-                unit.Init();
+        }
+
+        void genAlien(int nombre)
+        {
+            Unit localUnit;
+            for (int i = 0; i < nombre; i++)
+            {
+                localUnit = new Unit(new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), /*(UnitType)rand.Next((int)UnitType.AntiCorps, (int)*/UnitType.Neurone /*+ 1*/);
+                localUnit.Init();
+                unitList.Add(localUnit);
+            }
         }
 
         static public Unit GetEnnemy(bool friend)

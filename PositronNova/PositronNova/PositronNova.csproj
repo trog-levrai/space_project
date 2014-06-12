@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\BrouillardDeGuerre.cs" />
     <Compile Include="Class\Camera2d.cs" />
     <Compile Include="Class\Bullet.cs" />
     <Compile Include="Class\EffectBullet.cs" />

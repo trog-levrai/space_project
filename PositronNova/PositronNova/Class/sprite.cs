@@ -62,6 +62,7 @@ namespace PositronNova
         //}
 
         public Texture2D texture;
+        public Texture2D textureAnime;
         public Rectangle hitbox;
         public Vector2 position;
         public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture :o)
