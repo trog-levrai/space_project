@@ -358,7 +358,7 @@ namespace PositronNova
             }
             else
             {
-                caserne.Update(gameTime);
+                caserne.Update(gameTime, mouse, oldmouse);
                 selected_recrutement = !caserne.Recrut;
             }
 
@@ -440,6 +440,23 @@ namespace PositronNova
                             else
                                 spriteBatch.DrawString(spriteFont, "Niveau actuel :" + niveau_caserne + "\nNiveau suivant :" + recquiredRessourceCaserne().Energie + ", " + recquiredRessourceCaserne().Metal, new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y), color);
                         }
+                    }
+
+                    if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X) &&
+                        mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X + 50) &&
+                        mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y) &&
+                        mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y + 50))
+                    {
+                        if (niveau_caserne == 0)
+                            spriteBatch.DrawString(spriteFont,
+                                "Recrutement" + "\nRecquiert la caserne",
+                                new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                                Color.Green);
+                        else
+                            spriteBatch.DrawString(spriteFont,
+                                "Recrutement",
+                                new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                                Color.Green);
                     }
 
                     if (selected_centrale)

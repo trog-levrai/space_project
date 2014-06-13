@@ -14,7 +14,7 @@ namespace PositronNova
     class Caserne
     {
         Game game;
-        MouseState mouseState;
+
         Unit localUnit;
         ContentManager content;
 
@@ -95,9 +95,8 @@ namespace PositronNova
 
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, MouseState mouseState, MouseState oldmouse)
         {
-            mouseState = Mouse.GetState();
 
             position_icone_fleche = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 100 + Camera2d.Origine.X),
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y));
@@ -123,7 +122,7 @@ namespace PositronNova
                     recrut = false;
                 //selected_chasseur_lourd = Math.Abs(mouseState.X - (position_icone_chasseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_chasseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
             }
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_chasseur = Math.Abs(mouseState.X - (position_icone_chasseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_chasseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_chasseur)
@@ -132,10 +131,56 @@ namespace PositronNova
                 }
             }
 
+            if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+            {
+                selected_chasseur_lourd = Math.Abs(mouseState.X - (position_icone_chasseur_lourd.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_chasseur_lourd.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
+                if (selected_chasseur_lourd)
+                {
+                    genHum(2);
+                }
+            }
+
+            if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+            {
+                selected_corvette = Math.Abs(mouseState.X - (position_icone_corvette.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_corvette.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
+                if (selected_corvette)
+                {
+                    genHum(3);
+                }
+            }
+
+            if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+            {
+                selected_croiseur = Math.Abs(mouseState.X - (position_icone_croiseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_croiseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
+                if (selected_croiseur)
+                {
+                    genHum(4);
+                }
+            }
+
+            if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+            {
+                selected_cuirasse = Math.Abs(mouseState.X - (position_icone_cuirasse.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_cuirasse.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
+                if (selected_cuirasse)
+                {
+                    genHum(6);
+                }
+            }
+
+            if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+            {
+                selected_destroyer = Math.Abs(mouseState.X - (position_icone_destroyer.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_destroyer.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
+                if (selected_destroyer)
+                {
+                    genHum(5);
+                }
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            MouseState mouseState;
             mouseState = Mouse.GetState();
 
             spriteBatch.Draw(fleche,
