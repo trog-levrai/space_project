@@ -64,10 +64,25 @@ namespace PositronNova
         public Texture2D texture;
         public Texture2D textureAnime;
         public Rectangle hitbox;
+        //public Rectangle[] hitBoxes;
+        //protected int tailleHitBoxesX;
+        //protected int tailleHitBoxesY;
+        //protected int decalageHitBoxes;
         public Vector2 position;
         public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture :o)
         protected Vector2 direction;
+        public Vector2 Direction
+        {
+            get { return direction; }
+            set { direction = value; }
+        }
         protected Vector2 destination;
+        public Vector2 Destination
+        {
+            get { return destination; }
+            set { destination = value; }
+        }
+
 
         protected float speed;
 

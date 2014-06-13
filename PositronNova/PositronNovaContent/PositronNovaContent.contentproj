@@ -173,8 +173,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\ships\Croiseur.png">
-      <Name>Croiseur</Name>
+    <Compile Include="img\ships\Destroyer.png">
+      <Name>Destroyer</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -183,8 +183,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\ships\Destroyer.png">
-      <Name>Destroyer</Name>
+    <Compile Include="img\ships\Croiseur.png">
+      <Name>Croiseur</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

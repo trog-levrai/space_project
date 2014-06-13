@@ -14,7 +14,6 @@ namespace PositronNova
     {
 
         MouseState mouseState;
-        MouseState oldMouseState;
 
         Caserne caserne;
 
