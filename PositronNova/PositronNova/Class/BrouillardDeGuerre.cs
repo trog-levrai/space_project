@@ -49,7 +49,7 @@ namespace PositronNova.Class
                         rectPickUp = new Rectangle(100, 0, 50, 50);
                     else if (i < nbCellX - 1 && tab[i + 1, j].isVisited && j < nbCellY - 1 && tab[i, j + 1].isVisited)
                         rectPickUp = new Rectangle(100, 100, 50, 50);
-                    else if (i > 0 && tab[i - 1, j].isVisited)
+                    if (i > 0 && tab[i - 1, j].isVisited)
                         rectPickUp = new Rectangle(0, 50, 50, 50);
                     else if (i < nbCellX - 1 && tab[i + 1, j].isVisited)
                         rectPickUp = new Rectangle(100, 50, 50, 50);
@@ -111,11 +111,13 @@ namespace PositronNova.Class
             for (int i = 0; i < largeur / tailleCellX; i++)
                 for (int j = 0; j < hauteur / tailleCellY; j++)
                 {
-                    if (cellTab[i, j].rectangle.Top < Camera2d.Origine.Y + PositronNova.winHeight || // On dessine que ce qu'il y a dans le scroll (performance)
-                        cellTab[i, j].rectangle.Bottom > Camera2d.Origine.Y || 
-                        cellTab[i, j].rectangle.Left < Camera2d.Origine.X + PositronNova.winWidth ||
-                        cellTab[i, j].rectangle.Right > Camera2d.Origine.X)
-                    cellTab[i, j].Draw(sb);
+                    if (cellTab[i, j].rectangle.Bottom > Camera2d.Origine.Y && // On dessine que ce qu'il y a dans le scroll (performance)
+                        cellTab[i, j].rectangle.Top < Camera2d.Origine.Y + PositronNova.winHeight &&
+                        cellTab[i, j].rectangle.Right > Camera2d.Origine.X &&
+                        cellTab[i, j].rectangle.Left < Camera2d.Origine.X + PositronNova.winWidth )
+                    {
+                        cellTab[i, j].Draw(sb);
+                    }
                 }
         }
     }

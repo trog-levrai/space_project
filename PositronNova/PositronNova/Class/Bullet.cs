@@ -86,8 +86,8 @@ namespace PositronNova
 
             hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
-            textureData = new Color[texture.Width * texture.Height];
-            texture.GetData(textureData);
+            //textureData = new Color[texture.Width * texture.Height];
+            //texture.GetData(textureData);
         }
 
         //UPDATE & DRAW
@@ -142,7 +142,7 @@ namespace PositronNova
 
         void HitTarget()
         {
-            if (target != null && target.Pv > 0 && Physique.IntersectPixel(texture, position, textureData, target.texture, target.position, target.textureData))
+            if (target != null && target.Pv > 0 && hitbox.Intersects(target.hitbox))
             {
                 target.Pv -= damage;
                 destruc = true;
