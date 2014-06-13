@@ -72,7 +72,9 @@ namespace PositronNova
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            client = new Client("trog", "94.23.56.31", 1234, this);
+
+            client = new Client("Polo", "94.23.56.31", 1234, this);
+
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
             graphics.PreferredBackBufferHeight = winHeight;
         }
@@ -447,7 +449,6 @@ namespace PositronNova
                     {
                         if (activeScreen == actionScreen_)
                         {
-                            client.KBInput(keyboardState);
                             foreach (var unit in unitList)
                             {
                                 if (unit.Friendly)
@@ -520,6 +521,8 @@ namespace PositronNova
                         }
 
                         // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!
+                        client.KBInput(keyboardState);
+                        client.Receive();
                     }
                     break;
             }
