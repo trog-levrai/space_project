@@ -231,7 +231,10 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\centrale"),
                 Content.Load<Texture2D>("img\\Extracteur"),
                 Content.Load<Texture2D>("img\\Tick"),
-                Content.Load<SpriteFont>("Planete"));
+                Content.Load<Texture2D>("img\\Caserne"),
+                ressources,
+                Content.Load<SpriteFont>("Planete"),
+                Content.Load<SpriteFont>("progress"));
 
             chat = Content.Load<SpriteFont>("chat");
 
@@ -318,6 +321,7 @@ namespace PositronNova
                                 genHumain(10);
                                 genAlien(10);
 
+                                planete.Ressource = Ressources.getStartRessources();
                                 ressources = Ressources.getStartRessources();
 
                                 foreach (Unit unit in unitList)
@@ -451,6 +455,8 @@ namespace PositronNova
                                 cue.Resume();
                                 activeScreen = startScreen;
                                 activeScreen.Show();
+
+                                ressources = Ressources.getStartRessources();
                             }
                         }
                             
@@ -465,7 +471,8 @@ namespace PositronNova
                         _camera.Update1(keyboardState, mouse);
                         _camera.Update2(keyboardState, mouse);
 
-                        planete.Update(gameTime, mouse, oldMouse);
+                        planete.Update(gameTime, mouse, oldMouse, keyboardState, oldKeyboardState);
+                        ressources = planete.setRessource();
                         ressources.Update(gameTime, planete.Niveau_centrale, planete.Niveau_extracteur);
 
                         if (CheckKey(Keys.Escape))

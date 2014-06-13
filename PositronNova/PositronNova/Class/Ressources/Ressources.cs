@@ -128,5 +128,11 @@ namespace PositronNova
                 last = new TimeSpan(0);
             }
         }
+
+        public Ressources curRessources()
+        {
+            return new Ressources(r_energie, r_metal);
+        }
+
     }
 }
