@@ -41,7 +41,11 @@ namespace PositronNova
         bool diminution_centrale;
         bool diminution_extracteur;
         bool diminution_caserne;
-        bool progress;
+        bool progress_centrale;
+        bool progress_extracteur;
+        bool progress_caserne;
+
+        string batiments;
 
         int verif;
         int diminution_centrale_ressource;
@@ -57,6 +61,7 @@ namespace PositronNova
 
         Vector2 position;
         SpriteFont spriteFont;
+        SpriteFont progressFont;
         Game game;
 
         Vector2 position_icone_centrale;
@@ -88,12 +93,14 @@ namespace PositronNova
             Texture2D image_tick,
             Texture2D image_caserne,
             Ressources ressource,
-            SpriteFont spriteFont)
+            SpriteFont spriteFont,
+            SpriteFont progressFont)
         {
             this.image_planete = image_planete;
             this.image_plus = image_plus;
             this.image_centrale = image_centrale;
             this.image_extracteur = image_extracteur;
+            this.progressFont = progressFont;
             this.image_tick = image_tick;
             this.image_caserne = image_caserne;
             this.spriteFont = spriteFont;
@@ -124,7 +131,9 @@ namespace PositronNova
             diminution_centrale = false;
             diminution_extracteur = false;
             diminution_caserne = false;
-            progress = false;
+            progress_centrale = false;
+            progress_extracteur = false;
+            progress_caserne = false;
             verif = -1;
         }
 
@@ -200,7 +209,7 @@ namespace PositronNova
             {
                 if (ressource.curRessources() >= recquiredRessourceCentrale())
                 {
-                    progress = true;
+                    progress_centrale = true;
                     switch (niveau_centrale)
                     {
                         case 1:
@@ -233,6 +242,7 @@ namespace PositronNova
             {
                 if (ressource.curRessources() >= recquiredRessourceExtracteur())
                 {
+                    progress_extracteur = true;
                     switch (niveau_extracteur)
                     {
                         case 1:
@@ -256,12 +266,14 @@ namespace PositronNova
                     if (niveau_extracteur > 5)
                         niveau_extracteur = 5;
                     diminution_extracteur = true;
+                    plus = false;
                 }
             }
             if (selected && selected_caserne && plus)
             {
                 if (ressource.curRessources() >= recquiredRessourceCaserne())
                 {
+                    progress_caserne = true;
                     switch (niveau_caserne)
                     {
                         case 0:
@@ -287,6 +299,7 @@ namespace PositronNova
                     if (niveau_caserne > 5)
                         niveau_caserne = 5;
                     diminution_caserne = true;
+                    plus = false;
                 }
             }
 
@@ -385,22 +398,46 @@ namespace PositronNova
                 }
 
            }
-            if (progress)
+            if (progress_centrale || progress_extracteur || progress_caserne)
             {
+                if (progress_centrale)
+                    batiments = "Centrale";
+                else if (progress_extracteur)
+                    batiments = "Extracteur";
+                else if (progress_caserne)
+                    batiments = "Caserne";
+                else
+                    batiments = "Nothing";
+
+                spriteBatch.DrawString(progressFont,
+                    batiments + " en construction",
+                    new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 110 + Camera2d.Origine.Y)),
+                        Color.Red);
+
                 selected = false;
                 if (last > compt)
                 {
-                    spriteBatch.DrawString(spriteFont, "Progression : " + compteur + "%", new Vector2(150, 150), Color.Red);
-                    compteur += rand.Next(1, 5);
-                    if (compteur == 100)
+                    spriteBatch.DrawString(progressFont,
+                         "Progression : " + compteur + "%",
+                        new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 140 + Camera2d.Origine.Y)), 
+                        Color.Red);
+                    compteur += rand.Next(1, 10);
+                    if (compteur > 100)
                     {
                         compteur = 0;
-                        progress = false;
+                        progress_centrale = false;
+                        progress_extracteur = false;
+                        progress_caserne = false;
+                        selected = true;
                     }
                     last = new TimeSpan(0);
                 }
                 else
-                    spriteBatch.DrawString(spriteFont, "Progression : " + compteur + "%", new Vector2(150, 150), Color.Red);
+                    spriteBatch.DrawString(progressFont, 
+                        "Progression : " + compteur + "%",
+                        new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 140 + Camera2d.Origine.Y)), 
+                        Color.Red);
             }
             
 

@@ -230,7 +230,8 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Tick"),
                 Content.Load<Texture2D>("img\\Caserne"),
                 ressources,
-                Content.Load<SpriteFont>("Planete"));
+                Content.Load<SpriteFont>("Planete"),
+                Content.Load<SpriteFont>("progress"));
 
             chat = Content.Load<SpriteFont>("chat");
 
