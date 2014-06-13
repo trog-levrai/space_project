@@ -41,6 +41,8 @@ namespace PositronNova
         bool diminution_centrale;
         bool diminution_extracteur;
         bool diminution_caserne;
+        bool progress;
+
         int verif;
         int diminution_centrale_ressource;
         int diminution_extracteur_ressource;
@@ -48,7 +50,10 @@ namespace PositronNova
         int recquired_ressource_centrale;
         int recquired_ressource_extracteur;
 
-
+        TimeSpan compt;
+        TimeSpan last;
+        Random rand;
+        int compteur;
 
         Vector2 position;
         SpriteFont spriteFont;
@@ -104,6 +109,10 @@ namespace PositronNova
             recquired_ressource_centrale = 0;
             recquired_ressource_extracteur = 0;
 
+            compt = new TimeSpan(0, 0, 1);
+            compteur = 0;
+            rand = new Random();
+
             position = new Vector2(50, 250);
             imageRectangle = new Rectangle(50, 250, image_planete.Width * 2, image_planete.Height * 2);
 
@@ -115,11 +124,13 @@ namespace PositronNova
             diminution_centrale = false;
             diminution_extracteur = false;
             diminution_caserne = false;
+            progress = false;
             verif = -1;
         }
 
         public void Update(GameTime gameTime, MouseState mouse, MouseState oldmouse, KeyboardState keyboardState, KeyboardState oldKeyboardState)
         {
+            last = last.Add(gameTime.ElapsedGameTime);
 
             position_icone_centrale = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X), 
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
@@ -189,6 +200,7 @@ namespace PositronNova
             {
                 if (ressource.curRessources() >= recquiredRessourceCentrale())
                 {
+                    progress = true;
                     switch (niveau_centrale)
                     {
                         case 1:
@@ -210,7 +222,10 @@ namespace PositronNova
                     niveau_centrale += 1;
                     if (niveau_centrale > 5)
                         niveau_centrale = 5;
+
                     diminution_centrale = true;
+                    plus = false;
+
                 }
             }
 
@@ -369,6 +384,23 @@ namespace PositronNova
                         Color.White);
                 }
 
+           }
+            if (progress)
+            {
+                selected = false;
+                if (last > compt)
+                {
+                    spriteBatch.DrawString(spriteFont, "Progression : " + compteur + "%", new Vector2(150, 150), Color.Red);
+                    compteur += rand.Next(1, 5);
+                    if (compteur == 100)
+                    {
+                        compteur = 0;
+                        progress = false;
+                    }
+                    last = new TimeSpan(0);
+                }
+                else
+                    spriteBatch.DrawString(spriteFont, "Progression : " + compteur + "%", new Vector2(150, 150), Color.Red);
             }
             
 
