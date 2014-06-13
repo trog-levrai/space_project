@@ -72,7 +72,7 @@ namespace PositronNova
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            client = new  Client("trog", "10.3.141.104", 1234, this);
+            client = new Client("trog", "94.23.56.31", 1234, this);
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
             graphics.PreferredBackBufferHeight = winHeight;
         }
