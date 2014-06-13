@@ -71,7 +71,8 @@ namespace PositronNova.Class
             {
                 string foo;
                 foo = clientReader.ReadLine();
-                chat.addString(foo);
+                if (foo != "")
+                    chat.addString(foo);
             }
             catch
             {
