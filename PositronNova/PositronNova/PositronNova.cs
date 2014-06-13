@@ -520,7 +520,6 @@ namespace PositronNova
 
                         // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!
                         client.KBInput(keyboardState);
-                        client.Receive();
                     }
                     break;
             }

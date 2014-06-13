@@ -33,7 +33,8 @@ namespace PositronNova.Class
             this.clientReader = new StreamReader(new NetworkStream(sock));
             this.clientWriter = new StreamWriter(new NetworkStream(sock));
             Writer = new Thread(new ThreadStart(Receive));
-            //Writer = new Thread(new ThreadStart(Receive()));
+            Writer.IsBackground = true;
+            Writer.Start();
         }
         //Methode de connection au serveur
         public void KBInput(KeyboardState ks)
