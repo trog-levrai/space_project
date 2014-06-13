@@ -19,7 +19,7 @@ namespace PositronNova.Class.Unit
     public enum UnitType
     {
         Chasseur, Bombardier, Corvette, Destroyer, Croiseur, Cuirasse,
-        AntiCorps, Virus, Neurone
+        Virus, Bacterie, Neurone, Phagosome, Kraken, Nyan
     };
 
     public class Unit : sprite
@@ -175,11 +175,22 @@ namespace PositronNova.Class.Unit
                     range = 600;
                     requiredResources = new Ressources(80, 110);
                     break;
-                case UnitType.AntiCorps:
-                    side = UnitSide.Alien;
-                    break;
                 case UnitType.Virus:
                     side = UnitSide.Alien;
+                    break;
+                case UnitType.Bacterie:
+                    side = UnitSide.Alien;
+                    texture = content.Load<Texture2D>("img\\alienShips\\Bacterie");
+                    textureAnime = content.Load<Texture2D>("img\\alienShips\\BacterieSheet");
+                    nbFrame = 3;
+                    frameWidth = 53;
+                    frameHeight = 10;
+                    timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 900);
+                    weaponType = BulletType.BloodSting;
+                    pv_max = 40;
+                    speed = 1.9f;
+                    range = 300;
                     break;
                 case UnitType.Neurone:
                     side = UnitSide.Alien;
@@ -192,8 +203,36 @@ namespace PositronNova.Class.Unit
                     fireRate = new TimeSpan(0, 0, 0, 0, 400);
                     weaponType = BulletType.BloodSting;
                     pv_max = 60;
-                    speed = 2f;
+                    speed = 1.6f;
                     range = 400;
+                    break;
+                case UnitType.Phagosome:
+                    side = UnitSide.Alien;
+                    texture = content.Load<Texture2D>("img\\alienShips\\Phagosome");
+                    textureAnime = content.Load<Texture2D>("img\\alienShips\\PhagosomeSheet");
+                    nbFrame = 5;
+                    frameWidth = 150;
+                    frameHeight = 150;
+                    timeToNextFrame = new TimeSpan(0, 0, 0, 0, 120);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 2000);
+                    weaponType = BulletType.BloodSting;
+                    pv_max = 90;
+                    speed = 1.4f;
+                    range = 450;
+                    break;
+                case UnitType.Kraken:
+                    side = UnitSide.Alien;
+                    texture = content.Load<Texture2D>("img\\alienShips\\Kraken");
+                    textureAnime = content.Load<Texture2D>("img\\alienShips\\KrakenSheet");
+                    nbFrame = 3;
+                    frameWidth = 200;
+                    frameHeight = 100;
+                    timeToNextFrame = new TimeSpan(0);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 2000);
+                    weaponType = BulletType.BloodSting;
+                    pv_max = 300;
+                    speed = 1;
+                    range = 500;
                     break;
             }
 
@@ -205,8 +244,8 @@ namespace PositronNova.Class.Unit
             hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
-            textureData = new Color[texture.Width * texture.Height];
-            texture.GetData(textureData);
+            //textureData = new Color[texture.Width * texture.Height];
+            //texture.GetData(textureData);
         }
 
         public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState)
@@ -302,14 +341,13 @@ namespace PositronNova.Class.Unit
                     sb.Draw(texture, position, Color.White);
                 }
 
+                //sb.Draw(Manager.lifeBrick_t, hitbox, Color.White); // Dessin de la hitbox mais ça sert à rien, juste une petite verif ;)
 
                 sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
-
-
             }
             else
             {
-                sb.Draw(textureAnime, position, new Rectangle(frameHeight * frameSquare, 0, frameHeight, frameHeight), Color.White);
+                sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
 
             }
 

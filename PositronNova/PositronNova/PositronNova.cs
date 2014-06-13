@@ -70,7 +70,7 @@ namespace PositronNova
 
         // Brouillard
         BrouillardDeGuerre fog;
-        bool enableFog = false;
+        bool enableFog = true;
 
         Random rand = new Random();
 
@@ -494,10 +494,6 @@ namespace PositronNova
                                 if (i > 0)
                                     i--;
                             }
-
-                            if (enableFog)
-                                fog.Update();
-
                         }
 
                         for (int i = 0; i < bulletList.Count; i++)
@@ -527,6 +523,9 @@ namespace PositronNova
                                 i--;
                             }
                         }
+
+                        if (enableFog)
+                            fog.Update();
 
                         // TOUT LE CODE CONCERNANT LE LOGIQUE DU JEU DOIT ETRE MIS ICIIIIIIIIII !!!!!!!!!
                         
@@ -564,9 +563,6 @@ namespace PositronNova
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
 
-            
-
-
             switch (CurrentGameState)
             {
                 case GameState.Video:
@@ -601,28 +597,29 @@ namespace PositronNova
                     if (activeScreen == actionScreen)
                     {
                         actionScreen.Draw(gameTime);
-                        foreach (var unit in unitList) //Affichage des unites si vous n'aviez pas compris
+
+                        foreach (Unit unit in unitList) //Affichage des unites si vous n'aviez pas compris
                         {
-                            if (unit.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight || // On dessine que ce qu'il y a dans le scroll (performance) à revoir ><
-                                unit.hitbox.Bottom > Camera2d.Origine.Y ||
-                                unit.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth ||
+                            if (unit.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
+                                unit.hitbox.Bottom > Camera2d.Origine.Y &&
+                                unit.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth &&
                                 unit.hitbox.Right > Camera2d.Origine.X)
                             {
                                 unit.Draw(spriteBatch);
                             }
                         }
                         foreach (Bullet bullet in bulletList) // Affichage des bullets :p
-                            if (bullet.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight || // On dessine que ce qu'il y a dans le scroll (performance) à revoir ><
-                                bullet.hitbox.Bottom > Camera2d.Origine.Y ||
-                                bullet.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth ||
+                            if (bullet.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
+                                bullet.hitbox.Bottom > Camera2d.Origine.Y &&
+                                bullet.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth &&
                                 bullet.hitbox.Right > Camera2d.Origine.X)
                             {
                                 bullet.Draw(spriteBatch);
                             }
                         foreach (EffectBullet effect in effectBulletList)
-                            if (effect.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight || // On dessine que ce qu'il y a dans le scroll (performance) à revoir ><
-                                effect.hitbox.Bottom > Camera2d.Origine.Y ||
-                                effect.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth ||
+                            if (effect.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
+                                effect.hitbox.Bottom > Camera2d.Origine.Y &&
+                                effect.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth &&
                                 effect.hitbox.Right > Camera2d.Origine.X)
                             {
                                 effect.Draw(spriteBatch);
@@ -632,8 +629,9 @@ namespace PositronNova
                             fog.Draw(spriteBatch);
 
                         spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
-                        planete.Draw(spriteBatch);
                         //Affiche le chat
+                        // La planètatoum :o) 
+                        planete.Draw(spriteBatch);
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
                     }
@@ -669,7 +667,7 @@ namespace PositronNova
             Unit localUnit;
             for (int i = 0; i < nombre; i++)
             {
-                localUnit = new Unit(new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), /*(UnitType)rand.Next((int)UnitType.AntiCorps, (int)*/UnitType.Neurone /*+ 1*/);
+                localUnit = new Unit(new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
                 localUnit.Init();
                 unitList.Add(localUnit);
             }

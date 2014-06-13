@@ -83,7 +83,7 @@ namespace PositronNova
 
         public bool moving = false;
 
-        public Color[] textureData; //Pour les collisions Pix/Pix 
+        //public Color[] textureData; //Pour les collisions Pix/Pix 
 
         ////////////////////////// CONSTRUCTEURS
 
