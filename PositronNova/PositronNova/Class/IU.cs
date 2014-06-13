@@ -66,7 +66,7 @@ namespace PositronNova
                         {
                             UnitSelected[i].HasTarget = false;
                         }
-                        if (!UnitSelected[i].HasTarget)
+                        if (!UnitSelected[i].HasTarget && UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
                         {
                             UnitSelected[i].Destination = new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
                             UnitSelected[i].Direction = new Vector2(UnitSelected[i].Destination.X - UnitSelected[i].position.X, UnitSelected[i].Destination.Y - UnitSelected[i].position.Y);
