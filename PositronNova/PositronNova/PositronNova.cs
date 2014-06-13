@@ -66,6 +66,9 @@ namespace PositronNova
         float musicVolume = 1.0f;
         Texture2D ui;
 
+        //Interface joueur
+        IU interfaceJoueur;
+
         Camera2d _camera;
 
         // Brouillard
@@ -237,6 +240,9 @@ namespace PositronNova
             vidPlayer.Play(vid);
 
             ui = Content.Load<Texture2D>(@"newUI");
+
+            interfaceJoueur = new IU();
+            interfaceJoueur.ContentLoad(Content);
 
             // TODO: use this.Content to load your game content here
         }
@@ -470,9 +476,11 @@ namespace PositronNova
                             activeScreen.Show();
                         }
 
+
                         for (int i = 0; i < unitList.Count; i++)
                         {
-                            unitList[i].HandleInput(keyboardState, mouse);
+                            interfaceJoueur.HandleInput(keyboardState, mouse);
+                            //unitList[i].HandleInput(keyboardState, mouse);
                             unitList[i].Update(gameTime);
                             if (unitList[i].Side == UnitSide.Alien && unitList[0].Side == UnitSide.Humain)
                             {
@@ -623,6 +631,8 @@ namespace PositronNova
                                 effect.Draw(spriteBatch);
                             }
 
+                        interfaceJoueur.Draw(spriteBatch);
+
                         if (enableFog)
                             fog.Draw(spriteBatch);
 
@@ -671,11 +681,20 @@ namespace PositronNova
             }
         }
 
-        static public Unit GetEnnemy(bool friend)
+        static public Unit GetEnnemy()
         {
             foreach (Unit unit in unitList)
-                if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
-                    if (unit.Side == UnitSide.Alien)
+                if (unit.Side == UnitSide.Alien)
+                    if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
+                        return unit;
+            return null;
+        }
+
+        static public Unit GetHumain()
+        {
+            foreach (Unit unit in unitList)
+                if (unit.Side == UnitSide.Humain)
+                    if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
                         return unit;
             return null;
         }

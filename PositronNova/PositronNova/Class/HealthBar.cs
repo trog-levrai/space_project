@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace PositronNova.Class
 {
-    class HealthBar
+    public class HealthBar
     {
         Texture2D texture;
         Rectangle life;

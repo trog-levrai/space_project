@@ -13,7 +13,6 @@ namespace PositronNova
     class Planete
     {
         MouseState mouseState;
-        MouseState oldMouseState;
 
         Texture2D image_planete;
         Texture2D image_plus;

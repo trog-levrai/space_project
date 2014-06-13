@@ -47,14 +47,12 @@ namespace PositronNova.Class.Unit
         UnitSide side;
         public UnitSide Side { get { return side; } }
 
-        bool selected;
         private bool hasTarget;
         public bool HasTarget
         {
+            get { return hasTarget; }
             set { hasTarget = value; }
         }
-        private Texture2D selection;
-        private Texture2D cible;
 
         int pv_max;
         public int Pv_max
@@ -68,6 +66,10 @@ namespace PositronNova.Class.Unit
             set { pv = value; }
         }
         HealthBar lifeBar;
+        public HealthBar LifeBar
+        {
+            get { return lifeBar; }
+        }
 
         // Cible
         private Unit enn;
@@ -110,8 +112,6 @@ namespace PositronNova.Class.Unit
         {
             _font = content.Load<SpriteFont>("Affichage_mouse");
             deathNoise = content.Load<SoundEffect>("sounds\\shipDeath");
-            selection = content.Load<Texture2D>("img\\SelectionCarre");
-            cible = content.Load<Texture2D>("img\\TargetCarre");
 
             switch (unitType)
             {
@@ -158,6 +158,11 @@ namespace PositronNova.Class.Unit
                 case UnitType.Croiseur:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Croiseur");
+                    //hitBoxes = new Rectangle[3];
+                    //tailleHitBoxesX = 50;
+                    //decalageHitBoxes = 60;
+                    //for (int i = 0; i < 3; i++)
+                    //    hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
                     fireRate = new TimeSpan(0, 0, 0, 0, 2500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
@@ -248,32 +253,6 @@ namespace PositronNova.Class.Unit
             //texture.GetData(textureData);
         }
 
-        public virtual void HandleInput(KeyboardState keyboardState, MouseState mouseState)
-        {
-            //Ce code est magique, ne pas trop toucher SVP :-) effectivement trop bien ce code :o) GG !
-            if (mouseState.LeftButton == ButtonState.Pressed)
-            {
-                selected = Math.Abs(mouseState.X - (position.X + texture.Width / 2) + Camera2d.Origine.X) <= texture.Width / 2 & Math.Abs(mouseState.Y - (position.Y + texture.Height / 2) + Camera2d.Origine.Y) <= texture.Height / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
-            }
-            if (mouseState.RightButton == ButtonState.Pressed && selected && side == UnitSide.Humain)
-            {
-                enn = PositronNova.GetEnnemy(side == UnitSide.Humain);
-                if (enn != null)
-                    hasTarget = Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2);
-                else
-                {
-                    hasTarget = false;
-                }
-                if (!hasTarget)
-                {
-                    destination = new Vector2(mouseState.X - texture.Width / 2 + Camera2d.Origine.X, mouseState.Y - texture.Height / 2 + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
-                    direction = new Vector2(destination.X - centre.X, destination.Y - centre.Y);
-                    direction.Normalize();
-                    moving = true;
-                }
-            }
-        }
-
         public override void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
@@ -342,6 +321,9 @@ namespace PositronNova.Class.Unit
                 }
 
                 //sb.Draw(Manager.lifeBrick_t, hitbox, Color.White); // Dessin de la hitbox mais ça sert à rien, juste une petite verif ;)
+                //if (unitType == UnitType.Croiseur)
+                //    for (int i = 0; i < hitBoxes.Length; i++)
+                //        sb.Draw(Manager.lifeBrick_t, hitBoxes[i], Color.White);
 
                 sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
             }
@@ -351,51 +333,17 @@ namespace PositronNova.Class.Unit
 
             }
 
-            isSelected(sb);
-            if (selected)
-            {
-                lifeBar.Draw(sb, (int)position.X - 4, (int)position.Y - 10);
-                //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
-            }
+            //isSelected(sb);
+            //if (selected)
+            //{
+            //    lifeBar.Draw(sb, (int)position.X - 4, (int)position.Y - 10);
+            //    //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
+            //}
 
             base.Draw(sb);
         }
 
         /////////////////////////////////// METHODES //////////////////////////
-
-        void isSelected(SpriteBatch sb)
-        {
-            if (selected)
-            {
-                if (side == UnitSide.Alien)
-                {
-                    sb.Draw(cible, position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
-                    sb.Draw(cible, position + new Vector2(texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
-                    sb.Draw(cible, position + new Vector2(-4, texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
-                    sb.Draw(cible, position + new Vector2(texture.Width - 4, texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
-                }
-                else
-                {
-                    sb.Draw(selection, position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
-                    sb.Draw(selection, position + new Vector2(texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
-                    sb.Draw(selection, position + new Vector2(-4, texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
-                    sb.Draw(selection, position + new Vector2(texture.Width - 4, texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
-                }
-                aUneCible(sb);
-            }
-        }
-
-        void aUneCible(SpriteBatch sb)
-        {
-            if (hasTarget)
-                if (enn != null && enn.pv > 0)
-                {
-                    sb.Draw(cible, enn.position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
-                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
-                    sb.Draw(cible, enn.position + new Vector2(-4, enn.texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
-                    sb.Draw(cible, enn.position + new Vector2(enn.texture.Width - 4, enn.texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
-                }
-        }
 
         void deplacement(GameTime gameTime)
         {
@@ -409,6 +357,17 @@ namespace PositronNova.Class.Unit
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
                 hitbox.X = (int)position.X;
                 hitbox.Y = (int)position.Y;
+                //for (int i = 0; i < 3; i++)
+                //{
+                //    hitBoxes[i].X = (int)position.X + i * decalageHitBoxes;
+                //    hitBoxes[i].Y = (int)position.Y;
+                //    if (i == 0)
+                //    {
+                //        hitBoxes[0].X = (int)((position.X + i * decalageHitBoxes) * Math.Acos(Math.Abs(hitBoxes[0].X - hitBoxes[1].X) / direction.LengthSquared()));
+                //        hitBoxes[0].Y = (int)((position.Y) * (Math.Asin(Math.Abs(hitBoxes[0].Y - hitBoxes[1].Y) / direction.LengthSquared())));
+                //    }
+
+                //}
 
                 if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
@@ -447,55 +406,5 @@ namespace PositronNova.Class.Unit
         {
             return pv <= 0;
         }
-
-        //public bool CollisionInterVaisseau(Unit unit)
-        //{
-        //    return (Physique.IntersectPixel(texture, position, textureData, unit.texture, unit.position, unit.textureData));
-        //}
     }
-
-    //Les dignes heritieres de la class Unit :-)
-    //On initialise une variable qui nous servira de timer pour les attques avec "last"
-    //class Fighter : Unit
-    //{
-    //    public Fighter(string name, Vector2 Pos, bool friendly) 
-    //        : base(name, Pos)
-    //    {
-    //        last = new TimeSpan(0);
-    //        fireRate = new TimeSpan(0,0,0,1);
-    //        pv_max = 10;
-    //        pv = 10;
-    //        damage = 1;
-    //        //sprite = new sprite(Pos,Content,"img\\Chasseur_1B");
-    //        speed = 0.15f;
-    //    }
-    //}
-    //class Destroyer : Unit
-    //{
-    //    public Destroyer(string name, Vector2 Pos, bool friendly)
-    //        : base(name, Pos)
-    //    {
-    //        last = new TimeSpan(0);
-    //        fireRate = new TimeSpan(0, 0, 0, 1);
-    //        pv_max = 20;
-    //        pv = 20;
-    //        damage = 2;
-    //        //sprite = new sprite(Pos, Content, "img\\Destroyer_1B");
-    //        speed = 0.1f;
-    //    }
-    //}
-    //class Heavy : Unit
-    //{
-    //    public Heavy(string name, Vector2 Pos, bool friendly)
-    //        : base(name, Pos)
-    //    {
-    //        last = new TimeSpan(0);
-    //        fireRate = new TimeSpan(0, 0, 0, 2);
-    //        pv_max = 30;
-    //        pv = 30;
-    //        damage = 4;
-    //        //sprite = new sprite(Pos, Content, "img\\Vaisseau_1_LourdB");
-    //        speed = 0.05f;
-    //    }
-    //}
 }

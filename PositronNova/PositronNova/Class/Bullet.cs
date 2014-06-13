@@ -30,8 +30,8 @@ namespace PositronNova
             get { return bulletType; }
         }
 
-        public bool destruc = false; //
-        bool hitTarget = false; // Degeulasse mais c'est en attendant
+        public bool destruc = false; 
+        bool hitTarget = false;
         int damage;
 
         ///////////////////////////////// CONSTRUCTEURS
@@ -68,7 +68,7 @@ namespace PositronNova
                     texture = Manager.plasma_t;
                     hitNoise = Manager.plasmaHit_s;
                     speed = 10;
-                    damage = 35;
+                    damage = 36;
                     break;
                 case BulletType.Missile:
                     texture = Manager.missile_t;
