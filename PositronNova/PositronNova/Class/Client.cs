@@ -13,10 +13,8 @@ namespace PositronNova.Class
     {
         public Chat chat;
         private NetworkStream ns;
-        private Thread Writer, Reader;
+        private Thread Writer;
         public String name { get; private set; }
-        String host;
-        int port;
         public Socket sock;
         StreamReader clientReader;
         StreamWriter clientWriter;
@@ -26,8 +24,6 @@ namespace PositronNova.Class
             format = new BinaryFormatter();
             chat = new Chat(game);
             this.name = name;
-            this.host = host;
-            this.port = port;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             sock.Connect(host, port);
             this.clientReader = new StreamReader(new NetworkStream(sock));
@@ -67,17 +63,19 @@ namespace PositronNova.Class
         }
         public void Receive()
         {
-            object data;
-            try
+            while (true)
             {
-                string foo;
-                foo = clientReader.ReadLine();
-                if (foo != "")
-                    chat.addString(foo);
-            }
-            catch
-            {
-                throw new EventLogReadingException("Pas de bol");
+                try
+                {
+                    string foo;
+                    foo = clientReader.ReadLine();
+                    if (foo != "")
+                        chat.addString(foo);
+                }
+                catch
+                {
+                    throw new EventLogReadingException("Pas de bol");
+                }
             }
         }
     }
