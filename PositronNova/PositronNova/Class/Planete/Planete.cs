@@ -12,11 +12,6 @@ namespace PositronNova
 {
     class Planete
     {
-        TimeSpan compt;
-        TimeSpan last;
-        List<int> list_compteur;
-        int compteur;
-        Random Rand;
 
         MouseState mouseState;
         MouseState oldMouseState;
@@ -52,6 +47,8 @@ namespace PositronNova
         int diminution_caserne_ressource;
         int recquired_ressource_centrale;
         int recquired_ressource_extracteur;
+
+
 
         Vector2 position;
         SpriteFont spriteFont;
@@ -107,12 +104,6 @@ namespace PositronNova
             recquired_ressource_centrale = 0;
             recquired_ressource_extracteur = 0;
 
-            compt = new TimeSpan(0, 0, 2);
-            Rand = new Random();
-            list_compteur = new List<int>();
-            compteur = 0;
-            list_compteur.Add(compteur);
-
             position = new Vector2(50, 250);
             imageRectangle = new Rectangle(50, 250, image_planete.Width * 2, image_planete.Height * 2);
 
@@ -129,7 +120,6 @@ namespace PositronNova
 
         public void Update(GameTime gameTime, MouseState mouse, MouseState oldmouse, KeyboardState keyboardState, KeyboardState oldKeyboardState)
         {
-            last = last.Add(gameTime.ElapsedGameTime);
 
             position_icone_centrale = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X), 
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
@@ -221,7 +211,6 @@ namespace PositronNova
                     if (niveau_centrale > 5)
                         niveau_centrale = 5;
                     diminution_centrale = true;
-
                 }
             }
 
@@ -379,7 +368,7 @@ namespace PositronNova
                         new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 50 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 10, 10),
                         Color.White);
                 }
-       
+
             }
             
 
