@@ -78,5 +78,10 @@ namespace PositronNova.Class
                 }
             }
         }
+        public void Close()
+        {
+            //Est appele quand multijoueur est ferme
+            sock.Close();
+        }
     }
 }

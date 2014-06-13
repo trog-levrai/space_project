@@ -1,12 +1,7 @@
  using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -72,7 +67,6 @@ namespace PositronNova
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            client = new  Client("trog", "94.23.56.31", 1234, this);
             graphics.PreferredBackBufferWidth = winWidth; // Definition de la taille de l'écran...
             graphics.PreferredBackBufferHeight = winHeight;
         }
@@ -129,25 +123,6 @@ namespace PositronNova
 
             base.Initialize();
         }
-        private static void Ecouter(Object txt)
-        {
-            //On crée le serveur en lui spécifiant le port sur lequel il devra écouter.
-            UdpClient serveur = new UdpClient(1234);
-            //Création d'une boucle infinie qui aura pour tâche d'écouter.
-            while (true)
-            {
-                IPEndPoint client = null;
-                byte[] data = serveur.Receive(ref client);
-                string message = Encoding.Default.GetString(data);
-                if (message.StartsWith("nick:"))
-                    ennemyName = message.Substring(5);
-                else
-                {
-                    ((Chat)txt).addString(ennemyName + " dit: " + message);
-                }
-            }
-        }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -284,6 +259,7 @@ namespace PositronNova
                             }
                             if (startScreen.SelectedIndex == 2)
                             {
+                                client = new Client("trog", "94.23.56.31", 1234, this);
                                 client.Connect();
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
@@ -436,6 +412,7 @@ namespace PositronNova
                                 cue.Resume();
                                 activeScreen = startScreen;
                                 activeScreen.Show();
+                                client.Close();
                             }
                         }
                             
