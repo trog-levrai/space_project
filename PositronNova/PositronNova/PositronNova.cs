@@ -37,7 +37,11 @@ namespace PositronNova
 
         // WORLD ELEMENTS
         static List<Unit> unitList = new List<Unit>();
-        public static List<Unit> UnitList { get { return unitList; } }
+        static public  List<Unit> UnitList 
+        { 
+            get { return unitList; }
+            set { unitList = value; }
+        }
         static List<Bullet> bulletList = new List<Bullet>();
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
 
@@ -181,6 +185,7 @@ namespace PositronNova
             foreach (Unit unit in unitList)
                 unit.LoadContent(Content);
 
+
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
             #region LoadScreen
@@ -229,9 +234,13 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Extracteur"),
                 Content.Load<Texture2D>("img\\Tick"),
                 Content.Load<Texture2D>("img\\Caserne"),
+                Content.Load<Texture2D>("img\\recrutement"),
+                Content.Load<Texture2D>("img\\recrutement_grise"),
                 ressources,
                 Content.Load<SpriteFont>("Planete"),
                 Content.Load<SpriteFont>("progress"));
+
+            planete.LoadContent(Content);
 
             chat = Content.Load<SpriteFont>("chat");
 

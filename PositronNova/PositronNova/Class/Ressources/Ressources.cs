@@ -84,44 +84,44 @@ namespace PositronNova
                 switch (niveau_centrale)
                 {
                     case 1:
-                        r_energie += 2;
+                        r_energie += 4;
                         break;
                     case 2:
-                        r_energie += 5;
-                        break;
-                    case 3:
                         r_energie += 10;
                         break;
-                    case 4:
+                    case 3:
                         r_energie += 20;
                         break;
-                    case 5:
+                    case 4:
                         r_energie += 50;
                         break;
+                    case 5:
+                        r_energie += 100;
+                        break;
                     default :
-                        r_energie += 2;
+                        r_energie += 4;
                         break;
                 }
 
                 switch (niveau_extracteur)
                 {
                     case 1:
-                        r_metal += 2;
+                        r_metal += 4;
                         break;
                     case 2:
-                        r_metal += 5;
-                        break;
-                    case 3:
                         r_metal += 10;
                         break;
-                    case 4:
+                    case 3:
                         r_metal += 20;
                         break;
-                    case 5:
+                    case 4:
                         r_metal += 50;
                         break;
+                    case 5:
+                        r_metal += 100;
+                        break;
                     default:
-                        r_metal += 2;
+                        r_metal += 4;
                         break;
                 }
 

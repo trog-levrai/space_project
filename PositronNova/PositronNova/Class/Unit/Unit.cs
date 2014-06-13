@@ -100,8 +100,8 @@ namespace PositronNova.Class.Unit
                 color = Color.Aqua;
             else
                 color = Color.IndianRed;
-            speed = 0;
-            direction = Vector2.Zero;
+            //speed = 0;
+            //direction = Vector2.Zero;
             destination = position;
 
             base.Init();

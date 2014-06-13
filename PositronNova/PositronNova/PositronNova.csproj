@@ -116,6 +116,7 @@
     <Compile Include="Class\Manager.cs" />
     <Compile Include="Class\Chat.cs" />
     <Compile Include="Class\KBInput.cs" />
+    <Compile Include="Class\Planete\Caserne.cs" />
     <Compile Include="Class\Planete\Planete.cs" />
     <Compile Include="Class\Ressources\Ressources.cs" />
     <Compile Include="Class\Unit\Unit.cs" />
