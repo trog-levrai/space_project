@@ -486,7 +486,6 @@ namespace PositronNova
 
                         for (int i = 0; i < unitList.Count; i++)
                         {
-                            interfaceJoueur.HandleInput(keyboardState, mouse);
                             //unitList[i].HandleInput(keyboardState, mouse);
                             unitList[i].Update(gameTime);
                             if (unitList[i].Side == UnitSide.Alien && unitList[0].Side == UnitSide.Humain)
@@ -508,6 +507,8 @@ namespace PositronNova
                                     i--;
                             }
                         }
+
+                        interfaceJoueur.HandleInput(keyboardState, mouse);
 
                         for (int i = 0; i < bulletList.Count; i++)
                         {

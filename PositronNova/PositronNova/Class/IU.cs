@@ -94,22 +94,25 @@ namespace PositronNova
             {
                 for (int i = 0; i < UnitSelected.Count; i++)
                 {
-                    if (UnitSelected[i].Side == UnitSide.Alien)
+                    if (!UnitSelected[i].Destruction())
                     {
-                        sb.Draw(cible, UnitSelected[i].position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
-                        sb.Draw(cible, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
-                        sb.Draw(cible, UnitSelected[i].position + new Vector2(-4, UnitSelected[i].texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
-                        sb.Draw(cible, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, UnitSelected[i].texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
+                        if (UnitSelected[i].Side == UnitSide.Alien)
+                        {
+                            sb.Draw(cible, UnitSelected[i].position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
+                            sb.Draw(cible, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
+                            sb.Draw(cible, UnitSelected[i].position + new Vector2(-4, UnitSelected[i].texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
+                            sb.Draw(cible, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, UnitSelected[i].texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
+                        }
+                        else
+                        {
+                            sb.Draw(selection, UnitSelected[i].position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
+                            sb.Draw(selection, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
+                            sb.Draw(selection, UnitSelected[i].position + new Vector2(-4, UnitSelected[i].texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
+                            sb.Draw(selection, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, UnitSelected[i].texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
+                        }
+                        aUneCible(UnitSelected[i], sb);
+                        UnitSelected[i].LifeBar.Draw(sb, (int)UnitSelected[i].position.X - 4, (int)UnitSelected[i].position.Y - 10);
                     }
-                    else
-                    {
-                        sb.Draw(selection, UnitSelected[i].position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
-                        sb.Draw(selection, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
-                        sb.Draw(selection, UnitSelected[i].position + new Vector2(-4, UnitSelected[i].texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
-                        sb.Draw(selection, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, UnitSelected[i].texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
-                    }
-                    aUneCible(UnitSelected[i], sb);
-                    UnitSelected[i].LifeBar.Draw(sb, (int)UnitSelected[i].position.X - 4, (int)UnitSelected[i].position.Y - 10);
                 }
             }
         }
