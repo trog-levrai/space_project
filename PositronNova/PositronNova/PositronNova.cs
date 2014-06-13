@@ -228,6 +228,7 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\centrale"),
                 Content.Load<Texture2D>("img\\Extracteur"),
                 Content.Load<Texture2D>("img\\Tick"),
+                ressources,
                 Content.Load<SpriteFont>("Planete"));
 
             chat = Content.Load<SpriteFont>("chat");
@@ -460,6 +461,7 @@ namespace PositronNova
                         _camera.Update2(keyboardState, mouse);
 
                         planete.Update(gameTime, mouse, oldMouse);
+                        ressources = planete.setRessource();
                         ressources.Update(gameTime, planete.Niveau_centrale, planete.Niveau_extracteur);
 
                         if (CheckKey(Keys.Escape))
