@@ -98,8 +98,6 @@ namespace PositronNova
             graphics.IsFullScreen = true;
         }
 
-
-
         Video vid;
         VideoPlayer vidPlayer;
         Texture2D vidTexture;
@@ -509,7 +507,7 @@ namespace PositronNova
                                     text.addString("f:" + unitList[i].Name + " has been destroyed !");
                                 else
                                 {
-                                    text.addString("e:" + unitList[i].Name + " has been destroyed !");
+                                    text.addString("an Alien has been destroyed !");
                                 }
                                 unitList.RemoveAt(i);
                                 if (i > 0)

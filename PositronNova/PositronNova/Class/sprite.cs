@@ -14,60 +14,13 @@ namespace PositronNova
 {
     public abstract class sprite
     {
-        //private Texture2D _texture;
-        //public Texture2D Texture
-        //{
-        //    get { return _texture; }
-        //    set { _texture = value; }
-        //}
-
-        //private Vector2 _position;
-        //public Vector2 Position
-        //{
-        //    get { return _position; }
-        //    set { _position = value; }
-        //}
-
-        //private Vector2 _direction;
-        //public Vector2 Direction
-        //{
-        //    get { return _direction; }
-        //    set { _direction = Vector2.Normalize(value); }
-        //}
-
-        //protected Vector2 destination;
-
-        //private Vector2 _mouse;
-        //public Vector2 Mouse
-        //{
-        //    get { return _mouse; }
-        //    set { _mouse = value; }
-        //}
-
-        //private float _speed;
-        //public float Speed
-        //{
-        //    get { return _speed; }
-        //    set { _speed = value; }
-        //}
-
-        //private bool moving;
-
-        ////Booleen de selection
-        //private bool selected = false;
-        //public bool Selected
-        //{
-        //    get { return selected; }
-        //    set { selected = value; }
-        //}
-
         public Texture2D texture;
         public Texture2D textureAnime;
         public Rectangle hitbox;
-        //public Rectangle[] hitBoxes;
-        //protected int tailleHitBoxesX;
-        //protected int tailleHitBoxesY;
-        //protected int decalageHitBoxes;
+        public Rectangle[] hitBoxes;
+        protected int tailleHitBoxesX;
+        protected int tailleHitBoxesY;
+        protected int decalageHitBoxes;
         public Vector2 position;
         public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture :o)
         protected Vector2 direction;

@@ -118,6 +118,10 @@ namespace PositronNova.Class.Unit
                 case UnitType.Chasseur:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Chasseur2");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[1];
+                    hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, 10, 10);
+                    // ----
                     fireRate = new TimeSpan(0, 0, 0, 0, 600);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
@@ -128,6 +132,12 @@ namespace PositronNova.Class.Unit
                 case UnitType.Bombardier:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Bombardier");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[3];
+                    decalageHitBoxes = 14;
+                    for (int i = 0; i < 3; i++)
+                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, 16, 16);
+                    // ----
                     fireRate = new TimeSpan(0, 0, 0, 0, 900);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
@@ -138,6 +148,14 @@ namespace PositronNova.Class.Unit
                 case UnitType.Corvette:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Corvette");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[3];
+                    tailleHitBoxesX = 25;
+                    tailleHitBoxesY = 25;
+                    decalageHitBoxes = 20;
+                    for (int i = 0; i < 3; i++)
+                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
+                    // ----
                     fireRate = new TimeSpan(0, 0, 0, 0, 1500);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
@@ -148,6 +166,14 @@ namespace PositronNova.Class.Unit
                 case UnitType.Destroyer:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Destroyer");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[5];
+                    tailleHitBoxesX = 40;
+                    tailleHitBoxesY = 40;
+                    decalageHitBoxes = 30;
+                    for (int i = 0; i < 5; i++)
+                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
+                    // ----
                     fireRate = new TimeSpan(0, 0, 0, 0, 2000);
                     weaponType = BulletType.Ion;
                     pv_max = 90;
@@ -158,11 +184,14 @@ namespace PositronNova.Class.Unit
                 case UnitType.Croiseur:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Croiseur");
-                    //hitBoxes = new Rectangle[3];
-                    //tailleHitBoxesX = 50;
-                    //decalageHitBoxes = 60;
-                    //for (int i = 0; i < 3; i++)
-                    //    hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[5];
+                    tailleHitBoxesX = 40;
+                    tailleHitBoxesY = 40;
+                    decalageHitBoxes = 30;
+                    for (int i = 0; i < 5; i++)
+                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesY);
+                    // ----
                     fireRate = new TimeSpan(0, 0, 0, 0, 2500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
@@ -173,6 +202,14 @@ namespace PositronNova.Class.Unit
                 case UnitType.Cuirasse:
                     side = UnitSide.Humain;
                     texture = content.Load<Texture2D>("img\\ships\\Cuirasse");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[5];
+                    tailleHitBoxesX = 50;
+                    tailleHitBoxesY = 50;
+                    decalageHitBoxes = 40;
+                    for (int i = 0; i < 5; i++)
+                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
+                    // ----
                     fireRate = new TimeSpan(0, 0, 0, 3);
                     weaponType = BulletType.Missile;
                     pv_max = 250;
@@ -187,6 +224,14 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = content.Load<Texture2D>("img\\alienShips\\Bacterie");
                     textureAnime = content.Load<Texture2D>("img\\alienShips\\BacterieSheet");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[3];
+                    tailleHitBoxesX = 5;
+                    tailleHitBoxesY = 5;
+                    decalageHitBoxes = 3;
+                    for (int i = 0; i < 3; i++)
+                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
+                    // ----
                     nbFrame = 3;
                     frameWidth = 53;
                     frameHeight = 10;
@@ -201,6 +246,10 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = content.Load<Texture2D>("img\\alienShips\\Neurone");
                     textureAnime = content.Load<Texture2D>("img\\alienShips\\NeuroneSheet");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[1];
+                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 20, 20);
+                    // ----
                     nbFrame = 3;
                     frameWidth = 40;
                     frameHeight = 40;
@@ -215,6 +264,10 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = content.Load<Texture2D>("img\\alienShips\\Phagosome");
                     textureAnime = content.Load<Texture2D>("img\\alienShips\\PhagosomeSheet");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[1];
+                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 75, 75);
+                    // ----
                     nbFrame = 5;
                     frameWidth = 150;
                     frameHeight = 150;
@@ -229,6 +282,10 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = content.Load<Texture2D>("img\\alienShips\\Kraken");
                     textureAnime = content.Load<Texture2D>("img\\alienShips\\KrakenSheet");
+                    // Creation des HitBoxes
+                    hitBoxes = new Rectangle[1];
+                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 180, 80);
+                    // ----
                     nbFrame = 3;
                     frameWidth = 200;
                     frameHeight = 100;
@@ -307,12 +364,10 @@ namespace PositronNova.Class.Unit
             {
                 if (direction.X > 0)
                 {
-                    //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.FlipHorizontally, 0);
                     sb.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.FlipHorizontally, 0);
                 }
                 else if (direction.X < 0)
                 {
-                    //spriteBatch.Draw(texture, hitbox, null, Color.Transparent, (float)Math.Atan(direction.Y / direction.X), new Vector2(hitbox.Width / 2, hitbox.Height / 2), SpriteEffects.None, 0);
                     sb.Draw(texture, position + centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
                 }
                 else
@@ -320,10 +375,7 @@ namespace PositronNova.Class.Unit
                     sb.Draw(texture, position, Color.White);
                 }
 
-                //sb.Draw(Manager.lifeBrick_t, hitbox, Color.White); // Dessin de la hitbox mais ça sert à rien, juste une petite verif ;)
-                //if (unitType == UnitType.Croiseur)
-                //    for (int i = 0; i < hitBoxes.Length; i++)
-                //        sb.Draw(Manager.lifeBrick_t, hitBoxes[i], Color.White);
+                DrawHitboxes(sb);
 
                 sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
             }
@@ -332,13 +384,6 @@ namespace PositronNova.Class.Unit
                 sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
 
             }
-
-            //isSelected(sb);
-            //if (selected)
-            //{
-            //    lifeBar.Draw(sb, (int)position.X - 4, (int)position.Y - 10);
-            //    //spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
-            //}
 
             base.Draw(sb);
         }
@@ -357,18 +402,7 @@ namespace PositronNova.Class.Unit
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
                 hitbox.X = (int)position.X;
                 hitbox.Y = (int)position.Y;
-                //for (int i = 0; i < 3; i++)
-                //{
-                //    hitBoxes[i].X = (int)position.X + i * decalageHitBoxes;
-                //    hitBoxes[i].Y = (int)position.Y;
-                //    if (i == 0)
-                //    {
-                //        hitBoxes[0].X = (int)((position.X + i * decalageHitBoxes) * Math.Acos(Math.Abs(hitBoxes[0].X - hitBoxes[1].X) / direction.LengthSquared()));
-                //        hitBoxes[0].Y = (int)((position.Y) * (Math.Asin(Math.Abs(hitBoxes[0].Y - hitBoxes[1].Y) / direction.LengthSquared())));
-                //    }
-
-                //}
-
+                PlacementHitBoxes();
                 if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
             }
@@ -405,6 +439,49 @@ namespace PositronNova.Class.Unit
         public bool Destruction()
         {
             return pv <= 0;
+        }
+
+        public void PlacementHitBoxes()
+        {
+            if (unitType == UnitType.Chasseur || unitType == UnitType.Neurone || unitType == UnitType.Phagosome || unitType == UnitType.Kraken)
+            {
+                hitBoxes[0].X = (int)(position.X + centre.X - hitBoxes[0].Width / 2);
+                hitBoxes[0].Y = (int)(position.Y + centre.Y - hitBoxes[0].Height / 2);
+            }
+            else if (unitType == UnitType.Bombardier || unitType == UnitType.Corvette || unitType == UnitType.Bacterie)
+            {
+                hitBoxes[1].X = (int)(position.X + centre.X - hitBoxes[1].Width / 2);
+                hitBoxes[1].Y = (int)(position.Y + centre.Y - hitBoxes[1].Height / 2);
+
+                hitBoxes[0].X = (int)(decalageHitBoxes * Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[1].X;
+                hitBoxes[0].Y = (int)(decalageHitBoxes * Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[1].Y;
+
+                hitBoxes[2].X = (int)(decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[1].X;
+                hitBoxes[2].Y = (int)(decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[1].Y;
+            }
+            else if (unitType == UnitType.Destroyer || unitType == UnitType.Croiseur || unitType == UnitType.Cuirasse)
+            {
+                hitBoxes[2].X = (int)(position.X + centre.X - hitBoxes[2].Width / 2);
+                hitBoxes[2].Y = (int)(position.Y + centre.Y - hitBoxes[2].Height / 2);
+
+                hitBoxes[1].X = (int)(decalageHitBoxes * Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].X;
+                hitBoxes[1].Y = (int)(decalageHitBoxes * Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].Y;
+
+                hitBoxes[0].X = (int)(2 * decalageHitBoxes * Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].X;
+                hitBoxes[0].Y = (int)(2 * decalageHitBoxes * Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].Y;
+
+                hitBoxes[3].X = (int)(decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].X;
+                hitBoxes[3].Y = (int)(decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].Y;
+
+                hitBoxes[4].X = (int)(2 * decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].X;
+                hitBoxes[4].Y = (int)(2 * decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].Y;
+            }
+        }
+
+        public void DrawHitboxes(SpriteBatch sb)
+        {
+            for (int i = 0; i < hitBoxes.Length; i++)
+                sb.Draw(Manager.lifeBrick_t, hitBoxes[i], Color.White);
         }
     }
 }
