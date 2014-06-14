@@ -290,6 +290,8 @@ namespace PositronNova
                 if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected_recrutement = Math.Abs(mouse.X - (position_icone_recrutement.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_recrutement.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2 & recrutement; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
+                    if (!recrutement)
+                        // Sons impossible
                     if (selected_recrutement)
                     {
                         selected = false;
@@ -341,6 +343,10 @@ namespace PositronNova
                         plus = false;
 
                     }
+                    else
+                    {
+                        //Son : Pas possible
+                    }
                 }
 
                 if (selected && selected_extracteur && plus)
@@ -368,6 +374,10 @@ namespace PositronNova
                         }
                         diminution_extracteur = true;
                         plus = false;
+                    }
+                    else
+                    {
+                        //Son : Pas possible
                     }
                 }
                 if (selected && selected_caserne && plus)
@@ -398,6 +408,10 @@ namespace PositronNova
                         }
                         diminution_caserne = true;
                         plus = false;
+                    }
+                    else
+                    {
+                        //Son : Pas possible
                     }
                 }
 

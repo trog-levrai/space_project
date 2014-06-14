@@ -195,12 +195,17 @@ namespace PositronNova
                     lancer_recrutement_chasseur = true;
                     diminution_ressource_chasseur = true;
                 }
+                else
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (recrutement_chasseur_OK)
             {
                 genHum(1);
                 text.addString("Un Chasseur vient d'être créé !");
+                //Son : Unité créée
                 recrutement_chasseur_OK = false;
             }
 
@@ -213,12 +218,17 @@ namespace PositronNova
                     diminution_ressource_chasseur_lourd = true;
 
                 }
+                else 
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (recrutement_chasseur_lourd_OK)
             {
                 genHum(2);
                 text.addString("Un Chasseur lourd vient d'être créé !");
+                //Son : Unité créée
                 recrutement_chasseur_lourd_OK = false;
             }
 
@@ -230,12 +240,17 @@ namespace PositronNova
                     lancer_recrutement_corvette = true;
                     diminution_ressources_corvette = true;
                 }
+                else
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (recrutement_corvette_OK)
             {
                 genHum(3);
                 text.addString("Une Corvette vient d'être créée !");
+                //Son : Unité créée
                 recrutement_corvette_OK = false;
             }
 
@@ -247,12 +262,17 @@ namespace PositronNova
                     lancer_recrutement_croiseur = true;
                     diminution_ressource_croiseur = true;
                 }
+                else
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (recrutement_croiseur_OK)
             {
                 genHum(4);
                 text.addString("Un Croiseur vient d'être créé !");
+                //Son : Unité créée
                 recrutement_croiseur_OK = false;
             }
 
@@ -264,12 +284,17 @@ namespace PositronNova
                     lancer_recrutement_cuirasse = true;
                     diminution_ressource_cuirasse = true;
                 }
+                else 
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (recrutement_cuirasse_OK)
             {
                 genHum(6);
                 text.addString("Un Cuirasse vient d'être créé !");
+                //Son : Unité crées
                 recrutement_cuirasse_OK = false;
             }
 
@@ -281,12 +306,17 @@ namespace PositronNova
                     lancer_recrutement_destroyer = true;
                     diminution_resource_destroyer = true;
                 }
+                else 
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (recrutement_destroyer_OK)
             {
                 genHum(5);
                 text.addString("Un Destroyer vient d'être créé !");
+                //Son
                 recrutement_destroyer_OK = false;
             }
 

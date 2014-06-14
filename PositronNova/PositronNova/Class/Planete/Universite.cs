@@ -150,6 +150,10 @@ namespace PositronNova
                         Universite.Diminution_ressource_precision = true;
                     }
                 }
+                else
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
@@ -163,16 +167,22 @@ namespace PositronNova
                         diminution_ressource_moteur = true;
                     }
                 }
+                else
+                {
+                    //Son : Pas possible
+                }
             }
 
             if (precision_ok)
             {
                 text.addString("La technologie 'Dégats' est maintenant recherchée");
+                //Son : Recherche terminée
                 precision_ok = false;
             }
             if (moteur_ok)
             {
                 text.addString("La technologie 'Moteur' est maintenant recherchée");
+                //Son : recherche Terminée
                 moteur_ok = false;
             }
         }
