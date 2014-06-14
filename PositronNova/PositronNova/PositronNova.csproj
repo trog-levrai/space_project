@@ -119,6 +119,7 @@
     <Compile Include="Class\KBInput.cs" />
     <Compile Include="Class\Planete\Caserne.cs" />
     <Compile Include="Class\Planete\Planete.cs" />
+    <Compile Include="Class\Planete\Universite.cs" />
     <Compile Include="Class\Ressources\Ressources.cs" />
     <Compile Include="Class\Unit\Unit.cs" />
     <Compile Include="Menu\ActionScreen.cs" />

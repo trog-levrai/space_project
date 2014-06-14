@@ -16,6 +16,7 @@ namespace PositronNova
         MouseState mouseState;
 
         Caserne caserne;
+        Universite universite;
 
         private Ressources ressource;
         public Ressources Ressource
@@ -32,6 +33,7 @@ namespace PositronNova
         Texture2D image_extracteur;
         Texture2D image_tick;
         Texture2D image_caserne;
+        Texture2D image_universite;
         Texture2D image_recrutement;
         Texture2D image_recrutement_grisee;
 
@@ -42,6 +44,12 @@ namespace PositronNova
         {
             get { return selected_recrutement; }
             set { selected_recrutement = value; }
+        }
+        private bool selected_universite;
+        public bool Selected_universite
+        {
+            get { return selected_universite; }
+            set { selected_universite = value; }
         }
         bool selected;
         bool selected_centrale;
@@ -79,22 +87,26 @@ namespace PositronNova
         Vector2 position_icone_extracteur;
         Vector2 position_icone_caserne;
         Vector2 position_icone_recrutement;
+        Vector2 position_icone_universite;
         Vector2 position_icone_plus;
 
         private int niveau_centrale;
         public int Niveau_centrale
         {
-            get { return niveau_centrale; } 
+            get { return niveau_centrale; }
+            set { niveau_centrale = value; }
         }
         private int niveau_extracteur;
         public int Niveau_extracteur
         {
             get { return niveau_extracteur; }
+            set { niveau_extracteur = value; }
         }
         static private int niveau_caserne;
         static public int Niveau_caserne
         {
             get { return niveau_caserne; }
+            set { niveau_caserne = value; }
         }
 
         public Planete(Game game, 
@@ -106,6 +118,7 @@ namespace PositronNova
             Texture2D image_caserne,
             Texture2D image_recrutement,
             Texture2D image_recrutement_grise,
+            Texture2D image_universite,
             Ressources ressource,
             SpriteFont spriteFont,
             SpriteFont progressFont)
@@ -119,6 +132,7 @@ namespace PositronNova
             this.image_caserne = image_caserne;
             this.image_recrutement = image_recrutement;
             this.image_recrutement_grisee = image_recrutement_grise;
+            this.image_universite = image_universite;
             this.spriteFont = spriteFont;
             this.game = game;
             this.ressource = ressource;
@@ -145,6 +159,7 @@ namespace PositronNova
             selected_extracteur = false;
             selected_caserne = false;
             selected_recrutement = false;
+            selected_universite = false;
             plus = false;
             diminution_centrale = false;
             diminution_extracteur = false;
@@ -172,6 +187,12 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Icone_unite\\Icone_cuirasse_grisee"),
                 Content.Load<Texture2D>("img\\Fleche"),
                 Content.Load<SpriteFont>("Planete"));
+
+            universite = new Universite(game,
+                Content.Load<Texture2D>("img\\Icone_tech\\precision"),
+                Content.Load<Texture2D>("img\\Icone_tech\\Moteur"),
+                Content.Load<Texture2D>("img\\Fleche"),
+                Content.Load<SpriteFont>("Planete"));
         }
 
         public void Update(GameTime gameTime, MouseState mouse, MouseState oldmouse, KeyboardState keyboardState, KeyboardState oldKeyboardState)
@@ -188,10 +209,12 @@ namespace PositronNova
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
             position_icone_recrutement = new Vector2((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
                 (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y));
+            position_icone_universite = new Vector2((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
+                (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
 
             recrutement = (niveau_caserne != 0);
 
-            if (!selected_recrutement)
+            if (!selected_recrutement && !selected_universite)
             {
                 if (mouse.LeftButton == ButtonState.Pressed)
                 {
@@ -255,6 +278,20 @@ namespace PositronNova
                         selected_caserne = false;
                         selected_centrale = false;
                         selected_extracteur = false;
+                        selected_universite = false;
+                    }
+                }
+
+                if (mouse.LeftButton == ButtonState.Pressed)
+                {
+                    selected_universite = Math.Abs(mouse.X - (position_icone_universite.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_universite.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
+                    if (selected_universite)
+                    {
+                        selected = false;
+                        selected_caserne = false;
+                        selected_centrale = false;
+                        selected_extracteur = false;
+                        selected_recrutement = false;
                     }
                 }
 
@@ -377,10 +414,15 @@ namespace PositronNova
                     verif = -1;
                 }
             }
-            else
+            else if (!selected_universite)
             {
                 caserne.Update(gameTime, mouse, oldmouse);
                 selected_recrutement = !caserne.Recrut;
+            }
+            else
+            {
+                universite.Update(gameTime, mouse, oldmouse);
+                selected_universite = !universite.Univ;
             }
 
             
@@ -392,7 +434,7 @@ namespace PositronNova
 
             mouseState = Mouse.GetState();
 
-            if (!selected_recrutement)
+            if (!selected_recrutement && !selected_universite)
             {
                 if (selected)
                 {
@@ -408,6 +450,10 @@ namespace PositronNova
                     spriteBatch.Draw(image_caserne,
                         new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 50 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
                         Color.White);
+                    spriteBatch.Draw(image_universite,
+                        new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
+                        Color.White);
+
                     if (recrutement)
                         spriteBatch.Draw(image_recrutement,
                             new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
@@ -545,8 +591,13 @@ namespace PositronNova
                             Color.Red);
                 }
             }
-            else
+            else if (!selected_universite)
                 caserne.Draw(spriteBatch);
+            else
+                universite.Draw(spriteBatch);
+            
+ 
+
             
 
         }

@@ -239,6 +239,7 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Caserne"),
                 Content.Load<Texture2D>("img\\recrutement"),
                 Content.Load<Texture2D>("img\\recrutement_grise"),
+                Content.Load<Texture2D>("img\\universite"),
                 ressources,
                 Content.Load<SpriteFont>("Planete"),
                 Content.Load<SpriteFont>("progress"));
@@ -329,7 +330,11 @@ namespace PositronNova
 
                                 //genHumain(10);
                                 genAlien(10);
-
+                                planete.Niveau_centrale = 1;
+                                planete.Niveau_extracteur = 1;
+                                Planete.Niveau_caserne = 0;
+                                Universite.Changement_moteur = false;
+                                Universite.Changement_precision = false;
                                 planete.Ressource = Ressources.getStartRessources();
                                 ressources = Ressources.getStartRessources();
 
@@ -714,7 +719,7 @@ namespace PositronNova
         {
             foreach (Unit unit in unitList)
                 if (unit.Side == UnitSide.Alien)
-                    if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
+                    if ((Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2))
                         return unit;
             return null;
         }

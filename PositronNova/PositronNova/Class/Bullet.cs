@@ -46,36 +46,54 @@ namespace PositronNova
                 case BulletType.LittleCinetique:
                     texture = Manager.littleCinetique_t;
                     speed = 4;
-                    damage = 4;
+                    if (Universite.Changement_precision)
+                        damage = 6;
+                    else
+                        damage = 4;
                     break;
                 case BulletType.Cinetique:
                     texture = Manager.cinetique_t;
                     speed = 6;
-                    damage = 8;
+                    if (Universite.Changement_precision)
+                        damage = 12;
+                    else
+                        damage = 8;
                     break;
                 case BulletType.Laser:
                     texture = Manager.laser_t;
                     hitNoise = Manager.laserHit_s;
                     speed = 10;
-                    damage = 20;
+                    if (Universite.Changement_precision)
+                        damage = 30;
+                    else
+                        damage = 20;
                     break;
                 case BulletType.Ion:
                     texture = Manager.ion_t;
                     speed = 10;
-                    damage = 28;
+                    if (Universite.Changement_precision)
+                        damage = 42;
+                    else
+                        damage = 28;
                     break;
                 case BulletType.Plasma:
                     texture = Manager.plasma_t;
                     hitNoise = Manager.plasmaHit_s;
                     speed = 10;
-                    damage = 36;
+                    if (Universite.Changement_precision)
+                        damage = 54;
+                    else
+                        damage = 36;
                     break;
                 case BulletType.Missile:
                     texture = Manager.missile_t;
                     hitNoise = Manager.missileHit_s;
                     frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 2);
                     speed = 12;
-                    damage = 50;
+                    if (Universite.Changement_precision)
+                        damage = 75;
+                    else
+                        damage = 50;
                     break;
                 case BulletType.BloodSting:
                     texture = Manager.bloodSting_t;
