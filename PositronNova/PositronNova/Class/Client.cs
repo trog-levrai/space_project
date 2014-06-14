@@ -17,7 +17,6 @@ namespace PositronNova.Class
         {
             get { return enn; }
         }
-        private Encoding utf8 = Encoding.UTF8;
         public Chat chat;
         private Thread Writer;
         public String name { get; private set; }
