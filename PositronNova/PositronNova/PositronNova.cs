@@ -237,7 +237,8 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\universite"),
                 ressources,
                 Content.Load<SpriteFont>("Planete"),
-                Content.Load<SpriteFont>("progress"));
+                Content.Load<SpriteFont>("progress"),
+                text);
 
             planete.LoadContent(Content);
 
@@ -330,7 +331,7 @@ namespace PositronNova
                                 Planete.Niveau_caserne = 0;
                                 Universite.Changement_moteur = false;
                                 Universite.Changement_precision = false;
-                                planete.Ressource = Ressources.getStartRessources();
+                                planete.Start();
                                 ressources = Ressources.getStartRessources();
 
                                 foreach (Unit unit in unitList)
@@ -518,10 +519,10 @@ namespace PositronNova
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
                                 if (unitList[i].Side == UnitSide.Humain)
-                                    text.addString("f:" + unitList[i].Name + " has been destroyed !");
+                                    text.addString("f:" + unitList[i].Name + " a été détruit !");
                                 else
                                 {
-                                    text.addString("an Alien has been destroyed !");
+                                    text.addString("Un Alien a été détruit !");
                                 }
                                 unitList.RemoveAt(i);
                                 if (i > 0)

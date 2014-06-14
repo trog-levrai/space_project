@@ -18,6 +18,8 @@ namespace PositronNova
 
         Ressources ressource;
 
+        Chat text;
+
         SpriteFont spriteFont;
 
         TimeSpan compt;
@@ -48,6 +50,9 @@ namespace PositronNova
         bool diminution_ressource_precision;
         bool diminution_ressource_moteur;
 
+        bool precision_ok;
+        bool moteur_ok;
+
         bool lancer_recherche_precision;
         static private bool changement_precision;
         static public bool Changement_precision
@@ -70,7 +75,8 @@ namespace PositronNova
             Texture2D icone_precision_ok,
             Texture2D icone_moteur_ok,
             SpriteFont spriteFont,
-            Ressources ressource)
+            Ressources ressource,
+            Chat text)
         {
             this.game = game;
             this.ressource = ressource;
@@ -82,6 +88,7 @@ namespace PositronNova
             this.icone_precision_ok = icone_precision_ok;
 
             this.spriteFont = spriteFont;
+            this.text = text;
 
             selected_fleche = false;
             univ = false;
@@ -94,6 +101,8 @@ namespace PositronNova
             lancer_rechercher_moteur = false;
             diminution_ressource_moteur = false;
             diminution_ressource_precision = false;
+            precision_ok = false;
+            moteur_ok = false;
 
             compt = new TimeSpan(0, 0, 1);
             compteur = 0;
@@ -144,6 +153,17 @@ namespace PositronNova
                         diminution_ressource_moteur = true;
                     }
                 }
+            }
+
+            if (precision_ok)
+            {
+                text.addString("La technologie 'Dégats' est maintenant recherchée");
+                precision_ok = false;
+            }
+            if (moteur_ok)
+            {
+                text.addString("La technologie 'Moteur' est maintenant recherchée");
+                moteur_ok = false;
             }
         }
 
@@ -241,9 +261,15 @@ namespace PositronNova
                 {
                     compteur = 0;
                     if (lancer_recherche_precision)
+                    {
                         changement_precision = true;
+                        precision_ok = true;
+                    }
                     if (lancer_rechercher_moteur)
+                    {
                         changement_moteur = true;
+                        moteur_ok = true;
+                    }
 
                     lancer_recherche_precision = false;
                     lancer_rechercher_moteur = false;
@@ -287,6 +313,11 @@ namespace PositronNova
         private Ressources RecquiredRessourceMoteur()
         {
             return new Ressources(400, 400);
+        }
+
+        public void Start()
+        {
+            ressource = Ressources.getStartRessources();
         }
     }
 }

@@ -25,6 +25,7 @@ namespace PositronNova
         ContentManager content;
 
         Random rand;
+        Chat text;
 
         Texture2D Icone_chasseur;
         Texture2D Icone_chasseur_lourds;
@@ -95,7 +96,8 @@ namespace PositronNova
             Texture2D Icone_cuirasse_grisee,
             Texture2D fleche,
             SpriteFont spriteFont,
-            Ressources ressource)
+            Ressources ressource,
+            Chat text)
         {
             this.game = game;
             this.content = content;
@@ -111,6 +113,8 @@ namespace PositronNova
             this.Icone_destroyer = Icone_destroyer;
             this.fleche = fleche;
             this.ressource = ressource;
+
+            this.text = text;
 
             this.Icone_corvette_grisee = Icone_corvette_grisee;
             this.Icone_croiseur_grisee = Icone_croiseur_grisee;
@@ -161,7 +165,7 @@ namespace PositronNova
             last = last.Add(gameTime.ElapsedGameTime);
 
             position_icone_fleche = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 100 + Camera2d.Origine.X),
-                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y));
+                     (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y));
             position_icone_chasseur = new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), 
                     (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
             position_icone_chasseur_lourd = new Vector2((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
@@ -196,6 +200,7 @@ namespace PositronNova
             if (recrutement_chasseur_OK)
             {
                 genHum(1);
+                text.addString("Un Chasseur vient d'être créé !");
                 recrutement_chasseur_OK = false;
             }
 
@@ -213,6 +218,7 @@ namespace PositronNova
             if (recrutement_chasseur_lourd_OK)
             {
                 genHum(2);
+                text.addString("Un Chasseur loud vient d'être créé !");
                 recrutement_chasseur_lourd_OK = false;
             }
 
@@ -229,6 +235,7 @@ namespace PositronNova
             if (recrutement_corvette_OK)
             {
                 genHum(3);
+                text.addString("Une Corvette vient d'être créée !");
                 recrutement_corvette_OK = false;
             }
 
@@ -245,6 +252,7 @@ namespace PositronNova
             if (recrutement_croiseur_OK)
             {
                 genHum(4);
+                text.addString("Un Croiseur vient d'être créé !");
                 recrutement_croiseur_OK = false;
             }
 
@@ -261,6 +269,7 @@ namespace PositronNova
             if (recrutement_cuirasse_OK)
             {
                 genHum(6);
+                text.addString("Un Cuirasse vient d'être créé !");
                 recrutement_cuirasse_OK = false;
             }
 
@@ -277,6 +286,7 @@ namespace PositronNova
             if (recrutement_destroyer_OK)
             {
                 genHum(5);
+                text.addString("Un Destroyer vient d'être créé !");
                 recrutement_destroyer_OK = false;
             }
 
@@ -600,6 +610,11 @@ namespace PositronNova
             private Ressources RecquiredRessourceCuirasse()
             {
                 return new Ressources(450, 500);
+            }
+
+            public void Start()
+            {
+                ressource = Ressources.getStartRessources();
             }
     }
 }
