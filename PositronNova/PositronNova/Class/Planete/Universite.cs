@@ -145,6 +145,43 @@ namespace PositronNova
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
 
+
+            if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 - 100 + Camera2d.Origine.X) &&
+                mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 - 100 + Camera2d.Origine.X + 25) &&
+                mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y) &&
+                mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y + 25))
+            {
+                spriteBatch.DrawString(spriteFont, "Retour",
+                    new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                    Color.Green);
+            }
+
+            if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X) &&
+                mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X + 50))
+            {
+                if (mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y) &&
+                    mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y + 50))
+                {
+                    spriteBatch.DrawString(spriteFont,
+                        "Degats" + 
+                        "\nAugmente les degats de tous les vaisseaux !",
+                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Green);
+                }
+
+                if (mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y) &&
+                    mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y + 50))
+                {
+                    spriteBatch.DrawString(spriteFont,
+                        "Moteur :" +
+                        "\nAugmente la vitesse de tous les vaisseaux en contruction" +
+                        "\nN'augmente pas la vitesse des vaisseaux deja construits",
+                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Green);
+                }
+            }
+
+
             if ((lancer_recherche_precision || lancer_rechercher_moteur) &&
                 last > compt)
             {
