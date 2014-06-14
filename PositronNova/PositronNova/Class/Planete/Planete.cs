@@ -186,7 +186,8 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Icone_unite\\Icone_destroyer_grisee"),
                 Content.Load<Texture2D>("img\\Icone_unite\\Icone_cuirasse_grisee"),
                 Content.Load<Texture2D>("img\\Fleche"),
-                Content.Load<SpriteFont>("Planete"));
+                Content.Load<SpriteFont>("Planete"),
+                ressource);
 
             universite = new Universite(game,
                 Content.Load<Texture2D>("img\\Icone_tech\\precision"),
@@ -203,6 +204,7 @@ namespace PositronNova
             last = last.Add(gameTime.ElapsedGameTime);
 
             ressource = universite.setRessource();
+            ressource = caserne.setRessource();
 
             position_icone_centrale = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X), 
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
