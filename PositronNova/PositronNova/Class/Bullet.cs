@@ -160,11 +160,17 @@ namespace PositronNova
 
         void HitTarget()
         {
-            if (target != null && target.Pv > 0 && hitbox.Intersects(target.hitbox))
+            if (target != null && target.Pv > 0)
             {
-                target.Pv -= damage;
-                destruc = true;
-                hitTarget = true;
+                for (int i = 0; i < target.hitBoxes.Length; i++)
+                {
+                    if (hitbox.Intersects(target.hitBoxes[i]))
+                    {
+                        target.Pv -= damage;
+                        destruc = true;
+                        hitTarget = true;
+                    }
+                }
             }
         }
     }
