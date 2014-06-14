@@ -23,7 +23,6 @@ namespace PositronNova
         static public int winWidth = 800, winHeight = 600; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
-        private static Thread _thEcoute;
 
         static private Texture2D backgroundTexture;
         static public Texture2D BackgroundTexture

@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -17,6 +18,7 @@ namespace PositronNova.Class
         {
             get { return enn; }
         }
+        private Encoding utf8 = Encoding.UTF8;
         public Chat chat;
         private Thread Writer;
         public String name { get; private set; }
@@ -56,8 +58,10 @@ namespace PositronNova.Class
         }
         public void Send(string message)
         {
-            clientWriter.WriteLine(message);
-            clientWriter.Flush();
+            byte[] foo = utf8.GetBytes(message);
+            sock.Send(foo);
+            //clientWriter.WriteLine(message);
+            //clientWriter.Flush();
         }
         public void SendUnit(List<Unit.Unit> unit)
         {
