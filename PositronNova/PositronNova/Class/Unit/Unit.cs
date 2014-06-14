@@ -244,9 +244,9 @@ namespace PositronNova.Class.Unit
                     textureAnime = content.Load<Texture2D>("img\\alienShips\\BacterieSheet");
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[3];
-                    tailleHitBoxesX = 5;
-                    tailleHitBoxesY = 5;
-                    decalageHitBoxes = 3;
+                    tailleHitBoxesX = 10;
+                    tailleHitBoxesY = 10;
+                    decalageHitBoxes = 5;
                     for (int i = 0; i < 3; i++)
                         hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
                     // ----
@@ -302,7 +302,7 @@ namespace PositronNova.Class.Unit
                     textureAnime = content.Load<Texture2D>("img\\alienShips\\KrakenSheet");
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[1];
-                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 180, 80);
+                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 150, 60);
                     // ----
                     nbFrame = 3;
                     frameWidth = 200;
@@ -324,8 +324,7 @@ namespace PositronNova.Class.Unit
             hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
-            //textureData = new Color[texture.Width * texture.Height];
-            //texture.GetData(textureData);
+            PlacementHitBoxes();
         }
 
         public override void Update(GameTime gt)
@@ -393,8 +392,6 @@ namespace PositronNova.Class.Unit
                     sb.Draw(texture, position, Color.White);
                 }
 
-                DrawHitboxes(sb);
-
                 sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
             }
             else
@@ -402,6 +399,8 @@ namespace PositronNova.Class.Unit
                 sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
 
             }
+
+            //DrawHitboxes(sb);
 
             base.Draw(sb);
         }
