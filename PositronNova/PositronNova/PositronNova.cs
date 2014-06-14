@@ -425,11 +425,12 @@ namespace PositronNova
                     {
                         if (activeScreen == actionScreen_)
                         {
+                            List<Unit> send = new List<Unit>();
                             foreach (var unit in unitList)
                             {
                                 if (unit.Friendly)
                                 {
-                                    client.SendUnit(unit);
+                                    send.Add(unit);
                                 }
                             }
                         }

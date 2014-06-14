@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Net.Sockets;
@@ -31,6 +32,7 @@ namespace PositronNova.Class
             Writer = new Thread(new ThreadStart(Receive));
             Writer.IsBackground = true;
             Writer.Start();
+            ns = new NetworkStream(sock);
         }
         //Methode de connection au serveur
         public void KBInput(KeyboardState ks)
@@ -54,12 +56,12 @@ namespace PositronNova.Class
             clientWriter.WriteLine(message);
             clientWriter.Flush();
         }
-        public void SendUnit(Unit.Unit unit)
+        public void SendUnit(List<Unit.Unit> unit)
         {
-            //On serialise l'unite
-            ns = new NetworkStream(sock);
-            format.Serialize(ns, unit);
-            ns.Flush();
+            //On serialise la liste d'unites
+            MemoryStream ms = new MemoryStream();
+            format.Serialize(ms, unit);
+            sock.Send(ms.ToArray());
         }
         public void Receive()
         {
@@ -67,14 +69,18 @@ namespace PositronNova.Class
             {
                 try
                 {
+                    List<Unit.Unit> units;
+                    byte[] buffer = new byte[2048];
+                    sock.Receive(buffer);
+                    MemoryStream mem = new MemoryStream(buffer);
+                    units = (List<Unit.Unit>) format.Deserialize(mem);
+                }
+                catch
+                {
                     string foo;
                     foo = clientReader.ReadLine();
                     if (foo != "")
                         chat.addString(foo);
-                }
-                catch
-                {
-                    throw new EventLogReadingException("Pas de bol");
                 }
             }
         }
