@@ -14,6 +14,7 @@ namespace PositronNova
     class Universite
     {
         Game game;
+        Color color;
 
         SpriteFont spriteFont;
 
@@ -25,6 +26,8 @@ namespace PositronNova
         Texture2D icone_precision;
         Texture2D icone_moteur;
         Texture2D icone_fleche;
+        Texture2D icone_moteur_ok;
+        Texture2D icone_precision_ok;
 
         Vector2 position_icone_fleche;
         Vector2 position_icone_precision;
@@ -59,6 +62,8 @@ namespace PositronNova
             Texture2D icone_precision,
             Texture2D icone_moteur,
             Texture2D icone_fleche,
+            Texture2D icone_precision_ok,
+            Texture2D icone_moteur_ok,
             SpriteFont spriteFont)
         {
             this.game = game;
@@ -66,6 +71,8 @@ namespace PositronNova
             this.icone_moteur = icone_moteur;
             this.icone_precision = icone_precision;
             this.icone_fleche = icone_fleche;
+            this.icone_moteur_ok = icone_moteur_ok;
+            this.icone_precision_ok = icone_precision_ok;
 
             this.spriteFont = spriteFont;
 
@@ -135,15 +142,27 @@ namespace PositronNova
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y), 25, 25),
                 Color.White);
 
-            spriteBatch.Draw(icone_precision,
-                new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
-                    (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
-                Color.White);
+            if(changement_precision)
+                spriteBatch.Draw(icone_precision_ok,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
+            else
+                spriteBatch.Draw(icone_precision,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
 
-            spriteBatch.Draw(icone_moteur,
-                new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
-                    (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
-                Color.White);
+            if(changement_moteur)
+                spriteBatch.Draw(icone_moteur_ok,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
+            else
+                spriteBatch.Draw(icone_moteur,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
 
 
             if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 - 100 + Camera2d.Origine.X) &&
@@ -162,18 +181,24 @@ namespace PositronNova
                 if (mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y) &&
                     mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y + 50))
                 {
-                    spriteBatch.DrawString(spriteFont,
-                        "Degats" + 
-                        "\nAugmente les degats de tous les vaisseaux !",
-                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Green);
+                    if (changement_precision)
+                        spriteBatch.DrawString(spriteFont,
+                            "Degats" + "\n Technologie acquise",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                            Color.Green);
+                    else
+                        spriteBatch.DrawString(spriteFont,
+                            "Degats     Requis : 500, 500" + 
+                            "\nAugmente les degats de tous les vaisseaux !",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                            Color.Green);
                 }
 
                 if (mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y) &&
                     mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y + 50))
                 {
                     spriteBatch.DrawString(spriteFont,
-                        "Moteur :" +
+                        "Moteur     Requis : 400, 400" +
                         "\nAugmente la vitesse de tous les vaisseaux en contruction" +
                         "\nN'augmente pas la vitesse des vaisseaux deja construits",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
@@ -212,6 +237,17 @@ namespace PositronNova
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
                             Color.Red);
             }
+        }
+
+
+        private Ressources RecquiredRessourcePrecision()
+        {
+            return new Ressources(500, 500);
+        }
+
+        private Ressources RecquiredRessourceMoteur()
+        {
+            return new Ressources(400, 400);
         }
     }
 }

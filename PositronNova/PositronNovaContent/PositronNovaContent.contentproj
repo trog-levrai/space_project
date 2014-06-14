@@ -650,13 +650,29 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\Icone_tech\Moteur.jpg">
-      <Name>Moteur</Name>
+    <Compile Include="img\Icone_tech\precision.jpg">
+      <Name>precision</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\Icone_tech\precision.jpg">
-      <Name>precision</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="img\Icone_tech\precision_ok.jpg">
+      <Name>precision_ok</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="img\Icone_tech\Moteur_ok.jpg">
+      <Name>Moteur_ok</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="img\Icone_tech\Moteur.jpg">
+      <Name>Moteur</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
