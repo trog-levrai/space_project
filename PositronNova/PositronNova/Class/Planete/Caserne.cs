@@ -13,14 +13,16 @@ namespace PositronNova
 {
     class Caserne
     {
+        TimeSpan compt;
+        TimeSpan last;
+        int compteur;
+
         Game game;
 
         Unit localUnit;
         ContentManager content;
 
         Random rand;
-
-        int choix;
 
         Texture2D Icone_chasseur;
         Texture2D Icone_chasseur_lourds;
@@ -46,6 +48,12 @@ namespace PositronNova
         bool selected_croiseur;
         bool selected_destroyer;
         bool selected_cuirasse;
+
+        bool lancer_recrutement_chasseur;
+        bool recrutement_chasseur_OK;
+        bool lancer_recrutement_chasseur_lourd;
+        bool
+
 
         Vector2 position_icone_fleche;
         Vector2 position_icone_chasseur;
@@ -75,6 +83,9 @@ namespace PositronNova
             this.game = game;
             this.content = content;
 
+            compt = new TimeSpan(0, 0, 1);
+            compteur = 0;
+
             this.Icone_chasseur = Icone_chasseur;
             this.Icone_chasseur_lourds = Icone_chasseur_lourds;
             this.Icone_corvette = Icone_corvette;
@@ -97,8 +108,9 @@ namespace PositronNova
             selected_cuirasse = false;
             selected_destroyer = false;
             recrut = false;
+            lancer_recrutement = false;
+            recrutement_chasseur_OK = false;
 
-            choix = -1;
 
             rand = new Random();
         }
@@ -110,6 +122,7 @@ namespace PositronNova
 
         public void Update(GameTime gameTime, MouseState mouseState, MouseState oldmouse)
         {
+            last = last.Add(gameTime.ElapsedGameTime);
 
             position_icone_fleche = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 100 + Camera2d.Origine.X),
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y));
@@ -140,8 +153,14 @@ namespace PositronNova
                 selected_chasseur = Math.Abs(mouseState.X - (position_icone_chasseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_chasseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_chasseur)
                 {
-                    genHum(1);
+                    lancer_recrutement = true;
                 }
+            }
+
+            if (recrutement_chasseur_OK)
+            {
+                genHum(1);
+                recrutement_chasseur_OK = false;
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
@@ -149,7 +168,12 @@ namespace PositronNova
                 selected_chasseur_lourd = Math.Abs(mouseState.X - (position_icone_chasseur_lourd.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_chasseur_lourd.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_chasseur_lourd)
                 {
-                    genHum(2);
+                    lancer_recrutement = true;
+                    //if (recrutement_OK)
+                    //{
+                    //    genHum(2);
+                    //    recrutement_OK = false;
+                    //}
                 }
             }
 
@@ -158,7 +182,12 @@ namespace PositronNova
                 selected_corvette = Math.Abs(mouseState.X - (position_icone_corvette.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_corvette.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_corvette && Planete.Niveau_caserne > 1)
                 {
-                    genHum(3);
+                    lancer_recrutement = true;
+                    //if (recrutement_OK)
+                    //{
+                    //    genHum(3);
+                    //    recrutement_OK = false;
+                    //}
                 }
             }
 
@@ -167,7 +196,12 @@ namespace PositronNova
                 selected_croiseur = Math.Abs(mouseState.X - (position_icone_croiseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_croiseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_croiseur && Planete.Niveau_caserne > 2)
                 {
-                    genHum(4);
+                    lancer_recrutement = true;
+                    //if (recrutement_OK)
+                    //{
+                    //    genHum(4);
+                    //    recrutement_OK = false;
+                    //}
                 }
             }
 
@@ -176,7 +210,12 @@ namespace PositronNova
                 selected_cuirasse = Math.Abs(mouseState.X - (position_icone_cuirasse.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_cuirasse.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_cuirasse && Planete.Niveau_caserne > 3)
                 {
-                    genHum(6);
+                    lancer_recrutement = true;
+                    //if (recrutement_OK)
+                    //{
+                    //    genHum(6);
+                    //    recrutement_OK = false;
+                    //}
                 }
             }
 
@@ -185,6 +224,7 @@ namespace PositronNova
                 selected_destroyer = Math.Abs(mouseState.X - (position_icone_destroyer.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_destroyer.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_destroyer && Planete.Niveau_caserne > 4)
                 {
+                    lancer_recrutement = true;
                     genHum(5);
                 }
             }
@@ -350,6 +390,31 @@ namespace PositronNova
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
                         Color.Green);
                 }
+            }
+
+            if (lancer_recrutement && last > compt)
+            {
+                spriteBatch.DrawString(spriteFont,
+                             "Progression : " + compteur + "%",
+                            new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
+                            Color.Red);
+                compteur += rand.Next(1, 10);
+                if (compteur > 100)
+                {
+                    compteur = 0;
+                    recrutement_chasseur_OK = true;
+                    lancer_recrutement = false;
+                }
+                last = new TimeSpan(0);
+            }
+            else
+            {
+                spriteBatch.DrawString(spriteFont,
+                            "Progression : " + compteur + "%",
+                            new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
+                            Color.Red);
             }
 
         }

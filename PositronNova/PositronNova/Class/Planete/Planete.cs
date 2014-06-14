@@ -526,7 +526,7 @@ namespace PositronNova
                              "Progression : " + compteur + "%",
                             new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 140 + Camera2d.Origine.Y)),
                             Color.Red);
-                        compteur += rand.Next(1, 10);
+                        compteur += rand.Next(1, 15);
                         if (compteur > 100)
                         {
                             compteur = 0;
