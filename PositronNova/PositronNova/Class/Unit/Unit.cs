@@ -125,7 +125,10 @@ namespace PositronNova.Class.Unit
                     fireRate = new TimeSpan(0, 0, 0, 0, 600);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
-                    speed = 2.2f;
+                    if (Universite.Changement_moteur)
+                        speed = 2.8f;
+                    else
+                        speed = 2.2f;
                     range = 200;
                     requiredResources = new Ressources(10, 5);
                     break;
@@ -141,7 +144,10 @@ namespace PositronNova.Class.Unit
                     fireRate = new TimeSpan(0, 0, 0, 0, 900);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
-                    speed = 1.9f;
+                    if (Universite.Changement_moteur)
+                        speed = 2.5f;
+                    else
+                        speed = 1.9f;
                     range = 300;
                     requiredResources = new Ressources(40, 50);
                     break;
@@ -159,7 +165,10 @@ namespace PositronNova.Class.Unit
                     fireRate = new TimeSpan(0, 0, 0, 0, 1500);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
-                    speed = 1.6f;
+                    if (Universite.Changement_moteur)
+                        speed = 2.2f;
+                    else
+                        speed = 1.6f;
                     range = 400;
                     requiredResources = new Ressources(15, 10);
                     break;
@@ -177,7 +186,10 @@ namespace PositronNova.Class.Unit
                     fireRate = new TimeSpan(0, 0, 0, 0, 2000);
                     weaponType = BulletType.Ion;
                     pv_max = 90;
-                    speed = 1.4f;
+                    if (Universite.Changement_moteur)
+                        speed = 2f;
+                    else
+                        speed = 1.4f;
                     range = 450;
                     requiredResources = new Ressources(20, 15);
                     break;
@@ -195,7 +207,10 @@ namespace PositronNova.Class.Unit
                     fireRate = new TimeSpan(0, 0, 0, 0, 2500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
-                    speed = 1.3f;
+                    if (Universite.Changement_moteur)
+                        speed = 1.9f;
+                    else
+                        speed = 1.3f;
                     range = 500;
                     requiredResources = new Ressources(25, 20);
                     break;
@@ -213,7 +228,10 @@ namespace PositronNova.Class.Unit
                     fireRate = new TimeSpan(0, 0, 0, 3);
                     weaponType = BulletType.Missile;
                     pv_max = 250;
-                    speed = 1f;
+                    if (Universite.Changement_moteur)
+                        speed = 1.6f;
+                    else
+                        speed = 1f;
                     range = 600;
                     requiredResources = new Ressources(80, 110);
                     break;
@@ -410,7 +428,7 @@ namespace PositronNova.Class.Unit
             {
                 destination = position;
             }
-            moving = position != destination;
+            moving = (position != destination) || (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2));
         }
 
         void shoot()
