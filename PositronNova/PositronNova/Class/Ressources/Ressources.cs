@@ -61,7 +61,7 @@ namespace PositronNova
             r_energie = Energie;
             r_metal = Metal;
 
-            ressou_rate = new TimeSpan(0, 0, 2);
+            ressou_rate = new TimeSpan(0, 0, 1);
             last = new TimeSpan(0);
         }
 

@@ -327,7 +327,7 @@ namespace PositronNova
                                     i--;
                                 }
 
-                                genHumain(10);
+                                //genHumain(10);
                                 genAlien(10);
 
                                 planete.Ressource = Ressources.getStartRessources();
@@ -501,6 +501,18 @@ namespace PositronNova
                             {
                                 unitList[i].Ennemy = unitList[0];
                                 unitList[i].HasTarget = true;
+                            }
+                            if (unitList[i].Side == UnitSide.Alien)
+                            {
+                                for (int j = 0; j < unitList.Count; j++)
+                                {
+                                    if (unitList[j].Side == UnitSide.Humain)
+                                    {
+                                        unitList[i].Ennemy = unitList[j];
+                                        unitList[i].HasTarget = true;
+                                        j = unitList.Count;
+                                    }
+                                }
                             }
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
