@@ -201,15 +201,16 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Icone_tech\\precision_ok"),
                 Content.Load<Texture2D>("img\\Icone_tech\\Moteur_ok"),
                 Content.Load<SpriteFont>("Planete"),
-                ressource);
+                ressource,
+                text);
         }
 
         public void Update(GameTime gameTime, MouseState mouse, MouseState oldmouse, KeyboardState keyboardState, KeyboardState oldKeyboardState)
         {
             last = last.Add(gameTime.ElapsedGameTime);
 
-            ressource = universite.setRessource();
             ressource = caserne.setRessource();
+            ressource = universite.setRessource();
 
             position_icone_centrale = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X), 
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
@@ -228,13 +229,13 @@ namespace PositronNova
 
             if (!selected_recrutement && !selected_universite)
             {
-                if (mouse.LeftButton == ButtonState.Pressed)
+                if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected = Math.Abs(mouseState.X - (position.X + image_planete.Width) + Camera2d.Origine.X) <= image_planete.Width & Math.Abs(mouseState.Y - (position.Y + image_planete.Height) + Camera2d.Origine.Y) <= image_planete.Height || caserne.Recrut; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                 }
 
 
-                if (mouse.LeftButton == ButtonState.Pressed)
+                if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected_centrale = Math.Abs(mouse.X - (position_icone_centrale.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_centrale.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                     if (selected_centrale)
@@ -244,7 +245,7 @@ namespace PositronNova
                     }
                 }
 
-                if (mouse.LeftButton == ButtonState.Pressed)
+                if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected_extracteur = Math.Abs(mouse.X - (position_icone_extracteur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_extracteur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                     if (selected_extracteur)
@@ -254,7 +255,7 @@ namespace PositronNova
                     }
                 }
 
-                if (mouse.LeftButton == ButtonState.Pressed)
+                if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected_caserne = Math.Abs(mouse.X - (position_icone_caserne.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_caserne.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                     if (selected_caserne)
@@ -281,7 +282,7 @@ namespace PositronNova
 
                 }
 
-                if (mouse.LeftButton == ButtonState.Pressed)
+                if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected_recrutement = Math.Abs(mouse.X - (position_icone_recrutement.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_recrutement.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2 & recrutement; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                     if (selected_recrutement)
@@ -294,7 +295,7 @@ namespace PositronNova
                     }
                 }
 
-                if (mouse.LeftButton == ButtonState.Pressed)
+                if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected_universite = Math.Abs(mouse.X - (position_icone_universite.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_universite.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                     if (selected_universite)
@@ -435,6 +436,12 @@ namespace PositronNova
             {
                 universite.Update(gameTime, mouse, oldmouse);
                 selected_universite = !universite.Univ;
+                selected = universite.Univ;
+                if (selected)
+                {
+                    selected_recrutement = false;
+                    selected_universite = false;
+                }
             }
 
             
