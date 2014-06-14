@@ -522,11 +522,10 @@ namespace PositronNova
                             break;
                     }
 
-                    string[] names = new string[] {"Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Baptiste"};
+                    string[] names = new string[] { "Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Prescillia", "Niro", "Bastien", "Kelly", "Axel", "Baptiste" };
                     int a = rand.Next(0, names.Length);
                     string name = names[a];
                     localUnit = new Unit(name , new Vector2(150, 150) ,unit);
-                    localUnit.LoadContent(content);
                     localUnit.Init();
                     PositronNova.UnitList.Add(localUnit);
                     selected_chasseur = false;

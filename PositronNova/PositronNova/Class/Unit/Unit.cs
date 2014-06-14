@@ -106,18 +106,14 @@ namespace PositronNova.Class.Unit
             //direction = Vector2.Zero;
             destination = position;
 
-            base.Init();
-        }
-        public void LoadContent(ContentManager content)
-        {
-            _font = content.Load<SpriteFont>("Affichage_mouse");
-            deathNoise = content.Load<SoundEffect>("sounds\\shipDeath");
+            _font = Manager.font_t;
+            deathNoise = Manager.deathNoise_s;
 
             switch (unitType)
             {
                 case UnitType.Chasseur:
                     side = UnitSide.Humain;
-                    texture = content.Load<Texture2D>("img\\ships\\Chasseur2");
+                    texture = Manager.chasseur_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[1];
                     hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, 10, 10);
@@ -134,7 +130,7 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Bombardier:
                     side = UnitSide.Humain;
-                    texture = content.Load<Texture2D>("img\\ships\\Bombardier");
+                    texture = Manager.chasseurLourd_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[3];
                     decalageHitBoxes = 14;
@@ -153,7 +149,7 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Corvette:
                     side = UnitSide.Humain;
-                    texture = content.Load<Texture2D>("img\\ships\\Corvette");
+                    texture = Manager.corvette_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[3];
                     tailleHitBoxesX = 25;
@@ -174,7 +170,7 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Destroyer:
                     side = UnitSide.Humain;
-                    texture = content.Load<Texture2D>("img\\ships\\Destroyer");
+                    texture = Manager.destroyer_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[5];
                     tailleHitBoxesX = 40;
@@ -195,7 +191,7 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Croiseur:
                     side = UnitSide.Humain;
-                    texture = content.Load<Texture2D>("img\\ships\\Croiseur");
+                    texture = Manager.croiseur_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[5];
                     tailleHitBoxesX = 40;
@@ -216,7 +212,7 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Cuirasse:
                     side = UnitSide.Humain;
-                    texture = content.Load<Texture2D>("img\\ships\\Cuirasse");
+                    texture = Manager.cuirasse_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[5];
                     tailleHitBoxesX = 50;
@@ -240,8 +236,8 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Bacterie:
                     side = UnitSide.Alien;
-                    texture = content.Load<Texture2D>("img\\alienShips\\Bacterie");
-                    textureAnime = content.Load<Texture2D>("img\\alienShips\\BacterieSheet");
+                    texture = Manager.bacterie_t;
+                    textureAnime = Manager.bacterieAnim_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[3];
                     tailleHitBoxesX = 10;
@@ -262,8 +258,8 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Neurone:
                     side = UnitSide.Alien;
-                    texture = content.Load<Texture2D>("img\\alienShips\\Neurone");
-                    textureAnime = content.Load<Texture2D>("img\\alienShips\\NeuroneSheet");
+                    texture = Manager.neurone_t;
+                    textureAnime = Manager.neuroneAnim_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[1];
                     hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 20, 20);
@@ -280,8 +276,8 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Phagosome:
                     side = UnitSide.Alien;
-                    texture = content.Load<Texture2D>("img\\alienShips\\Phagosome");
-                    textureAnime = content.Load<Texture2D>("img\\alienShips\\PhagosomeSheet");
+                    texture = Manager.phagosome_t;
+                    textureAnime = Manager.phagosomeAnim_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[1];
                     hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 75, 75);
@@ -298,8 +294,8 @@ namespace PositronNova.Class.Unit
                     break;
                 case UnitType.Kraken:
                     side = UnitSide.Alien;
-                    texture = content.Load<Texture2D>("img\\alienShips\\Kraken");
-                    textureAnime = content.Load<Texture2D>("img\\alienShips\\KrakenSheet");
+                    texture = Manager.kraken_t;
+                    textureAnime = Manager.krakenAnim_t;
                     // Creation des HitBoxes
                     hitBoxes = new Rectangle[1];
                     hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 150, 60);
@@ -325,6 +321,8 @@ namespace PositronNova.Class.Unit
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
             PlacementHitBoxes();
+
+            base.Init();
         }
 
         public override void Update(GameTime gt)
@@ -436,6 +434,14 @@ namespace PositronNova.Class.Unit
             {
                 localBullet = new Bullet(position + centre, enn, weaponType);
                 PositronNova.AddBullet(localBullet);
+                // Les kraken font apparaître des unités
+                if (unitType == UnitType.Kraken)
+                {
+                    Unit localUnit = new Unit(position + new Vector2(0, 50), (UnitType)PositronNova.Rand.Next((int)UnitType.Bacterie, (int)UnitType.Neurone + 1));
+                    localUnit.Init();
+                    PositronNova.UnitList.Add(localUnit);
+                }
+                // Les sons à l'intérieur de l'écran
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
                     position.X + centre.X > Camera2d.Origine.X &&
                     position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&

@@ -79,7 +79,8 @@ namespace PositronNova
         BrouillardDeGuerre fog;
         bool enableFog = true;
 
-        Random rand = new Random();
+        static Random rand = new Random();
+        static public Random Rand { get { return rand; } }
 
         private SpriteFont chat;
         private Chat text;
@@ -182,10 +183,6 @@ namespace PositronNova
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Manager.ContentLoad(Content);
-
-            foreach (Unit unit in unitList)
-                unit.LoadContent(Content);
-
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
 
@@ -337,7 +334,7 @@ namespace PositronNova
                                 ressources = Ressources.getStartRessources();
 
                                 foreach (Unit unit in unitList)
-                                    unit.LoadContent(Content);
+                                    unit.Init();
                             }
                             if (startScreen.SelectedIndex == 3)
                             {
