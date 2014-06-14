@@ -47,8 +47,18 @@ namespace PositronNova
         bool selected_precision;
         bool selected_moteur;
 
-        bool diminution_ressource_precision;
-        bool diminution_ressource_moteur;
+        static bool diminution_ressource_precision;
+        static public bool Diminution_ressource_precision
+        {
+            get { return diminution_ressource_precision; }
+            set { diminution_ressource_precision = value; }
+        }
+        static bool diminution_ressource_moteur;
+        static public bool Diminution_ressource_moteur
+        {
+            get { return diminution_ressource_moteur; }
+            set { diminution_ressource_moteur = value; }
+        }
 
         bool precision_ok;
         bool moteur_ok;
@@ -132,12 +142,12 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_precision = Math.Abs(mouseState.X - (position_icone_precision.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_precision.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_precision && ressource.curRessources() >= RecquiredRessourcePrecision())
+                if (selected_precision && PositronNova.ressources.curRessources() >= RecquiredRessourcePrecision()/*&& ressource.curRessources() >= RecquiredRessourcePrecision()*/)
                 {
                     if (!changement_precision)
                     {
                         lancer_recherche_precision = true;
-                        diminution_ressource_precision = true;
+                        Universite.Diminution_ressource_precision = true;
                     }
                 }
             }
@@ -145,7 +155,7 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_moteur = Math.Abs(mouseState.X - (position_icone_moteur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_moteur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_moteur && ressource.curRessources() >= RecquiredRessourceMoteur())
+                if (selected_moteur && PositronNova.ressources.curRessources() >= RecquiredRessourceMoteur()/*&& ressource.curRessources() >= RecquiredRessourceMoteur()*/)
                 {
                     if (!changement_moteur)
                     {
@@ -290,14 +300,16 @@ namespace PositronNova
         {
             if (diminution_ressource_precision)
             {
-                ressource.Energie -= 500;
-                ressource.Metal -= 500;
+                //ressource.Energie -= 500;
+                //ressource.Metal -= 500;
+                ressource -= RecquiredRessourcePrecision();
                 diminution_ressource_precision = false;
             }
             if (diminution_ressource_moteur)
             {
-                ressource.Energie -= 400;
-                ressource.Metal -= 400;
+                //ressource.Energie -= 400;
+                //ressource.Metal -= 400;
+                ressource -= RecquiredRessourceMoteur();
                 diminution_ressource_moteur = false;
             }
 
@@ -319,5 +331,6 @@ namespace PositronNova
         {
             ressource = Ressources.getStartRessources();
         }
+
     }
 }

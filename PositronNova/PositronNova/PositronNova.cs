@@ -45,7 +45,8 @@ namespace PositronNova
         static List<Bullet> bulletList = new List<Bullet>();
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
 
-        Ressources ressources;
+        static public Ressources ressources;
+
         Planete planete;
 
         KeyboardState keyboardState;

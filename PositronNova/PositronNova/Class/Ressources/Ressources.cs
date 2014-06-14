@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PositronNova
 {
-    class Ressources
+    public class Ressources
     {
         System.TimeSpan ressou_rate;
         System.TimeSpan last;
