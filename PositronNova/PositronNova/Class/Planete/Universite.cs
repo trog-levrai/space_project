@@ -18,6 +18,7 @@ namespace PositronNova
 
         Ressources ressource;
 
+
         SpriteFont spriteFont;
 
         TimeSpan compt;
@@ -287,6 +288,11 @@ namespace PositronNova
         private Ressources RecquiredRessourceMoteur()
         {
             return new Ressources(400, 400);
+        }
+
+        public void Start()
+        {
+            ressource = Ressources.getStartRessources();
         }
     }
 }

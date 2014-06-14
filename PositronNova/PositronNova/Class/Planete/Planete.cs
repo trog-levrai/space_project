@@ -78,6 +78,8 @@ namespace PositronNova
         Random rand;
         int compteur;
 
+        Chat text;
+
         Vector2 position;
         SpriteFont spriteFont;
         SpriteFont progressFont;
@@ -121,7 +123,8 @@ namespace PositronNova
             Texture2D image_universite,
             Ressources ressource,
             SpriteFont spriteFont,
-            SpriteFont progressFont)
+            SpriteFont progressFont,
+            Chat text)
         {
             this.image_planete = image_planete;
             this.image_plus = image_plus;
@@ -136,6 +139,7 @@ namespace PositronNova
             this.spriteFont = spriteFont;
             this.game = game;
             this.ressource = ressource;
+            this.text = text;
 
             niveau_centrale = 1;
             niveau_extracteur = 1;
@@ -187,7 +191,8 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Icone_unite\\Icone_cuirasse_grisee"),
                 Content.Load<Texture2D>("img\\Fleche"),
                 Content.Load<SpriteFont>("Planete"),
-                ressource);
+                ressource,
+                text);
 
             universite = new Universite(game,
                 Content.Load<Texture2D>("img\\Icone_tech\\precision"),
@@ -789,6 +794,13 @@ namespace PositronNova
             }
 
             return new Ressources(recquired_ressource_centrale, recquired_ressource_extracteur);
+        }
+
+        public void Start()
+        {
+            ressource = Ressources.getStartRessources();
+            caserne.Start();
+            universite.Start();
         }
 
     }
