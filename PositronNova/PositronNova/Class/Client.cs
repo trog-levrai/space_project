@@ -12,14 +12,18 @@ namespace PositronNova.Class
 {
     class Client
     {
+        private List<Unit.Unit> enn;
+        public List<Unit.Unit>Ennemies
+        {
+            get { return enn; }
+        }
         public Chat chat;
-        private NetworkStream ns;
         private Thread Writer;
         public String name { get; private set; }
         public Socket sock;
         StreamReader clientReader;
         StreamWriter clientWriter;
-        private BinaryFormatter format;
+        public BinaryFormatter format;
         public Client(String name, String host, int port, Game game)
         {
             format = new BinaryFormatter();
@@ -32,7 +36,6 @@ namespace PositronNova.Class
             Writer = new Thread(new ThreadStart(Receive));
             Writer.IsBackground = true;
             Writer.Start();
-            ns = new NetworkStream(sock);
         }
         //Methode de connection au serveur
         public void KBInput(KeyboardState ks)
@@ -69,11 +72,17 @@ namespace PositronNova.Class
             {
                 try
                 {
-                    List<Unit.Unit> units;
+                    Unit.Unit[] units;
                     byte[] buffer = new byte[2048];
                     sock.Receive(buffer);
                     MemoryStream mem = new MemoryStream(buffer);
-                    units = (List<Unit.Unit>) format.Deserialize(mem);
+                    units = (Unit.Unit[]) format.Deserialize(mem);
+                    enn.Clear();
+                    for (int i = 0; i < units.Length; i++)
+                    {
+                        units[i].Friendly = false;
+                        enn.Add(units[i]);
+                    }
                 }
                 catch
                 {

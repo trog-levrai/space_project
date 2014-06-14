@@ -75,6 +75,7 @@ namespace PositronNova.Class.Unit
         public bool Friendly
         {
             get { return friendly; }
+            set { friendly = value; }
         }
 
         //////////////////////////////////// CONSTRUCTEURS /////////////////////////////////////

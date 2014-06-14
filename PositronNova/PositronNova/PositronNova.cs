@@ -433,6 +433,18 @@ namespace PositronNova
                                     send.Add(unit);
                                 }
                             }
+                            client.SendUnit(send);
+                            List<Unit> aux = unitList;
+                            unitList.Clear();
+                            foreach (var unit in aux)
+                            {
+                                if (unit.Friendly)
+                                    unitList.Add(unit);
+                            }
+                            foreach (var unit in client.Ennemies)
+                            {
+                                unitList.Add(unit);
+                            }
                         }
                         cue.Pause();
                         cue1.Resume();
