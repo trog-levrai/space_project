@@ -54,6 +54,7 @@ namespace PositronNova
         bool progress_centrale;
         bool progress_extracteur;
         bool progress_caserne;
+        bool passage_niveau_OK;
 
         string batiments;
 
@@ -90,8 +91,8 @@ namespace PositronNova
         {
             get { return niveau_extracteur; }
         }
-        private int niveau_caserne;
-        public int Niveau_caserne
+        static private int niveau_caserne;
+        static public int Niveau_caserne
         {
             get { return niveau_caserne; }
         }
@@ -151,6 +152,7 @@ namespace PositronNova
             progress_centrale = false;
             progress_extracteur = false;
             progress_caserne = false;
+            passage_niveau_OK = false;
             verif = -1;
         }
 
@@ -164,6 +166,10 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Icone_unite\\Icone_croiseur"),
                 Content.Load<Texture2D>("img\\Icone_unite\\Icone_cuirasse"),
                 Content.Load<Texture2D>("img\\Icone_unite\\Icone_destroyer"),
+                Content.Load<Texture2D>("img\\Icone_unite\\Icone_corvette_grisee"),
+                Content.Load<Texture2D>("img\\Icone_unite\\Icone_croiseur_grisee"),
+                Content.Load<Texture2D>("img\\Icone_unite\\Icone_destroyer_grisee"),
+                Content.Load<Texture2D>("img\\Icone_unite\\Icone_cuirasse_grisee"),
                 Content.Load<Texture2D>("img\\Fleche"),
                 Content.Load<SpriteFont>("Planete"));
         }
@@ -275,9 +281,6 @@ namespace PositronNova
                                 diminution_centrale_ressource = 0;
                                 break;
                         }
-                        niveau_centrale += 1;
-                        if (niveau_centrale > 5)
-                            niveau_centrale = 5;
 
                         diminution_centrale = true;
                         plus = false;
@@ -308,10 +311,6 @@ namespace PositronNova
                                 diminution_extracteur_ressource = 0;
                                 break;
                         }
-
-                        niveau_extracteur += 1;
-                        if (niveau_extracteur > 5)
-                            niveau_extracteur = 5;
                         diminution_extracteur = true;
                         plus = false;
                     }
@@ -342,12 +341,34 @@ namespace PositronNova
                                 diminution_caserne_ressource = -1;
                                 break;
                         }
-                        niveau_caserne += 1;
-                        if (niveau_caserne > 5)
-                            niveau_caserne = 5;
                         diminution_caserne = true;
                         plus = false;
                     }
+                }
+
+                if (passage_niveau_OK)
+                {
+                    if (batiments == "Centrale")
+                    {
+                        niveau_centrale += 1;
+                        if (niveau_centrale > 5)
+                            niveau_centrale = 5;
+                    }
+                    if (batiments == "Extracteur")
+                    {
+                        niveau_extracteur += 1;
+                        if (niveau_extracteur > 5)
+                            niveau_extracteur = 5;
+                    }
+
+                    if (batiments == "Caserne")
+                    {
+                        niveau_caserne += 1;
+                        if (niveau_caserne > 5)
+                            niveau_caserne = 5;
+                    }
+
+                    passage_niveau_OK = false;
                 }
 
                 if (plus)
@@ -513,6 +534,7 @@ namespace PositronNova
                             progress_extracteur = false;
                             progress_caserne = false;
                             selected = true;
+                            passage_niveau_OK = true;
                         }
                         last = new TimeSpan(0);
                     }

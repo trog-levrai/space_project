@@ -25,9 +25,13 @@ namespace PositronNova
         Texture2D Icone_chasseur;
         Texture2D Icone_chasseur_lourds;
         Texture2D Icone_corvette;
+        Texture2D Icone_corvette_grisee;
         Texture2D Icone_croiseur;
+        Texture2D Icone_croiseur_grisee;
         Texture2D Icone_cuirasse;
+        Texture2D Icone_cuirasse_grisee;
         Texture2D Icone_destroyer;
+        Texture2D Icone_destroyer_grisee;
         Texture2D fleche;
 
         bool selected_fleche;
@@ -61,6 +65,10 @@ namespace PositronNova
             Texture2D Icone_croiseur,
             Texture2D Icone_cuirasse,
             Texture2D Icone_destroyer,
+            Texture2D Icone_corvette_grisee,
+            Texture2D Icone_croiseur_grisee,
+            Texture2D Icone_destroyer_grisee,
+            Texture2D Icone_cuirasse_grisee,
             Texture2D fleche,
             SpriteFont spriteFont)
         {
@@ -74,6 +82,11 @@ namespace PositronNova
             this.Icone_cuirasse = Icone_cuirasse;
             this.Icone_destroyer = Icone_destroyer;
             this.fleche = fleche;
+
+            this.Icone_corvette_grisee = Icone_corvette_grisee;
+            this.Icone_croiseur_grisee = Icone_croiseur_grisee;
+            this.Icone_cuirasse_grisee = Icone_cuirasse_grisee;
+            this.Icone_destroyer_grisee = Icone_destroyer_grisee;
 
             this.spriteFont = spriteFont;
 
@@ -143,7 +156,7 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_corvette = Math.Abs(mouseState.X - (position_icone_corvette.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_corvette.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_corvette)
+                if (selected_corvette && Planete.Niveau_caserne > 1)
                 {
                     genHum(3);
                 }
@@ -152,7 +165,7 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_croiseur = Math.Abs(mouseState.X - (position_icone_croiseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_croiseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_croiseur)
+                if (selected_croiseur && Planete.Niveau_caserne > 2)
                 {
                     genHum(4);
                 }
@@ -161,7 +174,7 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_cuirasse = Math.Abs(mouseState.X - (position_icone_cuirasse.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_cuirasse.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_cuirasse)
+                if (selected_cuirasse && Planete.Niveau_caserne > 3)
                 {
                     genHum(6);
                 }
@@ -170,7 +183,7 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_destroyer = Math.Abs(mouseState.X - (position_icone_destroyer.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_destroyer.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_destroyer)
+                if (selected_destroyer && Planete.Niveau_caserne > 4)
                 {
                     genHum(5);
                 }
@@ -198,22 +211,46 @@ namespace PositronNova
                     (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
 
-            spriteBatch.Draw(Icone_corvette,
-                new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X), 
+            if (Planete.Niveau_caserne < 2)
+                spriteBatch.Draw(Icone_corvette_grisee,
+                 new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
+                (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
+                Color.White);
+            else
+                spriteBatch.Draw(Icone_corvette,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X), 
                     (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
 
-            spriteBatch.Draw(Icone_croiseur,
+            if (Planete.Niveau_caserne < 3)
+                spriteBatch.Draw(Icone_croiseur_grisee,
+                     new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
+                    (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
+                Color.White);
+            else
+                spriteBatch.Draw(Icone_croiseur,
                 new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
 
-            spriteBatch.Draw(Icone_destroyer,
-                new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
+            if(Planete.Niveau_caserne < 4)
+                spriteBatch.Draw(Icone_destroyer_grisee,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
+            else
+                spriteBatch.Draw(Icone_destroyer,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
+
+            if(Planete.Niveau_caserne < 5)
+                spriteBatch.Draw(Icone_cuirasse_grisee,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
-
-            spriteBatch.Draw(Icone_cuirasse,
+            else
+                spriteBatch.Draw(Icone_cuirasse,
                 new Rectangle((int)(game.Window.ClientBounds.Width / 2 +500 + Camera2d.Origine.X),
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
@@ -226,7 +263,7 @@ namespace PositronNova
             {
                 spriteBatch.DrawString(spriteFont, "Retour",
                     new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                    Color.Red);
+                    Color.Green);
             }
 
             if (mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y) &&
@@ -238,7 +275,7 @@ namespace PositronNova
                     spriteBatch.DrawString(spriteFont,
                         "Chasseur",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
+                        Color.Green);
                 }
 
                 if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X) &&
@@ -247,16 +284,22 @@ namespace PositronNova
                     spriteBatch.DrawString(spriteFont,
                         "Chasseur Lourd",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
+                        Color.Green);
                 }
 
                 if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X) &&
                     mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X + 50))
                 {
-                    spriteBatch.DrawString(spriteFont,
+                    if (Planete.Niveau_caserne < 2)
+                        spriteBatch.DrawString(spriteFont,
+                            "Corvette" + "\nRecquiert caserne \nniveau 2 ou plus",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                            Color.Red);
+                    else
+                        spriteBatch.DrawString(spriteFont,
                         "Corvette",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
+                        Color.Green);
                 }
             }
 
@@ -266,28 +309,46 @@ namespace PositronNova
                 if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X) &&
                     mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X + 50))
                 {
-                    spriteBatch.DrawString(spriteFont,
+                    if (Planete.Niveau_caserne < 3)
+                        spriteBatch.DrawString(spriteFont,
+                            "Croiseur" + "\nRecquiert caserne \nniveau 3 ou plus",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Red);
+                    else
+                        spriteBatch.DrawString(spriteFont,
                         "Croiseur",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
+                        Color.Green);
                 }
 
                 if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X) &&
                     mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X + 50))
                 {
-                    spriteBatch.DrawString(spriteFont,
+                    if (Planete.Niveau_caserne < 4)
+                        spriteBatch.DrawString(spriteFont,
+                            "Destroyer" + "\nRecquiert caserne \nniveau 4 ou plus",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Red);
+                    else
+                        spriteBatch.DrawString(spriteFont,
                         "Destroyer",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
+                        Color.Green);
                 }
 
                 if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X) &&
                     mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X + 50))
                 {
-                    spriteBatch.DrawString(spriteFont,
+                    if (Planete.Niveau_caserne < 5)
+                        spriteBatch.DrawString(spriteFont,
+                            "Cuirasse" + "\nRecquiert caserne \nniveau 5",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Red);
+                    else
+                        spriteBatch.DrawString(spriteFont,
                         "Cuirasse",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
+                        Color.Green);
                 }
             }
 
