@@ -52,7 +52,8 @@ namespace PositronNova.Class
                     break;
             }
 
-            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            hitBoxes = new Rectangle[1];
+            hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
         public override void Update(GameTime gameTime)

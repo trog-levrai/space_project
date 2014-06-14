@@ -102,7 +102,8 @@ namespace PositronNova
                     break;
             }
 
-            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            hitBoxes = new Rectangle[1];
+            hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
             //textureData = new Color[texture.Width * texture.Height];
             //texture.GetData(textureData);
@@ -144,12 +145,11 @@ namespace PositronNova
         }
 
         // METHODES
-
         void Deplacement()
         {
             position += direction * speed;
-            hitbox.X = (int)position.X;
-            hitbox.Y = (int)position.Y;
+            hitBoxes[0].X = (int)position.X;
+            hitBoxes[0].Y = (int)position.Y;
         }
 
         void Destruction()
@@ -164,7 +164,7 @@ namespace PositronNova
             {
                 for (int i = 0; i < target.hitBoxes.Length; i++)
                 {
-                    if (hitbox.Intersects(target.hitBoxes[i]))
+                    if (hitBoxes[0].Intersects(target.hitBoxes[i]))
                     {
                         target.Pv -= damage;
                         destruc = true;

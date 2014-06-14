@@ -71,6 +71,8 @@ namespace PositronNova.Class.Unit
             get { return lifeBar; }
         }
 
+        int champDeVisionWidth, champDeVisionHeight;
+
         // Cible
         private Unit enn;
         public Unit Ennemy
@@ -118,6 +120,8 @@ namespace PositronNova.Class.Unit
                     hitBoxes = new Rectangle[1];
                     hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, 10, 10);
                     // ----
+                    champDeVisionWidth = 100;
+                    champDeVisionHeight = 100;
                     fireRate = new TimeSpan(0, 0, 0, 0, 600);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
@@ -137,6 +141,8 @@ namespace PositronNova.Class.Unit
                     for (int i = 0; i < 3; i++)
                         hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, 16, 16);
                     // ----
+                    champDeVisionWidth = 100;
+                    champDeVisionHeight = 100;
                     fireRate = new TimeSpan(0, 0, 0, 0, 900);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
@@ -158,6 +164,8 @@ namespace PositronNova.Class.Unit
                     for (int i = 0; i < 3; i++)
                         hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
                     // ----
+                    champDeVisionWidth = 100;
+                    champDeVisionHeight = 100;
                     fireRate = new TimeSpan(0, 0, 0, 0, 1500);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
@@ -179,6 +187,8 @@ namespace PositronNova.Class.Unit
                     for (int i = 0; i < 5; i++)
                         hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
                     // ----
+                    champDeVisionWidth = 100;
+                    champDeVisionHeight = 100;
                     fireRate = new TimeSpan(0, 0, 0, 0, 2000);
                     weaponType = BulletType.Ion;
                     pv_max = 90;
@@ -200,6 +210,8 @@ namespace PositronNova.Class.Unit
                     for (int i = 0; i < 5; i++)
                         hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesY);
                     // ----
+                    champDeVisionWidth = 100;
+                    champDeVisionHeight = 100;
                     fireRate = new TimeSpan(0, 0, 0, 0, 2500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
@@ -221,6 +233,8 @@ namespace PositronNova.Class.Unit
                     for (int i = 0; i < 5; i++)
                         hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
                     // ----
+                    champDeVisionWidth = 100;
+                    champDeVisionHeight = 100;
                     fireRate = new TimeSpan(0, 0, 0, 3);
                     weaponType = BulletType.Missile;
                     pv_max = 250;
@@ -317,10 +331,11 @@ namespace PositronNova.Class.Unit
 
             lifeBar = new HealthBar(pv, texture.Width);
 
-            hitbox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
 
             PlacementHitBoxes();
+            champDeVision = new Rectangle((int)(position.X + centre.X - champDeVisionWidth / 2), (int)(position.Y + centre.X - champDeVisionHeight / 2), champDeVisionWidth, champDeVisionHeight);
+            collisionInterVaisseau = new Rectangle((int)(position.X + centre.X - texture.Width / 2), (int)(position.Y + centre.X - texture.Height / 2), texture.Width, texture.Width);
 
             base.Init();
         }
@@ -335,6 +350,7 @@ namespace PositronNova.Class.Unit
             }
 
             deplacement(gt);
+            //CollisionInterVaisseau();
             if (Destruction())
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
                         position.X + centre.X > Camera2d.Origine.X &&
@@ -398,6 +414,8 @@ namespace PositronNova.Class.Unit
 
             }
 
+            //sb.Draw(Manager.lifeBrick_t, collisionInterVaisseau, Color.White);
+
             //DrawHitboxes(sb);
 
             base.Draw(sb);
@@ -415,9 +433,12 @@ namespace PositronNova.Class.Unit
                 direction = new Vector2(destination.X - position.X, destination.Y - position.Y);
                 direction.Normalize();
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
-                hitbox.X = (int)position.X;
-                hitbox.Y = (int)position.Y;
+                CorrectionTrajectoire();
                 PlacementHitBoxes();
+                champDeVision.X = (int)(position.X + centre.X - champDeVisionWidth / 2);
+                champDeVision.Y = (int)(position.Y + centre.Y - champDeVisionHeight / 2);
+                collisionInterVaisseau.X = (int)(position.X + centre.X - collisionInterVaisseau.Width / 2);
+                collisionInterVaisseau.Y = (int)(position.Y + centre.Y - collisionInterVaisseau.Height / 2);
                 if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
             }
@@ -505,6 +526,57 @@ namespace PositronNova.Class.Unit
         {
             for (int i = 0; i < hitBoxes.Length; i++)
                 sb.Draw(Manager.lifeBrick_t, hitBoxes[i], Color.White);
+        }
+
+        Vector2 CollisionInterVaisseau()
+        {
+            for (int i = 0; i < PositronNova.UnitList.Count; i++)
+            {
+                if (PositronNova.UnitList[i] != this)
+                {
+                    //for (int j = 0; j < hitBoxes.Length; j++)
+                    //    for (int k = 0; k < PositronNova.UnitList[i].hitBoxes.Length; k++)
+                            if (collisionInterVaisseau.Intersects(PositronNova.UnitList[i].collisionInterVaisseau))
+                            {
+                                //if (position.X + centre.X >= PositronNova.UnitList[i].position.X + PositronNova.UnitList[i].centre.X)
+                                //{
+                                //    if (position.Y + centre.Y >= PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
+                                //    {
+
+                                //    }
+                                //    else if (position.Y + centre.Y < PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
+                                //    {
+
+                                //    }
+                                //}
+                                //else if (position.X + centre.X < PositronNova.UnitList[i].position.X + PositronNova.UnitList[i].centre.X)
+                                //{
+                                //    if (position.Y + centre.Y >= PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
+                                //    {
+
+                                //    }
+                                //    else if (position.Y + centre.Y < PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
+                                //    {
+
+                                //    }
+                                //}
+                                return new Vector2(PositronNova.UnitList[i].position.X - position.X, PositronNova.UnitList[i].position.Y - position.Y);
+                            }
+
+               }
+            }
+            return Vector2.Zero;
+        }
+
+        void CorrectionTrajectoire()
+        {
+            if (CollisionInterVaisseau() != Vector2.Zero)
+            {
+                Vector2 temp = CollisionInterVaisseau();
+                temp.Normalize();
+                position -= temp * speed;
+                destination -= temp * speed;
+            }
         }
     }
 }

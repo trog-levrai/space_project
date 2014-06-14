@@ -229,7 +229,7 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Planete_1"),
                 Content.Load<Texture2D>("img\\Plus"),
                 Content.Load<Texture2D>("img\\centrale"),
-                Content.Load<Texture2D>("img\\Extracteur"),
+                Content.Load<Texture2D>("img\\Extracteur2"),
                 Content.Load<Texture2D>("img\\Tick"),
                 Content.Load<Texture2D>("img\\Caserne"),
                 Content.Load<Texture2D>("img\\recrutement"),
@@ -324,7 +324,7 @@ namespace PositronNova
                                     i--;
                                 }
 
-                                //genHumain(10);
+                                genHumain(10);
                                 genAlien(10);
                                 planete.Niveau_centrale = 1;
                                 planete.Niveau_extracteur = 1;
@@ -496,14 +496,14 @@ namespace PositronNova
 
                         for (int i = 0; i < unitList.Count; i++)
                         {
-                            //unitList[i].HandleInput(keyboardState, mouse);
                             unitList[i].Update(gameTime);
+                            // Mini IA
                             if (unitList[i].Side == UnitSide.Alien && unitList[0].Side == UnitSide.Humain)
                             {
                                 unitList[i].Ennemy = unitList[0];
                                 unitList[i].HasTarget = true;
                             }
-                            if (unitList[i].Side == UnitSide.Alien)
+                            else if (unitList[i].Side == UnitSide.Alien)
                             {
                                 for (int j = 0; j < unitList.Count; j++)
                                 {
@@ -515,6 +515,7 @@ namespace PositronNova
                                     }
                                 }
                             }
+
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
@@ -528,6 +529,15 @@ namespace PositronNova
                                 if (i > 0)
                                     i--;
                             }
+
+                            //for (int j = 0; j < unitList.Count; j++)
+                            //{
+                            //    if (i == j)
+                            //    {
+                            //        for (int k = 0; k < unitList[i].hitBoxes.Length; k++)
+                            //            for (int l = 0; l <
+                            //    }
+                            //}
                         }
 
                         interfaceJoueur.HandleInput(keyboardState, mouse);
@@ -634,29 +644,29 @@ namespace PositronNova
                     {
                         actionScreen.Draw(gameTime);
 
-                        foreach (Unit unit in unitList) //Affichage des unites si vous n'aviez pas compris
+                        foreach (Unit unit in unitList) // On utilise ChampdeVision ici c'est normal ! Avec hitBoxes c'est casse cul... la fleme et pas le temps
                         {
-                            if (unit.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
-                                unit.hitbox.Bottom > Camera2d.Origine.Y &&
-                                unit.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth &&
-                                unit.hitbox.Right > Camera2d.Origine.X)
+                            if (unit.champDeVision.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
+                                unit.champDeVision.Bottom > Camera2d.Origine.Y &&
+                                unit.champDeVision.Left < Camera2d.Origine.X + PositronNova.winWidth &&
+                                unit.champDeVision.Right > Camera2d.Origine.X)
                             {
                                 unit.Draw(spriteBatch);
                             }
                         }
                         foreach (Bullet bullet in bulletList) // Affichage des bullets :p
-                            if (bullet.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
-                                bullet.hitbox.Bottom > Camera2d.Origine.Y &&
-                                bullet.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth &&
-                                bullet.hitbox.Right > Camera2d.Origine.X)
+                            if (bullet.hitBoxes[0].Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
+                                bullet.hitBoxes[0].Bottom > Camera2d.Origine.Y &&
+                                bullet.hitBoxes[0].Left < Camera2d.Origine.X + PositronNova.winWidth &&
+                                bullet.hitBoxes[0].Right > Camera2d.Origine.X)
                             {
                                 bullet.Draw(spriteBatch);
                             }
                         foreach (EffectBullet effect in effectBulletList)
-                            if (effect.hitbox.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
-                                effect.hitbox.Bottom > Camera2d.Origine.Y &&
-                                effect.hitbox.Left < Camera2d.Origine.X + PositronNova.winWidth &&
-                                effect.hitbox.Right > Camera2d.Origine.X)
+                            if (effect.hitBoxes[0].Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
+                                effect.hitBoxes[0].Bottom > Camera2d.Origine.Y &&
+                                effect.hitBoxes[0].Left < Camera2d.Origine.X + PositronNova.winWidth &&
+                                effect.hitBoxes[0].Right > Camera2d.Origine.X)
                             {
                                 effect.Draw(spriteBatch);
                             }

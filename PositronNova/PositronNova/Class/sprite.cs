@@ -16,8 +16,9 @@ namespace PositronNova
     {
         public Texture2D texture;
         public Texture2D textureAnime;
-        public Rectangle hitbox;
+        public Rectangle champDeVision;
         public Rectangle[] hitBoxes;
+        protected Rectangle collisionInterVaisseau;
         protected int tailleHitBoxesX;
         protected int tailleHitBoxesY;
         protected int decalageHitBoxes;
@@ -72,9 +73,6 @@ namespace PositronNova
                 textureRotation = (float)Math.Atan((destination.Y - origine.Y) / (destination.X - origine.X)) + (float)Math.PI; // En rajoutant pi on passe de l'autre côté ^^
 
             position = origine;
-
-            //speed = 0;
-            //LoadContent(content, cont);
         }
 
         /////////////////////// METHODES
@@ -83,6 +81,7 @@ namespace PositronNova
         {
 
         }
+
         /// <summary>
         /// Charge l'image voulue grâce au ContentManager donné
         /// </summary>

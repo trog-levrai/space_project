@@ -36,7 +36,7 @@ namespace PositronNova.Class
             for (int z = 0; z < PositronNova.UnitList.Count; z++)
             {
                 if (!tab[i, j].isVisited)
-                    if (PositronNova.UnitList[z].Side == Unit.UnitSide.Humain && PositronNova.UnitList[z].hitbox.Intersects(tab[i, j].rectangle))
+                    if (PositronNova.UnitList[z].Side == Unit.UnitSide.Humain && PositronNova.UnitList[z].champDeVision.Intersects(tab[i, j].rectangle))
                         tab[i, j].isVisited = true;
 
                 if (!tab[i, j].isVisited)

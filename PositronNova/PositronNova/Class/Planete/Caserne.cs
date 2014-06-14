@@ -218,7 +218,7 @@ namespace PositronNova
             if (recrutement_chasseur_lourd_OK)
             {
                 genHum(2);
-                text.addString("Un Chasseur loud vient d'être créé !");
+                text.addString("Un Chasseur lourd vient d'être créé !");
                 recrutement_chasseur_lourd_OK = false;
             }
 
