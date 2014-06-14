@@ -471,24 +471,36 @@ namespace PositronNova
                 {
                     compteur = 0;
                     if (lancer_recrutement_chasseur)
-                        recrutement_chasseur_OK = true; ;
+                    {
+                        recrutement_chasseur_OK = true;
+                        lancer_recrutement_chasseur = false;
+                    }
                     if (lancer_recrutement_chasseur_lourd)
+                    {
                         recrutement_chasseur_lourd_OK = true;
+                        lancer_recrutement_chasseur_lourd = false;
+                    }
                     if (lancer_recrutement_corvette)
+                    {
                         recrutement_corvette_OK = true;
+                        lancer_recrutement_corvette = false;
+                    }
                     if (lancer_recrutement_croiseur)
+                    {
                         recrutement_croiseur_OK = true;
+                        lancer_recrutement_croiseur = false;
+                    }
                     if (lancer_recrutement_cuirasse)
+                    {
                         recrutement_cuirasse_OK = true;
+                        lancer_recrutement_cuirasse = false;
+                    }
                     if (lancer_recrutement_destroyer)
+                    {
                         recrutement_destroyer_OK = true;
+                        lancer_recrutement_destroyer = false;
+                    }
 
-                    lancer_recrutement_chasseur = false;
-                    lancer_recrutement_chasseur_lourd = false;
-                    lancer_recrutement_corvette = false;
-                    lancer_recrutement_croiseur = false;
-                    lancer_recrutement_cuirasse = false;
-                    lancer_recrutement_destroyer = false;
                 }
                 last = new TimeSpan(0);
             }
@@ -532,11 +544,12 @@ namespace PositronNova
                             break;
                     }
 
-                    string[] names = new string[] {"Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Baptiste"};
+                    string[] names = new string[] { "Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Prescillia", "Niro", "Bastien", "Kelly", "Axel", "Baptiste" };
                     int a = rand.Next(0, names.Length);
                     string name = names[a];
-                    localUnit = new Unit(name , new Vector2(150, 150), unit);
-                    localUnit.LoadContent(content);
+
+                    localUnit = new Unit(name , new Vector2(150, 150) ,unit);
+
                     localUnit.Init();
                     PositronNova.UnitList.Add(localUnit);
                     selected_chasseur = false;
@@ -547,39 +560,57 @@ namespace PositronNova
             {
                 if (diminution_ressource_chasseur)
                 {
-                    ressource.Energie -= 50;
-                    ressource.Metal -= 60;
+                    //ressource.Energie -= 50;
+                    //ressource.Metal -= 60;
+                    ressource -= RecquiredRessourceChasseur();
                     diminution_ressource_chasseur = false;
                 }
                 if (diminution_ressource_chasseur_lourd)
                 {
-                    ressource.Energie -= 70;
-                    ressource.Metal -= 90;
+                    //ressource.Energie -= 70;
+                    //ressource.Metal -= 90;
+                    ressource -= RecquiredRessourceChasseurLourd();
                     diminution_ressource_chasseur_lourd = false;
                 }
                 if (diminution_ressources_corvette)
                 {
-                    ressource.Energie -= 100;
-                    ressource.Metal -= 140;
+                    //ressource.Energie -= 100;
+                    //ressource.Metal -= 140;
+                    ressource -= RecquiredRessourceCorvette();
                     diminution_ressources_corvette = false;
                 }
                 if (diminution_ressource_croiseur)
                 {
-                    ressource.Energie -= 220;
-                    ressource.Metal -= 190;
+                    //ressource.Energie -= 220;
+                    //ressource.Metal -= 190;
+                    ressource -= RecquiredRessourceCroiseur();
                     diminution_ressource_croiseur = false;
                 }
                 if (diminution_resource_destroyer)
                 {
-                    ressource.Energie -= 250;
-                    ressource.Metal -= 250;
+                    //ressource.Energie -= 250;
+                    //ressource.Metal -= 250;
+                    ressource -= RecquiredRessourceDestroyer();
                     diminution_resource_destroyer = false;
                 }
                 if (diminution_ressource_cuirasse)
                 {
-                    ressource.Energie -= 450;
-                    ressource.Metal -= 500;
+                    //ressource.Energie -= 450;
+                    //ressource.Metal -= 500;
+                    ressource -= RecquiredRessourceCuirasse();
                     diminution_ressource_cuirasse = false;
+                }
+                if (Universite.Diminution_ressource_precision)
+                {
+                    ressource.Energie -= 500;
+                    ressource.Metal -= 500;
+                    Universite.Diminution_ressource_precision = false;
+                }
+                if (Universite.Diminution_ressource_moteur)
+                {
+                    ressource.Energie -= 400;
+                    ressource.Metal -= 400;
+                    Universite.Diminution_ressource_moteur = false;
                 }
 
                 return ressource;

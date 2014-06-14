@@ -209,9 +209,6 @@ namespace PositronNova
         {
             last = last.Add(gameTime.ElapsedGameTime);
 
-            ressource = caserne.setRessource();
-            ressource = universite.setRessource();
-
             position_icone_centrale = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X), 
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
             position_icone_extracteur = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X),
@@ -232,6 +229,14 @@ namespace PositronNova
                 if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected = Math.Abs(mouseState.X - (position.X + image_planete.Width) + Camera2d.Origine.X) <= image_planete.Width & Math.Abs(mouseState.Y - (position.Y + image_planete.Height) + Camera2d.Origine.Y) <= image_planete.Height || caserne.Recrut; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
+                    if (!selected)
+                    {
+                        selected_caserne = false;
+                        selected_centrale = false;
+                        selected_extracteur = false;
+                        selected_recrutement = false;
+                        selected_universite = false;
+                    }
                 }
 
 
@@ -431,6 +436,11 @@ namespace PositronNova
             {
                 caserne.Update(gameTime, mouse, oldmouse);
                 selected_recrutement = !caserne.Recrut;
+                if (!selected_recrutement)
+                {
+                    selected = true;
+                    selected_universite = false;
+                }
             }
             else
             {
@@ -444,6 +454,17 @@ namespace PositronNova
                 }
             }
 
+            //if(universite.Diminution_ressource_moteur || universite.Diminution_ressource_precision)
+            //    ressource = universite.setRessource();
+            ressource = caserne.setRessource();
+            //if (selected_recrutement)
+            //{
+            //    ressource = caserne.setRessource();
+            //}
+            //if (selected_universite)
+            //{
+            //    ressource = universite.setRessource();
+            //}
             
         }
 
