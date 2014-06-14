@@ -194,12 +194,15 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Fleche"),
                 Content.Load<Texture2D>("img\\Icone_tech\\precision_ok"),
                 Content.Load<Texture2D>("img\\Icone_tech\\Moteur_ok"),
-                Content.Load<SpriteFont>("Planete"));
+                Content.Load<SpriteFont>("Planete"),
+                ressource);
         }
 
         public void Update(GameTime gameTime, MouseState mouse, MouseState oldmouse, KeyboardState keyboardState, KeyboardState oldKeyboardState)
         {
             last = last.Add(gameTime.ElapsedGameTime);
+
+            ressource = universite.setRessource();
 
             position_icone_centrale = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X), 
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));

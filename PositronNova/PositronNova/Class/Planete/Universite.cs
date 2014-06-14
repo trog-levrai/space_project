@@ -16,6 +16,8 @@ namespace PositronNova
         Game game;
         Color color;
 
+        Ressources ressource;
+
         SpriteFont spriteFont;
 
         TimeSpan compt;
@@ -43,6 +45,9 @@ namespace PositronNova
         bool selected_precision;
         bool selected_moteur;
 
+        bool diminution_ressource_precision;
+        bool diminution_ressource_moteur;
+
         bool lancer_recherche_precision;
         static private bool changement_precision;
         static public bool Changement_precision
@@ -64,9 +69,11 @@ namespace PositronNova
             Texture2D icone_fleche,
             Texture2D icone_precision_ok,
             Texture2D icone_moteur_ok,
-            SpriteFont spriteFont)
+            SpriteFont spriteFont,
+            Ressources ressource)
         {
             this.game = game;
+            this.ressource = ressource;
 
             this.icone_moteur = icone_moteur;
             this.icone_precision = icone_precision;
@@ -85,6 +92,8 @@ namespace PositronNova
             changement_precision = false;
             lancer_recherche_precision = false;
             lancer_rechercher_moteur = false;
+            diminution_ressource_moteur = false;
+            diminution_ressource_precision = false;
 
             compt = new TimeSpan(0, 0, 1);
             compteur = 0;
@@ -114,20 +123,26 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_precision = Math.Abs(mouseState.X - (position_icone_precision.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_precision.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_precision)
+                if (selected_precision && ressource.curRessources() >= RecquiredRessourcePrecision())
                 {
                     if (!changement_precision)
+                    {
                         lancer_recherche_precision = true;
+                        diminution_ressource_precision = true;
+                    }
                 }
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_moteur = Math.Abs(mouseState.X - (position_icone_moteur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_moteur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_moteur)
+                if (selected_moteur && ressource.curRessources() >= RecquiredRessourceMoteur())
                 {
                     if (!changement_moteur)
+                    {
                         lancer_rechercher_moteur = true;
+                        diminution_ressource_moteur = true;
+                    }
                 }
             }
         }
@@ -197,12 +212,18 @@ namespace PositronNova
                 if (mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y) &&
                     mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y + 50))
                 {
-                    spriteBatch.DrawString(spriteFont,
-                        "Moteur     Requis : 400, 400" +
-                        "\nAugmente la vitesse de tous les vaisseaux en contruction" +
-                        "\nN'augmente pas la vitesse des vaisseaux deja construits",
-                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Green);
+                    if(changement_moteur)
+                        spriteBatch.DrawString(spriteFont,
+                            "Moteur" + "\n Technologie acquise",
+                             new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                             Color.Green);
+                    else
+                        spriteBatch.DrawString(spriteFont,
+                            "Moteur     Requis : 400, 400" +
+                            "\nAugmente la vitesse de tous les vaisseaux en contruction" +
+                            "\nN'augmente pas la vitesse des vaisseaux deja construits",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                            Color.Green);
                 }
             }
 
@@ -237,6 +258,24 @@ namespace PositronNova
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
                             Color.Red);
             }
+        }
+
+        public Ressources setRessource()
+        {
+            if (diminution_ressource_precision)
+            {
+                ressource.Energie -= 500;
+                ressource.Metal -= 500;
+                diminution_ressource_precision = false;
+            }
+            if (diminution_ressource_moteur)
+            {
+                ressource.Energie -= 400;
+                ressource.Metal -= 400;
+                diminution_ressource_moteur = false;
+            }
+
+            return ressource;
         }
 
 
