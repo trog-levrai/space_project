@@ -105,13 +105,13 @@ namespace PositronNova
                         }
                         else
                         {
-                            sb.Draw(selection, UnitSelected[i].position + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White);
-                            sb.Draw(selection, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, -4), new Rectangle(6, 0, 7, 7), Color.White);
-                            sb.Draw(selection, UnitSelected[i].position + new Vector2(-4, UnitSelected[i].texture.Height - 4), new Rectangle(0, 6, 7, 7), Color.White);
-                            sb.Draw(selection, UnitSelected[i].position + new Vector2(UnitSelected[i].texture.Width - 4, UnitSelected[i].texture.Height - 4), new Rectangle(6, 6, 7, 7), Color.White);
+                            sb.Draw(selection, new Vector2(Math.Min(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X), Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y)) + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White); // haut gauche
+                            sb.Draw(selection, new Vector2(Math.Max(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X) + UnitSelected[i].CIVWidth, Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y)) + new Vector2(4, -4), new Rectangle(6, 0, 7, 7), Color.White); // haut droit
+                            sb.Draw(selection, new Vector2(Math.Min(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X), Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(-4, 4), new Rectangle(0, 6, 7, 7), Color.White); // bas gauche
+                            sb.Draw(selection, new Vector2(Math.Max(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X) + UnitSelected[i].CIVWidth, Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(4, 4), new Rectangle(6, 6, 7, 7), Color.White); // bas droit
                         }
                         aUneCible(UnitSelected[i], sb);
-                        UnitSelected[i].LifeBar.Draw(sb, (int)UnitSelected[i].position.X - 4, (int)UnitSelected[i].position.Y - 10);
+                        UnitSelected[i].LifeBar.Draw(sb, (int)(UnitSelected[i].position.X + UnitSelected[i].centre.X - (UnitSelected[i].texture.Width / 2)), (int)(Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) - 10));
                     }
                 }
             }

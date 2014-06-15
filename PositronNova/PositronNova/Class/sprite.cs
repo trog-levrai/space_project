@@ -22,8 +22,9 @@ namespace PositronNova
         protected int nbHitBoxes, hitBoxesWidth, hitBoxesHeight, decalageHitBoxes;
         // ----
         // collisionInterVaisseau
-        protected Rectangle[] collisionInterVaisseau;
-        protected int nbCIV, CIVWidth, CIVHeight;
+        public Rectangle[] collisionInterVaisseau;
+        protected int nbCIV;
+        public int CIVWidth, CIVHeight;
         // ----
         public Vector2 position;
         public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture :o)

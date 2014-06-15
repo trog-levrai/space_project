@@ -425,7 +425,7 @@ namespace PositronNova.Class.Unit
                     sb.Draw(texture, position, Color.White);
                 }
 
-                sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
+                sb.DrawString(_font, name, new Vector2(position.X + centre.X - (texture.Width / 2), Math.Min(collisionInterVaisseau[0].Y, collisionInterVaisseau[collisionInterVaisseau.Length - 1].Y) - 26), color);
                 //sb.Draw(Manager.lifeBrick_t, destination, Color.White);  // Dessine la destination pour voir comment elle évolue :o)
             }
             else
@@ -434,7 +434,7 @@ namespace PositronNova.Class.Unit
             }
 
             //for (int i = 0; i < collisionInterVaisseau.Length; i++)
-            //    sb.Draw(Manager.lifeBrick_t, hitBoxes[i], Color.White);
+            //    sb.Draw(Manager.lifeBrick_t, collisionInterVaisseau[i], Color.White);
 
             base.Draw(sb);
         }
