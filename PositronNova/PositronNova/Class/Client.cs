@@ -74,24 +74,24 @@ namespace PositronNova.Class
             {
                 try
                 {
+                    string foo;
+                    foo = clientReader.ReadLine();
+                    if (foo != "")
+                        chat.addString(foo);
+                }
+                catch
+                {
                     Unit.Unit[] units;
                     byte[] buffer = new byte[2048];
                     sock.Receive(buffer);
                     MemoryStream mem = new MemoryStream(buffer);
-                    units = (Unit.Unit[]) format.Deserialize(mem);
+                    units = (Unit.Unit[])format.Deserialize(mem);
                     enn.Clear();
                     for (int i = 0; i < units.Length; i++)
                     {
                         units[i].Friendly = false;
                         enn.Add(units[i]);
                     }
-                }
-                catch
-                {
-                    string foo;
-                    foo = clientReader.ReadLine();
-                    if (foo != "")
-                        chat.addString(foo);
                 }
             }
         }
