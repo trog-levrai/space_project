@@ -21,13 +21,13 @@ namespace PositronNova.Class.Unit
         System.TimeSpan fireRate;
         System.TimeSpan last;
 
-        SoundEffect deathNoise;
-        Bullet localBullet;
-        BulletType weaponType;
+        [NonSerialized()] SoundEffect deathNoise;
+        [NonSerialized()] Bullet localBullet;
+        [NonSerialized()] BulletType weaponType;
 
         // Caractéristiques unit
-        private Color color;
-        private SpriteFont _font;
+        [NonSerialized()] private Color color;
+        [NonSerialized()] private SpriteFont _font;
         private string name;
         public string Name
         {
@@ -42,8 +42,8 @@ namespace PositronNova.Class.Unit
         {
             set { hasTarget = value; }
         }
-        private Texture2D selection;
-        private Texture2D cible;
+        [NonSerialized()] private Texture2D selection;
+        [NonSerialized()] private Texture2D cible;
 
         protected int damage;
         protected int pv_max;

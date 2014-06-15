@@ -431,7 +431,8 @@ namespace PositronNova
                                     send.Add(unit);
                                 }
                             }
-                            client.SendUnit(send);
+                            if (client.Start)
+                                client.SendUnit(send);
                             List<Unit> aux = unitList;
                             unitList.Clear();
                             foreach (var unit in aux)
