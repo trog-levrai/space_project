@@ -81,10 +81,14 @@ namespace PositronNova.Class
                 {
                     string foo;
                     foo = clientReader.ReadLine();
+                    if (foo == "game")
+                    {
+                        Start = true;
+                        break;
+                    }
                     if (foo != "")
                         chat.addString(foo);
-                    if (foo == "game")
-                        Start = true;
+
                 }
                 catch
                 {
