@@ -449,8 +449,6 @@ namespace PositronNova
                                     }
                                 }
                             }
-                                
-                            
                         }
                         cue.Pause();
                         cue1.Resume();
@@ -577,7 +575,7 @@ namespace PositronNova
                         foreach (EffectBullet effect in effectBulletList)
                             effect.Draw(spriteBatch);
                         //Affiche le chat
-                        spriteBatch.DrawString(chat, client.chat.ReturnString(Keyboard.GetState()), client.chat.GetPosition(), Color.AntiqueWhite);
+                        spriteBatch.DrawString(chat, client.chat.ReturnString(), client.chat.GetPosition(), Color.AntiqueWhite);
                     }
                     break;
             }

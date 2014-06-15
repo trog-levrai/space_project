@@ -77,7 +77,7 @@ namespace PositronNova
             return position;
         }
         //Génère le texte à afficher
-        public string ReturnString(KeyboardState kb)
+        public string ReturnString()
         {
             string ans = "";
             foreach (string text in texts)
