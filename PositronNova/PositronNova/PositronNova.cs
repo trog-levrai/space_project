@@ -448,6 +448,7 @@ namespace PositronNova
                                 {
                                     foreach (var unit in client.Ennemies)
                                     {
+                                        unit.LoadContent(Content);
                                         unitList.Add(unit);
                                     }
                                 }

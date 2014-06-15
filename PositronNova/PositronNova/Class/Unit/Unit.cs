@@ -192,7 +192,6 @@ namespace PositronNova.Class.Unit
                 }
             }
         }
-
         public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
