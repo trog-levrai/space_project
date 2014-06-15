@@ -14,7 +14,6 @@ namespace PositronNova
     class Universite
     {
         Game game;
-        Color color;
 
         Ressources ressource;
 
@@ -29,13 +28,16 @@ namespace PositronNova
 
         Texture2D icone_precision;
         Texture2D icone_moteur;
+        Texture2D icone_blindage;
         Texture2D icone_fleche;
         Texture2D icone_moteur_ok;
         Texture2D icone_precision_ok;
+        Texture2D icone_blindage_ok;
 
         Vector2 position_icone_fleche;
         Vector2 position_icone_precision;
         Vector2 position_icone_moteur;
+        Vector2 position_icone_blindage;
 
         bool univ;
         public bool Univ
@@ -78,12 +80,22 @@ namespace PositronNova
             set { changement_moteur = value; }
         }
 
+        bool lancer_recherche_blindage;
+        static private bool changement_blindage;
+        static public bool Changement_blindage
+        {
+            get { return changement_blindage; }
+            set { changement_blindage = value; }
+        }
+
         public Universite(Game game,
             Texture2D icone_precision,
             Texture2D icone_moteur,
             Texture2D icone_fleche,
             Texture2D icone_precision_ok,
             Texture2D icone_moteur_ok,
+            Texture2D icone_blindage,
+            Texture2D icone_blindage_ok,
             SpriteFont spriteFont,
             Ressources ressource,
             Chat text)
@@ -96,6 +108,8 @@ namespace PositronNova
             this.icone_fleche = icone_fleche;
             this.icone_moteur_ok = icone_moteur_ok;
             this.icone_precision_ok = icone_precision_ok;
+            this.icone_blindage = icone_blindage;
+            this.icone_blindage_ok = icone_blindage_ok;
 
             this.spriteFont = spriteFont;
             this.text = text;
@@ -107,8 +121,10 @@ namespace PositronNova
 
             changement_moteur = false;
             changement_precision = false;
+            changement_blindage = false;
             lancer_recherche_precision = false;
             lancer_rechercher_moteur = false;
+            lancer_recherche_blindage = false;
             diminution_ressource_moteur = false;
             diminution_ressource_precision = false;
             precision_ok = false;
@@ -217,6 +233,17 @@ namespace PositronNova
                 spriteBatch.Draw(icone_moteur,
                     new Rectangle((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
                         (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
+
+            if (changement_blindage)
+                spriteBatch.Draw(icone_blindage_ok,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
+                    (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
+            else
+                spriteBatch.Draw(icone_blindage,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
+                    (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y), 50, 50),
                     Color.White);
 
 
