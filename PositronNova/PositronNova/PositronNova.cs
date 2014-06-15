@@ -206,7 +206,7 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            last = last.Add(gameTime.ElapsedGameTime);
+
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             Vector2 movement = Vector2.Zero;
@@ -426,6 +426,7 @@ namespace PositronNova
                     {
                         if (activeScreen == actionScreen_)
                         {
+                            last = last.Add(gameTime.ElapsedGameTime);
                             if (last > seconde)
                             {
                                 List<Unit> send = new List<Unit>();
