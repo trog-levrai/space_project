@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -95,7 +94,7 @@ namespace PositronNova.Class
                 {
                     string foo;
                     foo = clientReader.ReadLine();
-                    if (foo != "")
+                    if (foo != "" && foo != "\0")
                     {
                         if (foo == "game")
                             Start = true;
