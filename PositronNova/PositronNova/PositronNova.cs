@@ -261,7 +261,7 @@ namespace PositronNova
                                 activeScreen.Hide();
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();
-                                client = new Client("Polo", "10.3.141.70", 1234, this);
+                                client = new Client("trog", "10.3.141.70", 1234, this);
                                 client.Connect();
                                 for (int i = 0; i < unitList.Count; i++)
                                 {
@@ -432,18 +432,22 @@ namespace PositronNova
                                 }
                             }
                             if (client.Start)
+                            {
                                 client.SendUnit(send);
-                            List<Unit> aux = unitList;
-                            unitList.Clear();
-                            foreach (var unit in aux)
-                            {
-                                if (unit.Friendly)
+                                List<Unit> aux = unitList;
+                                unitList.Clear();
+                                foreach (var unit in aux)
+                                {
+                                    if (unit.Friendly)
+                                        unitList.Add(unit);
+                                }
+                                foreach (var unit in client.Ennemies)
+                                {
                                     unitList.Add(unit);
+                                }
                             }
-                            foreach (var unit in client.Ennemies)
-                            {
-                                unitList.Add(unit);
-                            }
+                                
+                            
                         }
                         cue.Pause();
                         cue1.Resume();
@@ -559,7 +563,7 @@ namespace PositronNova
                         spriteBatch.DrawString(chat, client.chat.ReturnString(Keyboard.GetState()), client.chat.GetPosition(), Color.AntiqueWhite);
                         pauseScreen.Draw(gameTime);
                     }
-                    if (activeScreen == actionScreen)
+                    if (activeScreen == actionScreen || activeScreen == actionScreen_)
                     {
                         actionScreen.Draw(gameTime);
 
