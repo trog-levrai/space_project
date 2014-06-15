@@ -437,12 +437,12 @@ namespace PositronNova
                                     }
                                 }
                                 client.SendUnit(send);
-                                List<Unit> aux = unitList;
-                                unitList.Clear();
-                                foreach (var unit in aux)
+                                for (int i = 0; i < unitList.Count; i++)
                                 {
-                                    if (unit.Friendly)
-                                        unitList.Add(unit);
+                                    if (!unitList[i].Friendly)
+                                    {
+                                        unitList.RemoveAt(i);
+                                    }
                                 }
                                 if (client.Ennemies != null)
                                 {
