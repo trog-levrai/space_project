@@ -79,17 +79,6 @@ namespace PositronNova.Class
             {
                 try
                 {
-                    string foo;
-                    foo = clientReader.ReadLine();
-                    if (foo != "")
-                    {
-                        chat.addString(foo);
-                        if (foo == "game")
-                            Start = true;
-                    }
-                }
-                catch
-                {
                     Unit.Unit[] units;
                     byte[] buffer = new byte[2048];
                     sock.Receive(buffer);
@@ -100,6 +89,17 @@ namespace PositronNova.Class
                     {
                         units[i].Friendly = false;
                         enn.Add(units[i]);
+                    }
+                }
+                catch
+                {
+                    string foo;
+                    foo = clientReader.ReadLine();
+                    if (foo != "")
+                    {
+                        chat.addString(foo);
+                        if (foo == "game")
+                            Start = true;
                     }
                 }
             }

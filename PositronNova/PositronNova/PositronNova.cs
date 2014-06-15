@@ -441,9 +441,12 @@ namespace PositronNova
                                     if (unit.Friendly)
                                         unitList.Add(unit);
                                 }
-                                foreach (var unit in client.Ennemies)
+                                if (client.Ennemies != null)
                                 {
-                                    unitList.Add(unit);
+                                    foreach (var unit in client.Ennemies)
+                                    {
+                                        unitList.Add(unit);
+                                    }
                                 }
                             }
                                 
