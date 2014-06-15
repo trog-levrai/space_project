@@ -432,17 +432,19 @@ namespace PositronNova
                                 }
                             }
                             if (client.Start)
+                            {
                                 client.SendUnit(send);
-                            List<Unit> aux = unitList;
-                            unitList.Clear();
-                            foreach (var unit in aux)
-                            {
-                                if (unit.Friendly)
+                                List<Unit> aux = unitList;
+                                unitList.Clear();
+                                foreach (var unit in aux)
+                                {
+                                    if (unit.Friendly)
+                                        unitList.Add(unit);
+                                }
+                                foreach (var unit in client.Ennemies)
+                                {
                                     unitList.Add(unit);
-                            }
-                            foreach (var unit in client.Ennemies)
-                            {
-                                unitList.Add(unit);
+                                }
                             }
                         }
                         cue.Pause();
@@ -559,7 +561,7 @@ namespace PositronNova
                         spriteBatch.DrawString(chat, client.chat.ReturnString(Keyboard.GetState()), client.chat.GetPosition(), Color.AntiqueWhite);
                         pauseScreen.Draw(gameTime);
                     }
-                    if (activeScreen == actionScreen)
+                    if (activeScreen == actionScreen || activeScreen == actionScreen_)
                     {
                         actionScreen.Draw(gameTime);
 
