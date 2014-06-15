@@ -502,9 +502,11 @@ namespace PositronNova
             //if(universite.Diminution_ressource_moteur || universite.Diminution_ressource_precision)
             //    ressource = universite.setRessource();
             ressource = caserne.setRessource();
+            caserne.LancerRecrutement();
+            caserne.Continu = !selected_recrutement;
+            caserne.Recrutement();
 
-            if (!selected_recrutement && caserne.Continu)
-                caserne.Compteur();
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -659,9 +661,12 @@ namespace PositronNova
                 caserne.Draw(spriteBatch);
             else
                 universite.Draw(spriteBatch);
-            
- 
 
+            caserne.Lancercompt();
+            //if (caserne.Continu && !selected_recrutement)
+            //{
+            //    caserne.Compteur();
+            //}
             
 
         }
