@@ -29,6 +29,8 @@ namespace PositronNova
         //Pour la gestion du serveur
         private static Thread _thEcoute;
 
+
+
         static private Texture2D backgroundTexture;
         static public Texture2D BackgroundTexture
         {
@@ -325,7 +327,7 @@ namespace PositronNova
                                     i--;
                                 }
 
-                                genHumain(10);
+                                //genHumain(10);
                                 genAlien(10);
                                 planete.Niveau_centrale = 1;
                                 planete.Niveau_extracteur = 1;
@@ -612,6 +614,7 @@ namespace PositronNova
         {
             GraphicsDevice.Clear(Color.LightGoldenrodYellow);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
+            MouseState mouse = Mouse.GetState();
 
             switch (CurrentGameState)
             {
@@ -686,6 +689,7 @@ namespace PositronNova
                         planete.Draw(spriteBatch);
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
+
                     }
                     break;
             }
