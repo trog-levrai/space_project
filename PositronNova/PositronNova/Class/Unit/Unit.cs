@@ -314,10 +314,10 @@ namespace PositronNova.Class.Unit
                     hitBoxes = new Rectangle[1];
                     hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 150, 60);
                     // ----
-                    nbFrame = 3;
+                    nbFrame = 4;
                     frameWidth = 200;
                     frameHeight = 100;
-                    timeToNextFrame = new TimeSpan(0);
+                    timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
                     fireRate = new TimeSpan(0, 0, 0, 0, 2000);
                     weaponType = BulletType.BloodSting;
                     pv_max = 300;
@@ -534,36 +534,13 @@ namespace PositronNova.Class.Unit
             {
                 if (PositronNova.UnitList[i] != this)
                 {
-                    //for (int j = 0; j < hitBoxes.Length; j++)
-                    //    for (int k = 0; k < PositronNova.UnitList[i].hitBoxes.Length; k++)
-                            if (collisionInterVaisseau.Intersects(PositronNova.UnitList[i].collisionInterVaisseau))
-                            {
-                                //if (position.X + centre.X >= PositronNova.UnitList[i].position.X + PositronNova.UnitList[i].centre.X)
-                                //{
-                                //    if (position.Y + centre.Y >= PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
-                                //    {
+                    if (collisionInterVaisseau.Intersects(PositronNova.UnitList[i].collisionInterVaisseau))
+                    {
 
-                                //    }
-                                //    else if (position.Y + centre.Y < PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
-                                //    {
+                        return new Vector2(PositronNova.UnitList[i].position.X - position.X, PositronNova.UnitList[i].position.Y - position.Y);
+                    }
 
-                                //    }
-                                //}
-                                //else if (position.X + centre.X < PositronNova.UnitList[i].position.X + PositronNova.UnitList[i].centre.X)
-                                //{
-                                //    if (position.Y + centre.Y >= PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
-                                //    {
-
-                                //    }
-                                //    else if (position.Y + centre.Y < PositronNova.UnitList[i].position.Y + PositronNova.UnitList[i].centre.Y)
-                                //    {
-
-                                //    }
-                                //}
-                                return new Vector2(PositronNova.UnitList[i].position.X - position.X, PositronNova.UnitList[i].position.Y - position.Y);
-                            }
-
-               }
+                }
             }
             return Vector2.Zero;
         }
