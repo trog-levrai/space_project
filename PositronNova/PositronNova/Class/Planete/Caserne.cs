@@ -642,6 +642,12 @@ namespace PositronNova
                     ressource.Metal -= 400;
                     Universite.Diminution_ressource_moteur = false;
                 }
+                if (Universite.Diminution_ressource_blindage)
+                {
+                    ressource.Energie -= 600;
+                    ressource.Metal -= 600;
+                    Universite.Diminution_ressource_blindage = false;
+                }
 
                 return ressource;
             }
