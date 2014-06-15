@@ -50,6 +50,12 @@ namespace PositronNova
         public bool Recrut
         {
             get { return recrut; }
+            set { recrut = value; }
+        }
+        bool continu;
+        public bool Continu
+        {
+            get { return continu; }
         }
         bool selected_chasseur;
         bool selected_chasseur_lourd;
@@ -127,6 +133,7 @@ namespace PositronNova
             this.ressource = ressource;
 
             this.text = text;
+            continu = false;
 
             list = new List<int>();
 
@@ -370,31 +377,7 @@ namespace PositronNova
                     changement_position = false;
             }
 
-            if (list.Count != 0 & finish)
-            {
-                finish = false;
-                switch (list[0])
-                {
-                    case 1:
-                        lancer_recrutement_chasseur = true;
-                        break;
-                    case 2:
-                        lancer_recrutement_chasseur_lourd = true;
-                        break;
-                    case 3:
-                        lancer_recrutement_corvette = true;
-                        break;
-                    case 4: 
-                        lancer_recrutement_croiseur = true;
-                        break;
-                    case 5:
-                        lancer_recrutement_destroyer = true;
-                        break;
-                    case 6:
-                        lancer_recrutement_cuirasse = true;
-                        break;
-                }
-            }
+            LancerRecrutement();
 
         }
 
@@ -575,8 +558,7 @@ namespace PositronNova
                 lancer_recrutement_corvette ||
                 lancer_recrutement_croiseur ||
                 lancer_recrutement_cuirasse ||
-                lancer_recrutement_destroyer) &&
-                last > compt)
+                lancer_recrutement_destroyer) & Planete.Selected_recrutement)
             {
                 spriteBatch.DrawString(spriteFont,
                              "Progression : " + compteur + "%",
@@ -590,60 +572,12 @@ namespace PositronNova
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
                         Color.Red);
 
-                compteur += rand.Next(1, 30);
-                if (compteur > 100)
-                {
-                    compteur = 0;
-                    if (lancer_recrutement_chasseur)
-                    {
-                        recrutement_chasseur_OK = true;
-                        lancer_recrutement_chasseur = false;
-                    }
-                    if (lancer_recrutement_chasseur_lourd)
-                    {
-                        recrutement_chasseur_lourd_OK = true;
-                        lancer_recrutement_chasseur_lourd = false;
-                    }
-                    if (lancer_recrutement_corvette)
-                    {
-                        recrutement_corvette_OK = true;
-                        lancer_recrutement_corvette = false;
-                    }
-                    if (lancer_recrutement_croiseur)
-                    {
-                        recrutement_croiseur_OK = true;
-                        lancer_recrutement_croiseur = false;
-                    }
-                    if (lancer_recrutement_cuirasse)
-                    {
-                        recrutement_cuirasse_OK = true;
-                        lancer_recrutement_cuirasse = false;
-                    }
-                    if (lancer_recrutement_destroyer)
-                    {
-                        recrutement_destroyer_OK = true;
-                        lancer_recrutement_destroyer = false;
-                    }
-                    finish = true;
+                    Compteur();
 
-                }
-                last = new TimeSpan(0);
-            }
-            else
-            {
-                spriteBatch.DrawString(spriteFont,
-                            "Progression : " + compteur + "%",
-                            new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
-                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
-                            Color.Red);
+               }
 
-                    spriteBatch.DrawString(spriteFont,
-                        "Nombre d'unites en cours de creation : " + (list.Count),
-                        new Vector2((int)(game.Window.ClientBounds.Width / 2 + 200 + Camera2d.Origine.X),
-                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
-                        Color.Red);
-            }
 
+            
         }
             void genHum(int choix)
             {
@@ -790,6 +724,91 @@ namespace PositronNova
             public void Start()
             {
                 ressource = Ressources.getStartRessources();
+            }
+
+            public void Compteur()
+            {
+                if (last > compt)
+                {
+                    compteur += rand.Next(1, 30);
+                    if (compteur > 100)
+                    {
+                        compteur = 0;
+                        if (lancer_recrutement_chasseur)
+                        {
+                            recrutement_chasseur_OK = true;
+                            lancer_recrutement_chasseur = false;
+                        }
+                        if (lancer_recrutement_chasseur_lourd)
+                        {
+                            recrutement_chasseur_lourd_OK = true;
+                            lancer_recrutement_chasseur_lourd = false;
+                        }
+                        if (lancer_recrutement_corvette)
+                        {
+                            recrutement_corvette_OK = true;
+                            lancer_recrutement_corvette = false;
+                        }
+                        if (lancer_recrutement_croiseur)
+                        {
+                            recrutement_croiseur_OK = true;
+                            lancer_recrutement_croiseur = false;
+                        }
+                        if (lancer_recrutement_cuirasse)
+                        {
+                            recrutement_cuirasse_OK = true;
+                            lancer_recrutement_cuirasse = false;
+                        }
+                        if (lancer_recrutement_destroyer)
+                        {
+                            recrutement_destroyer_OK = true;
+                            lancer_recrutement_destroyer = false;
+                        }
+                        finish = true;
+                        continu = false;
+
+                    }
+                    last = new TimeSpan(0);
+                }
+            
+            }
+
+            public void LancerRecrutement()
+            {
+                if (list.Count != 0 & finish)
+                {
+                    finish = false;
+                    switch (list[0])
+                    {
+                        case 1:
+                            lancer_recrutement_chasseur = true;
+                            continu = true;
+                            break;
+                        case 2:
+                            lancer_recrutement_chasseur_lourd = true;
+                            continu = true;
+                            break;
+                        case 3:
+                            lancer_recrutement_corvette = true;
+                            continu = true;
+                            break;
+                        case 4:
+                            lancer_recrutement_croiseur = true;
+                            continu = true;
+                            break;
+                        case 5:
+                            lancer_recrutement_destroyer = true;
+                            continu = true;
+                            break;
+                        case 6:
+                            lancer_recrutement_cuirasse = true;
+                            continu = true;
+                            break;
+                        default:
+                            continu = false;
+                            break;
+                    }
+                }
             }
     }
 }

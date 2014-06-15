@@ -40,18 +40,19 @@ namespace PositronNova
 
         Rectangle imageRectangle;
         bool recrutement;
-        private bool selected_recrutement;
-        public bool Selected_recrutement
+        static private bool selected_recrutement;
+        static public bool Selected_recrutement
         {
             get { return selected_recrutement; }
             set { selected_recrutement = value; }
         }
-        private bool selected_universite;
-        public bool Selected_universite
+        static private bool selected_universite;
+        static public bool Selected_universite
         {
             get { return selected_universite; }
             set { selected_universite = value; }
         }
+        bool selected2;
         bool selected;
         bool selected_centrale;
         bool selected_extracteur;
@@ -64,6 +65,12 @@ namespace PositronNova
         bool progress_extracteur;
         bool progress_caserne;
         bool passage_niveau_OK;
+
+        bool continu;
+        public bool Continu
+        {
+            get { return continu; }
+        }
 
         string batiments;
 
@@ -160,11 +167,13 @@ namespace PositronNova
 
             recrutement = false;
             selected = false;
+            selected2 = false;
             selected_centrale = false;
             selected_extracteur = false;
             selected_caserne = false;
             selected_recrutement = false;
             selected_universite = false;
+            continu = false;
             plus = false;
             diminution_centrale = false;
             diminution_extracteur = false;
@@ -230,9 +239,12 @@ namespace PositronNova
 
             if (!selected_recrutement && !selected_universite)
             {
+
                 if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected = Math.Abs(mouseState.X - (position.X + image_planete.Width) + Camera2d.Origine.X) <= image_planete.Width & Math.Abs(mouseState.Y - (position.Y + image_planete.Height) + Camera2d.Origine.Y) <= image_planete.Height || caserne.Recrut; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
+                    selected2 = Math.Abs(mouseState.X - (position.X + image_planete.Width) + Camera2d.Origine.X) <= image_planete.Width & Math.Abs(mouseState.Y - (position.Y + image_planete.Height) + Camera2d.Origine.Y) <= image_planete.Height || caserne.Recrut; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
+                    //selected3 = Math.Abs(mouseState.X - (position.X + image_planete.Width) + Camera2d.Origine.X) <= image_planete.Width & Math.Abs(mouseState.Y - (position.Y + image_planete.Height) + Camera2d.Origine.Y) <= image_planete.Height || caserne.Recrut; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
                     if (!selected)
                     {
                         selected_caserne = false;
@@ -241,6 +253,7 @@ namespace PositronNova
                         selected_recrutement = false;
                         selected_universite = false;
                     }
+
                 }
 
 
@@ -324,6 +337,9 @@ namespace PositronNova
                     if (ressource.curRessources() >= recquiredRessourceCentrale())
                     {
                         progress_centrale = true;
+                        continu = true;
+                        selected = false;
+                        selected2 = true;
                         switch (niveau_centrale)
                         {
                             case 1:
@@ -359,6 +375,9 @@ namespace PositronNova
                     if (ressource.curRessources() >= recquiredRessourceExtracteur())
                     {
                         progress_extracteur = true;
+                        continu = true;
+                        selected = false;
+                        selected2 = true;
                         switch (niveau_extracteur)
                         {
                             case 1:
@@ -391,6 +410,9 @@ namespace PositronNova
                     if (ressource.curRessources() >= recquiredRessourceCaserne())
                     {
                         progress_caserne = true;
+                        continu = true;
+                        selected = false;
+                        selected2 = true;
                         switch (niveau_caserne)
                         {
                             case 0:
@@ -457,10 +479,12 @@ namespace PositronNova
             {
                 caserne.Update(gameTime, mouse, oldmouse);
                 selected_recrutement = !caserne.Recrut;
-                if (!selected_recrutement)
+                selected = caserne.Recrut;
+                if (selected)
                 {
-                    selected = true;
+                    selected_recrutement = false;
                     selected_universite = false;
+                    caserne.Recrut = false;
                 }
             }
             else
@@ -478,15 +502,9 @@ namespace PositronNova
             //if(universite.Diminution_ressource_moteur || universite.Diminution_ressource_precision)
             //    ressource = universite.setRessource();
             ressource = caserne.setRessource();
-            //if (selected_recrutement)
-            //{
-            //    ressource = caserne.setRessource();
-            //}
-            //if (selected_universite)
-            //{
-            //    ressource = universite.setRessource();
-            //}
-            
+
+            if (!selected_recrutement && caserne.Continu)
+                caserne.Compteur();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -524,10 +542,7 @@ namespace PositronNova
                             new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                             Color.White);
 
-                }
-
-                if (selected)
-                {
+                
                     if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X) &&
                         mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X + 50))
                     {
@@ -609,7 +624,7 @@ namespace PositronNova
 
                 }
 
-                if (progress_centrale || progress_extracteur || progress_caserne)
+                if ((progress_centrale || progress_extracteur || progress_caserne) && selected2)
                 {
                     if (progress_centrale)
                         batiments = "Centrale";
@@ -627,30 +642,18 @@ namespace PositronNova
                             Color.Red);
 
                     selected = false;
-                    if (last > compt)
-                    {
-                        spriteBatch.DrawString(progressFont,
-                             "Progression : " + compteur + "%",
-                            new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 140 + Camera2d.Origine.Y)),
-                            Color.Red);
-                        compteur += rand.Next(1, 15);
-                        if (compteur > 100)
-                        {
-                            compteur = 0;
-                            progress_centrale = false;
-                            progress_extracteur = false;
-                            progress_caserne = false;
-                            selected = true;
-                            passage_niveau_OK = true;
-                        }
-                        last = new TimeSpan(0);
-                    }
-                    else
-                        spriteBatch.DrawString(progressFont,
-                            "Progression : " + compteur + "%",
-                            new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 140 + Camera2d.Origine.Y)),
-                            Color.Red);
+
+                    Compteur();
+
+                    spriteBatch.DrawString(progressFont,
+                         "Progression : " + compteur + "%",
+                        new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 140 + Camera2d.Origine.Y)),
+                        Color.Red);
+
                 }
+
+                if (!selected2 && continu)
+                    Compteur();
             }
             else if (!selected_universite)
                 caserne.Draw(spriteBatch);
@@ -850,6 +853,29 @@ namespace PositronNova
             ressource = Ressources.getStartRessources();
             caserne.Start();
             universite.Start();
+        }
+
+        public void Compteur()
+        {
+            if (last > compt)
+            {
+                compteur += rand.Next(1, 15);
+                if (compteur > 100)
+                {
+                    compteur = 0;
+                    progress_centrale = false;
+                    progress_extracteur = false;
+                    progress_caserne = false;
+                    passage_niveau_OK = true;
+                    continu = false;
+
+                    if (selected2)
+                        selected = true;
+                    else
+                        selected = false;
+                }
+                last = new TimeSpan(0);
+            }
         }
 
     }
