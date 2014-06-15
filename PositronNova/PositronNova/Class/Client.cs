@@ -97,9 +97,9 @@ namespace PositronNova.Class
                     foo = clientReader.ReadLine();
                     if (foo != "")
                     {
-                        chat.addString(foo);
-                        if (foo == "fret")
+                        if (foo == "game")
                             Start = true;
+                        chat.addString(foo);
                     }
                 }
             }
