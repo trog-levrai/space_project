@@ -561,7 +561,7 @@ namespace PositronNova
                         foreach (EffectBullet effect in effectBulletList)
                             effect.Draw(spriteBatch);
 
-                        spriteBatch.DrawString(chat, client.chat.ReturnString(Keyboard.GetState()), client.chat.GetPosition(), Color.AntiqueWhite);
+                        spriteBatch.DrawString(chat, client.chat.ReturnString(), client.chat.GetPosition(), Color.AntiqueWhite);
                         pauseScreen.Draw(gameTime);
                     }
                     if (activeScreen == actionScreen || activeScreen == actionScreen_)
