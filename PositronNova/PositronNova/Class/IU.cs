@@ -34,7 +34,7 @@ namespace PositronNova
             {
                 if (keyboard.IsKeyDown(Keys.LeftShift))
                 {
-                    if (UnitSelected[0].Side == UnitSide.Alien)
+                    if (UnitSelected.Count > 0 && UnitSelected[0].Side == UnitSide.Alien)
                         UnitSelected.RemoveAt(0);
                     if (PositronNova.GetHumain() != null)
                         UnitSelected.Add(PositronNova.GetHumain());

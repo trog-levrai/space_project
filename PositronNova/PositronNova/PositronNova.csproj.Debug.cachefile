@@ -48,21 +48,6 @@ Content\img\effects\Burst.xnb
 Content\img\effects\Explosion2.xnb
 Content\img\effects\ExplosionLaser.xnb
 Content\img\effects\ExplosionMk3.xnb
-Content\Affichage_mouse.xnb
-Content\chat.xnb
-Content\menufont.xnb
-Content\optionfont.xnb
-Content\titlefont.xnb
-Content\sounds\laser.xnb
-Content\Video\Vid.xnb
-Content\sounds\Espace.xnb
-Content\sounds\Menu.xnb
-Content\sounds\cinetiqueFire.xnb
-Content\sounds\explose2.xnb
-Content\sounds\laserHit.xnb
-Content\sounds\missileHit.xnb
-Content\sounds\MissileLaunch.xnb
-Content\sounds\shipDeath.xnb
 Content\img\life.xnb
 Content\img\alienShips\Neurone.xnb
 Content\img\alienShips\NeuroneSheet.xnb
@@ -90,6 +75,26 @@ Content\img\Icone_unite\Icone_destroyer.xnb
 Content\img\Fleche.xnb
 Content\img\recrutement.xnb
 Content\img\recrutement_grise.xnb
+Content\Affichage_mouse.xnb
+Content\chat.xnb
+Content\menufont.xnb
+Content\optionfont.xnb
+Content\titlefont.xnb
+Content\Planete.xnb
+Content\progress.xnb
+Content\sounds\laser.xnb
+Content\Video\Vid.xnb
+Content\sounds\Espace.xnb
+Content\sounds\Menu.xnb
+Content\sounds\cinetiqueFire.xnb
+Content\sounds\explose2.xnb
+Content\sounds\plasmaFire.xnb
+Content\sounds\laserFire.xnb
+Content\sounds\laserHit.xnb
+Content\sounds\missileHit.xnb
+Content\sounds\MissileLaunch.xnb
+Content\sounds\shipDeath.xnb
+Content\sounds\plasmaHit.xnb
 Content\img\Icone_unite\Icone_corvette_grisee.xnb
 Content\img\Icone_unite\Icone_croiseur_grisee.xnb
 Content\img\Icone_unite\Icone_cuirasse_grisee.xnb
@@ -102,11 +107,22 @@ Content\img\Icone_tech\Moteur.xnb
 Content\img\Extracteur2.xnb
 Content\img\Icone_tech\Blindage.xnb
 Content\img\Icone_tech\Blindage_ok.xnb
-Content\Planete.xnb
-Content\progress.xnb
-Content\sounds\plasmaFire.xnb
-Content\sounds\laserFire.xnb
-Content\sounds\plasmaHit.xnb
+Content\sounds\voix\action impossible1.xnb
+Content\sounds\voix\action impossible2.xnb
+Content\sounds\voix\action impossible3.xnb
+Content\sounds\voix\action impossible4.xnb
+Content\sounds\voix\action impossible5.xnb
+Content\sounds\voix\alerte1.xnb
+Content\sounds\voix\alerte2.xnb
+Content\sounds\voix\ATTENTION1.xnb
+Content\sounds\voix\insolite1.xnb
+Content\sounds\voix\insolite2.xnb
+Content\sounds\voix\planete attaquee.xnb
+Content\sounds\voix\recherche terminee.xnb
+Content\sounds\voix\scan.xnb
+Content\sounds\voix\technologie.xnb
+Content\sounds\voix\unite perdu.xnb
+Content\sounds\voix\unite prete.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb
