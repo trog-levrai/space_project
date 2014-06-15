@@ -32,7 +32,7 @@ namespace PositronNova.Class
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             sock.Connect(host, port);
             this.clientReader = new StreamReader(new NetworkStream(sock));
-            this.clientWriter = new StreamWriter(new NetworkStream(sock));
+            //this.clientWriter = new StreamWriter(new NetworkStream(sock));
             Writer = new Thread(new ThreadStart(Receive));
             Writer.IsBackground = true;
             Writer.Start();
@@ -56,8 +56,10 @@ namespace PositronNova.Class
         }
         public void Send(string message)
         {
-            clientWriter.WriteLine(message);
-            clientWriter.Flush();
+            byte[] foo = UTF8Encoding.UTF8.GetBytes(message);
+            sock.Send(foo);
+            //clientWriter.WriteLine(message);
+            //clientWriter.Flush();
         }
         public void SendUnit(List<Unit.Unit> unit)
         {
