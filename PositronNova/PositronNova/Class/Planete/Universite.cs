@@ -127,6 +127,7 @@ namespace PositronNova
             univ = false;
             selected_precision = false;
             selected_moteur = false;
+            selected_blindage = false;
 
             changement_moteur = false;
             changement_precision = false;
@@ -136,8 +137,10 @@ namespace PositronNova
             lancer_recherche_blindage = false;
             diminution_ressource_moteur = false;
             diminution_ressource_precision = false;
+            diminution_ressource_blindage = false;
             precision_ok = false;
             moteur_ok = false;
+            blindage_ok = false;
 
             compt = new TimeSpan(0, 0, 1);
             compteur = 0;
@@ -154,6 +157,8 @@ namespace PositronNova
                     (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
             position_icone_moteur = new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y));
+            position_icone_blindage = new Vector2((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
+                    (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
             
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -198,6 +203,23 @@ namespace PositronNova
                 }
             }
 
+            if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+            {
+                selected_blindage = Math.Abs(mouseState.X - (position_icone_blindage.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_blindage.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
+                if (selected_blindage && PositronNova.ressources.curRessources() >= RecquiredRessourceBlindage()/*&& ressource.curRessources() >= RecquiredRessourceMoteur()*/)
+                {
+                    if (!changement_blindage)
+                    {
+                        lancer_recherche_blindage = true;
+                        diminution_ressource_blindage = true;
+                    }
+                }
+                else
+                {
+                    //Son : Pas possible
+                }
+            }
+
             if (precision_ok)
             {
                 text.addString("La technologie 'Dégats' est maintenant recherchée");
@@ -209,6 +231,12 @@ namespace PositronNova
                 text.addString("La technologie 'Moteur' est maintenant recherchée");
                 Manager.rechercheTerminee_s.Play();
                 moteur_ok = false;
+            }
+            if (blindage_ok)
+            {
+                text.addString("La technologie 'Blindage' est maintenant recherchée");
+                //son : Recherche Terminée
+                blindage_ok = false;
             }
         }
 
@@ -277,6 +305,12 @@ namespace PositronNova
                             "Degats" + "\n Technologie acquise",
                             new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
                             Color.Green);
+                    else if(PositronNova.ressources.curRessources() <= RecquiredRessourcePrecision())
+                            spriteBatch.DrawString(spriteFont,
+                            "Degats     Requis : 500, 500" + 
+                            "\nAugmente les degats de tous les vaisseaux !",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                            Color.Red);
                     else
                         spriteBatch.DrawString(spriteFont,
                             "Degats     Requis : 500, 500" + 
@@ -293,6 +327,13 @@ namespace PositronNova
                             "Moteur" + "\n Technologie acquise",
                              new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
                              Color.Green);
+                    else if (PositronNova.ressources.curRessources() <= RecquiredRessourceMoteur())
+                        spriteBatch.DrawString(spriteFont,
+                            "Moteur     Requis : 400, 400" +
+                            "\nAugmente la vitesse de tous les vaisseaux en contruction" +
+                            "\nN'augmente pas la vitesse des vaisseaux deja construits",
+                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                            Color.Red);
                     else
                         spriteBatch.DrawString(spriteFont,
                             "Moteur     Requis : 400, 400" +
@@ -303,8 +344,34 @@ namespace PositronNova
                 }
             }
 
+            if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X) &&
+                mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X +50) &&
+                mouseState.Y + Camera2d.Origine.Y > (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y) &&
+                mouseState.Y + Camera2d.Origine.Y < (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y + 50))
+            {
+                if (changement_blindage)
+                    spriteBatch.DrawString(spriteFont,
+                        "Blindage" + "\n Technologie acquise",
+                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y +Camera2d.Origine.Y),
+                        Color.Green);
+                else if (PositronNova.ressources.curRessources() <= RecquiredRessourceBlindage())
+                    spriteBatch.DrawString(spriteFont,
+                        "Blindage     Requis : 600, 600" +
+                        "\n Augmente les points de vie de tous les vaisseaux en construction" +
+                        "\n N'augmente pas les points de vie des vaisseaux deja construits",
+                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Red);
+                else
+                    spriteBatch.DrawString(spriteFont,
+                        "Blindage     Requis : 600, 600" +
+                        "\n Augmente les points de vie de tous les vaisseaux en construction" +
+                        "\n N'augmente pas les points de vie des vaisseaux deja construits",
+                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Green);
+            }
 
-            if ((lancer_recherche_precision || lancer_rechercher_moteur) &&
+
+            if ((lancer_recherche_precision || lancer_rechercher_moteur || lancer_recherche_blindage) &&
                 last > compt)
             {
                 spriteBatch.DrawString(spriteFont,
@@ -326,9 +393,15 @@ namespace PositronNova
                         changement_moteur = true;
                         moteur_ok = true;
                     }
+                    if(lancer_recherche_blindage)
+                    {
+                        changement_blindage = true;
+                        blindage_ok = true;
+                    }
 
                     lancer_recherche_precision = false;
                     lancer_rechercher_moteur = false;
+                    lancer_recherche_blindage = false;
                 }
                 last = new TimeSpan(0);
             }
@@ -358,6 +431,11 @@ namespace PositronNova
                 ressource -= RecquiredRessourceMoteur();
                 diminution_ressource_moteur = false;
             }
+            if (diminution_ressource_blindage)
+            {
+                ressource -= RecquiredRessourceBlindage();
+                diminution_ressource_blindage = false;
+            }
 
             return ressource;
         }
@@ -371,6 +449,11 @@ namespace PositronNova
         private Ressources RecquiredRessourceMoteur()
         {
             return new Ressources(400, 400);
+        }
+
+        private Ressources RecquiredRessourceBlindage()
+        {
+            return new Ressources(600, 600);
         }
 
         public void Start()
