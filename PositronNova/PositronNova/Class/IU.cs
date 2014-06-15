@@ -58,15 +58,8 @@ namespace PositronNova
                     if (UnitSelected[i].Side == UnitSide.Humain)
                     {
                         UnitSelected[i].Ennemy = PositronNova.GetEnnemy();
-                        if (UnitSelected[i].Ennemy != null)
-                        {
-                            UnitSelected[i].HasTarget = Math.Pow(UnitSelected[i].position.X - UnitSelected[i].Ennemy.position.X, 2) + Math.Pow(UnitSelected[i].position.Y - UnitSelected[i].Ennemy.position.Y, 2) <= Math.Pow(UnitSelected[i].Range, 2);
-                        }
-                        else
-                        {
-                            UnitSelected[i].HasTarget = false;
-                        }
-                        if (!UnitSelected[i].HasTarget && UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
+                        UnitSelected[i].HasTarget = UnitSelected[i].Ennemy != null; // Utilisé pour marqué et suivre une cible
+                        if (UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
                         {
                             UnitSelected[i].Destination = new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
                             UnitSelected[i].Direction = new Vector2(UnitSelected[i].Destination.X - UnitSelected[i].position.X, UnitSelected[i].Destination.Y - UnitSelected[i].position.Y);
@@ -106,9 +99,9 @@ namespace PositronNova
                         else
                         {
                             sb.Draw(selection, new Vector2(Math.Min(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X), Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y)) + new Vector2(-4, -4), new Rectangle(0, 0, 7, 7), Color.White); // haut gauche
-                            sb.Draw(selection, new Vector2(Math.Max(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X) + UnitSelected[i].CIVWidth, Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y)) + new Vector2(4, -4), new Rectangle(6, 0, 7, 7), Color.White); // haut droit
-                            sb.Draw(selection, new Vector2(Math.Min(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X), Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(-4, 4), new Rectangle(0, 6, 7, 7), Color.White); // bas gauche
-                            sb.Draw(selection, new Vector2(Math.Max(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X) + UnitSelected[i].CIVWidth, Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(4, 4), new Rectangle(6, 6, 7, 7), Color.White); // bas droit
+                            sb.Draw(selection, new Vector2(Math.Max(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X) + UnitSelected[i].CIVWidth, Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y)) + new Vector2(-4, -4), new Rectangle(6, 0, 7, 7), Color.White); // haut droit
+                            sb.Draw(selection, new Vector2(Math.Min(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X), Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(-4, -4), new Rectangle(0, 6, 7, 7), Color.White); // bas gauche
+                            sb.Draw(selection, new Vector2(Math.Max(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X) + UnitSelected[i].CIVWidth, Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(-4, -4), new Rectangle(6, 6, 7, 7), Color.White); // bas droit
                         }
                         aUneCible(UnitSelected[i], sb);
                         UnitSelected[i].LifeBar.Draw(sb, (int)(UnitSelected[i].position.X + UnitSelected[i].centre.X - (UnitSelected[i].texture.Width / 2)), (int)(Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) - 10));

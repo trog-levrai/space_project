@@ -11,9 +11,8 @@ using PositronNova.Class;
 
 namespace PositronNova
 {
-    class Planete
+    public class Planete
     {
-
         MouseState mouseState;
 
         Caserne caserne;
@@ -39,6 +38,7 @@ namespace PositronNova
         Texture2D image_recrutement_grisee;
 
         Rectangle imageRectangle;
+        public Rectangle champDeVision;
         bool recrutement;
         static private bool selected_recrutement;
         static public bool Selected_recrutement
@@ -163,6 +163,7 @@ namespace PositronNova
             rand = new Random();
 
             position = new Vector2(50, 250);
+            champDeVision = new Rectangle((int)(position.X + image_planete.Width - 300), (int)(position.Y + image_planete.Height - 300), 600, 600);
             imageRectangle = new Rectangle(50, 250, image_planete.Width * 2, image_planete.Height * 2);
 
             recrutement = false;

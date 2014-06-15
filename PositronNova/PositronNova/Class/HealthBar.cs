@@ -25,7 +25,7 @@ namespace PositronNova.Class
             this.largeurTexture = largeurTexture;
             largeurTextureFixe = largeurTexture;
             texture = Manager.lifeBrick_t;
-            life = new Rectangle(0, 0, 3, 5);
+            life = new Rectangle(0, 0, 3, 3);
         }
 
         public void Update(int vie)
