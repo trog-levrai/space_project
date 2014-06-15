@@ -258,7 +258,11 @@ namespace PositronNova
                             }
                             if (startScreen.SelectedIndex == 2)
                             {
+<<<<<<< HEAD
                                 client = new Client("Polo", "10.3.141.70", 1234, this);
+=======
+                                client = new Client("trog", "10.3.141.70", 1234, this);
+>>>>>>> a76dc1b13f83234dcc97d83cd0b8d2e348fc8078
                                 client.Connect();
                                 activeScreen.Hide();
                                 activeScreen = actionScreen;
