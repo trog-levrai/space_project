@@ -206,7 +206,6 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             Vector2 movement = Vector2.Zero;
@@ -438,12 +437,12 @@ namespace PositronNova
                                     }
                                 }
                                 client.SendUnit(send);
-                                List<Unit> aux = unitList;
-                                unitList.Clear();
-                                foreach (var unit in aux)
+                                for (int i = 0; i < unitList.Count; i++)
                                 {
-                                    if (unit.Friendly)
-                                        unitList.Add(unit);
+                                    if (!unitList[i].Friendly)
+                                    {
+                                        unitList.RemoveAt(i);
+                                    }
                                 }
                                 if (client.Ennemies != null)
                                 {
