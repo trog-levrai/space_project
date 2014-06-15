@@ -74,12 +74,6 @@ namespace PositronNova.Class
         }
         public void Receive()
         {
-            while (!Start)
-            {
-                string foo;
-                foo = clientReader.ReadLine();
-                Start = foo == "game";
-            }
             while (true)
             {
                 try

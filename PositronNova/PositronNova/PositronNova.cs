@@ -23,7 +23,8 @@ namespace PositronNova
         static public int winWidth = 800, winHeight = 600; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
-
+        private System.TimeSpan seconde;
+        private TimeSpan last;
         static private Texture2D backgroundTexture;
         static public Texture2D BackgroundTexture
         {
@@ -205,6 +206,7 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            last = last.Add(gameTime.ElapsedGameTime);
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             Vector2 movement = Vector2.Zero;
@@ -258,6 +260,7 @@ namespace PositronNova
                             }
                             if (startScreen.SelectedIndex == 2)
                             {
+                                seconde = new TimeSpan(0,0,10);
                                 activeScreen.Hide();
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();
@@ -423,7 +426,7 @@ namespace PositronNova
                     {
                         if (activeScreen == actionScreen_)
                         {
-                            if (client.Start)
+                            if (last > seconde)
                             {
                                 List<Unit> send = new List<Unit>();
                                 foreach (var unit in unitList)
