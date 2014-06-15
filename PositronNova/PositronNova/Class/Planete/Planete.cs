@@ -11,7 +11,7 @@ using PositronNova.Class;
 
 namespace PositronNova
 {
-    class Planete
+    public class Planete
     {
 
         MouseState mouseState;
@@ -39,6 +39,8 @@ namespace PositronNova
         Texture2D image_recrutement_grisee;
 
         Rectangle imageRectangle;
+        Rectangle champDeVision;
+        public Rectangle ChampDeVision { get { return champDeVision; } }
         bool recrutement;
         private bool selected_recrutement;
         public bool Selected_recrutement
@@ -156,6 +158,7 @@ namespace PositronNova
             rand = new Random();
 
             position = new Vector2(50, 250);
+            champDeVision = new Rectangle((int)(position.X + (image_planete.Width) - 300), (int)(position.Y + (image_planete.Height) - 300), 600, 600);
             imageRectangle = new Rectangle(50, 250, image_planete.Width * 2, image_planete.Height * 2);
 
             recrutement = false;
@@ -488,6 +491,7 @@ namespace PositronNova
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            //spriteBatch.Draw(Manager.lifeBrick_t, champDeVision, Color.White);
             spriteBatch.Draw(image_planete, imageRectangle, Color.White);
 
             mouseState = Mouse.GetState();

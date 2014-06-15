@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PositronNova
 {
-    class Chat
+    public class Chat
     {
         //Capte le texte
         //Le code sera à compléter pour l'implémentation de l'autocomplete pour shell

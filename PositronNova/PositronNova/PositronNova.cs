@@ -49,7 +49,8 @@ namespace PositronNova
 
         static public Ressources ressources;
 
-        Planete planete;
+        static Planete planete;
+        static public Planete PLANETE { get { return planete; } }
 
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
@@ -500,25 +501,25 @@ namespace PositronNova
                         for (int i = 0; i < unitList.Count; i++)
                         {
                             unitList[i].Update(gameTime);
-                            // Mini IA
-                            if (unitList[i].Side == UnitSide.Alien && unitList[0].Side == UnitSide.Humain)
-                            {
-                                unitList[i].Ennemy = unitList[0];
-                                unitList[i].HasTarget = true;
-                            }
-                            else if (unitList[i].Side == UnitSide.Alien)
-                            {
-                                for (int j = 0; j < unitList.Count; j++)
-                                {
-                                    if (unitList[j].Side == UnitSide.Humain)
-                                    {
-                                        unitList[i].Ennemy = unitList[j];
-                                        unitList[i].HasTarget = true;
-                                        j = unitList.Count;
-                                    }
-                                }
-                            }
-                            // ----
+                            //// Mini IA
+                            //if (unitList[i].Side == UnitSide.Alien && unitList[0].Side == UnitSide.Humain)
+                            //{
+                            //    unitList[i].Ennemy = unitList[0];
+                            //    unitList[i].HasTarget = true;
+                            //}
+                            //else if (unitList[i].Side == UnitSide.Alien)
+                            //{
+                            //    for (int j = 0; j < unitList.Count; j++)
+                            //    {
+                            //        if (unitList[j].Side == UnitSide.Humain)
+                            //        {
+                            //            unitList[i].Ennemy = unitList[j];
+                            //            unitList[i].HasTarget = true;
+                            //            j = unitList.Count;
+                            //        }
+                            //    }
+                            //}
+                            //// ----
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
