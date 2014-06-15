@@ -88,11 +88,14 @@ Content\img\Extracteur2.xnb
 Content\img\Icone_tech\Blindage.xnb
 Content\img\Icone_tech\Blindage_ok.xnb
 Content\img\Icone_fleche.xnb
+<<<<<<< HEAD
+=======
 Content\Affichage_mouse.xnb
 Content\chat.xnb
 Content\menufont.xnb
 Content\optionfont.xnb
 Content\titlefont.xnb
+>>>>>>> 92c5761681c9688f38370cf4e3c9a566dfe20c2c
 Content\Planete.xnb
 Content\progress.xnb
 Content\sounds\laser.xnb

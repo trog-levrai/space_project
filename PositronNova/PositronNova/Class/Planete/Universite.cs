@@ -235,7 +235,7 @@ namespace PositronNova
             if (blindage_ok)
             {
                 text.addString("La technologie 'Blindage' est maintenant recherchée");
-                //son : Recherche Terminée
+                Manager.rechercheTerminee_s.Play();
                 blindage_ok = false;
             }
         }

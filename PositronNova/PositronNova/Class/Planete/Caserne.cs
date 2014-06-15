@@ -50,6 +50,13 @@ namespace PositronNova
         public bool Recrut
         {
             get { return recrut; }
+            set { recrut = value; }
+        }
+        bool continu;
+        public bool Continu
+        {
+            get { return continu; }
+            set { continu = value; }
         }
         bool selected_chasseur;
         bool selected_chasseur_lourd;
@@ -59,7 +66,11 @@ namespace PositronNova
         bool selected_cuirasse;
         bool selected_fleche_caserne;
 
-        List<int> list;
+        static List<int> list;
+        static public List<int> List
+        {
+            get { return list; }
+        }
 
         bool lancer_recrutement_chasseur;
         bool recrutement_chasseur_OK;
@@ -127,6 +138,7 @@ namespace PositronNova
             this.ressource = ressource;
 
             this.text = text;
+            continu = false;
 
             list = new List<int>();
 
@@ -224,19 +236,12 @@ namespace PositronNova
                     diminution_ressource_chasseur = true;
                     list.Add(1);
                     selected_chasseur = false;
+                    LancerRecrutement();
                 }
                 else
                 {
                     //Son : Pas possible
                 }
-            }
-
-            if (recrutement_chasseur_OK)
-            {
-                genHum(1);
-                text.addString("Un Chasseur vient d'être créé !");
-                Manager.unitePrete_s.Play();
-                recrutement_chasseur_OK = false;
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
@@ -248,19 +253,12 @@ namespace PositronNova
                     list.Add(2);
                     diminution_ressource_chasseur_lourd = true;
                     selected_chasseur_lourd = false;
+                    LancerRecrutement();
                 }
                 else 
                 {
                     //Son : Pas possible
                 }
-            }
-
-            if (recrutement_chasseur_lourd_OK)
-            {
-                genHum(2);
-                text.addString("Un Chasseur lourd vient d'être créé !");
-                Manager.unitePrete_s.Play();
-                recrutement_chasseur_lourd_OK = false;
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
@@ -272,19 +270,12 @@ namespace PositronNova
                     list.Add(3);
                     diminution_ressources_corvette = true;
                     selected_corvette = false;
+                    LancerRecrutement();
                 }
                 else
                 {
                     //Son : Pas possible
                 }
-            }
-
-            if (recrutement_corvette_OK)
-            {
-                genHum(3);
-                text.addString("Une Corvette vient d'être créée !");
-                Manager.unitePrete_s.Play();
-                recrutement_corvette_OK = false;
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
@@ -296,19 +287,12 @@ namespace PositronNova
                     list.Add(4);
                     diminution_ressource_croiseur = true;
                     selected_croiseur = false;
+                    LancerRecrutement();
                 }
                 else
                 {
                     //Son : Pas possible
                 }
-            }
-
-            if (recrutement_croiseur_OK)
-            {
-                genHum(4);
-                text.addString("Un Croiseur vient d'être créé !");
-                Manager.unitePrete_s.Play();
-                recrutement_croiseur_OK = false;
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
@@ -320,19 +304,12 @@ namespace PositronNova
                     list.Add(6);
                     diminution_ressource_cuirasse = true;
                     selected_cuirasse = false;
+                    LancerRecrutement();
                 }
                 else 
                 {
                     //Son : Pas possible
                 }
-            }
-
-            if (recrutement_cuirasse_OK)
-            {
-                genHum(6);
-                text.addString("Un Cuirasse vient d'être créé !");
-                Manager.unitePrete_s.Play();
-                recrutement_cuirasse_OK = false;
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
@@ -344,19 +321,12 @@ namespace PositronNova
                     list.Add(5);
                     diminution_resource_destroyer = true;
                     selected_destroyer = false;
+                    LancerRecrutement();
                 }
                 else 
                 {
                     //Son : Pas possible
                 }
-            }
-
-            if (recrutement_destroyer_OK)
-            {
-                genHum(5);
-                text.addString("Un Destroyer vient d'être créé !");
-                Manager.unitePrete_s.Play();
-                recrutement_destroyer_OK = false;
             }
 
             if (changement_position)
@@ -370,32 +340,8 @@ namespace PositronNova
                     changement_position = false;
             }
 
-            if (list.Count != 0 & finish)
-            {
-                finish = false;
-                switch (list[0])
-                {
-                    case 1:
-                        lancer_recrutement_chasseur = true;
-                        break;
-                    case 2:
-                        lancer_recrutement_chasseur_lourd = true;
-                        break;
-                    case 3:
-                        lancer_recrutement_corvette = true;
-                        break;
-                    case 4: 
-                        lancer_recrutement_croiseur = true;
-                        break;
-                    case 5:
-                        lancer_recrutement_destroyer = true;
-                        break;
-                    case 6:
-                        lancer_recrutement_cuirasse = true;
-                        break;
-                }
-            }
-
+            if (!continu) 
+                Recrutement();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -575,8 +521,7 @@ namespace PositronNova
                 lancer_recrutement_corvette ||
                 lancer_recrutement_croiseur ||
                 lancer_recrutement_cuirasse ||
-                lancer_recrutement_destroyer) &&
-                last > compt)
+                lancer_recrutement_destroyer) & Planete.Selected_recrutement)
             {
                 spriteBatch.DrawString(spriteFont,
                              "Progression : " + compteur + "%",
@@ -590,60 +535,52 @@ namespace PositronNova
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
                         Color.Red);
 
-                compteur += rand.Next(1, 30);
-                if (compteur > 100)
-                {
-                    compteur = 0;
-                    if (lancer_recrutement_chasseur)
+                    if (!continu)
                     {
-                        recrutement_chasseur_OK = true;
-                        lancer_recrutement_chasseur = false;
-                    }
-                    if (lancer_recrutement_chasseur_lourd)
-                    {
-                        recrutement_chasseur_lourd_OK = true;
-                        lancer_recrutement_chasseur_lourd = false;
-                    }
-                    if (lancer_recrutement_corvette)
-                    {
-                        recrutement_corvette_OK = true;
-                        lancer_recrutement_corvette = false;
-                    }
-                    if (lancer_recrutement_croiseur)
-                    {
-                        recrutement_croiseur_OK = true;
-                        lancer_recrutement_croiseur = false;
-                    }
-                    if (lancer_recrutement_cuirasse)
-                    {
-                        recrutement_cuirasse_OK = true;
-                        lancer_recrutement_cuirasse = false;
-                    }
-                    if (lancer_recrutement_destroyer)
-                    {
-                        recrutement_destroyer_OK = true;
-                        lancer_recrutement_destroyer = false;
-                    }
-                    finish = true;
+                        compteur = Compteur(compteur);
+                        if (compteur > 100)
+                        {
+                            compteur = 0;
+                            if (lancer_recrutement_chasseur)
+                            {
+                                recrutement_chasseur_OK = true;
+                                lancer_recrutement_chasseur = false;
+                            }
+                            if (lancer_recrutement_chasseur_lourd)
+                            {
+                                recrutement_chasseur_lourd_OK = true;
+                                lancer_recrutement_chasseur_lourd = false;
+                            }
+                            if (lancer_recrutement_corvette)
+                            {
+                                recrutement_corvette_OK = true;
+                                lancer_recrutement_corvette = false;
+                            }
+                            if (lancer_recrutement_croiseur)
+                            {
+                                recrutement_croiseur_OK = true;
+                                lancer_recrutement_croiseur = false;
+                            }
+                            if (lancer_recrutement_cuirasse)
+                            {
+                                recrutement_cuirasse_OK = true;
+                                lancer_recrutement_cuirasse = false;
+                            }
+                            if (lancer_recrutement_destroyer)
+                            {
+                                recrutement_destroyer_OK = true;
+                                lancer_recrutement_destroyer = false;
+                            }
+                            finish = true;
+                            continu = false;
 
-                }
-                last = new TimeSpan(0);
-            }
-            else
-            {
-                spriteBatch.DrawString(spriteFont,
-                            "Progression : " + compteur + "%",
-                            new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
-                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
-                            Color.Red);
+                        }
+                    }
 
-                    spriteBatch.DrawString(spriteFont,
-                        "Nombre d'unites en cours de creation : " + (list.Count),
-                        new Vector2((int)(game.Window.ClientBounds.Width / 2 + 200 + Camera2d.Origine.X),
-                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
-                        Color.Red);
-            }
+               }
 
+
+            
         }
             void genHum(int choix)
             {
@@ -791,5 +728,149 @@ namespace PositronNova
             {
                 ressource = Ressources.getStartRessources();
             }
+
+            public int Compteur(int compte)
+            {
+                if (last > compt)
+                {
+                    compte += rand.Next(1, 30);
+
+                    last = new TimeSpan(0);
+                    return compte;
+                }
+                else return compte;
+            
+            }
+
+            public void LancerRecrutement()
+            {
+                if (list.Count != 0 & finish)
+                {
+                    finish = false;
+                    switch (list[0])
+                    {
+                        case 1:
+                            lancer_recrutement_chasseur = true;
+                            continu = true;
+                            break;
+                        case 2:
+                            lancer_recrutement_chasseur_lourd = true;
+                            continu = true;
+                            break;
+                        case 3:
+                            lancer_recrutement_corvette = true;
+                            continu = true;
+                            break;
+                        case 4:
+                            lancer_recrutement_croiseur = true;
+                            continu = true;
+                            break;
+                        case 5:
+                            lancer_recrutement_destroyer = true;
+                            continu = true;
+                            break;
+                        case 6:
+                            lancer_recrutement_cuirasse = true;
+                            continu = true;
+                            break;
+                    }
+                }
+            }
+
+            public void Recrutement()
+            {
+                if (recrutement_chasseur_OK)
+                {
+                    genHum(1);
+                    text.addString("Un Chasseur vient d'être créé !");
+                    Manager.unitePrete_s.Play();
+                    recrutement_chasseur_OK = false;
+                }
+
+                if (recrutement_chasseur_lourd_OK)
+                {
+                    genHum(2);
+                    text.addString("Un Chasseur lourd vient d'être créé !");
+                    Manager.unitePrete_s.Play();
+                    recrutement_chasseur_lourd_OK = false;
+                }
+
+                if (recrutement_corvette_OK)
+                {
+                    genHum(3);
+                    text.addString("Une Corvette vient d'être créée !");
+                    Manager.unitePrete_s.Play();
+                    recrutement_corvette_OK = false;
+                }
+
+                if (recrutement_croiseur_OK)
+                {
+                    genHum(4);
+                    text.addString("Un Croiseur vient d'être créé !");
+                    Manager.unitePrete_s.Play();
+                    recrutement_croiseur_OK = false;
+                }
+
+                if (recrutement_destroyer_OK)
+                {
+                    genHum(5);
+                    text.addString("Un Destroyer vient d'être créé !");
+                    Manager.unitePrete_s.Play();
+                    recrutement_destroyer_OK = false;
+                }
+
+                if (recrutement_cuirasse_OK)
+                {
+                    genHum(6);
+                    text.addString("Un Cuirasse vient d'être créé !");
+                    Manager.unitePrete_s.Play();
+                    recrutement_cuirasse_OK = false;
+                }
+            }
+
+        public void Lancercompt()
+        {
+            if (!Planete.Selected_recrutement && continu)
+            {
+                compteur = Compteur(compteur);
+                if (compteur > 100)
+                {
+                    compteur = 0;
+                    if (lancer_recrutement_chasseur)
+                    {
+                        recrutement_chasseur_OK = true;
+                        lancer_recrutement_chasseur = false;
+                    }
+                    if (lancer_recrutement_chasseur_lourd)
+                    {
+                        recrutement_chasseur_lourd_OK = true;
+                        lancer_recrutement_chasseur_lourd = false;
+                    }
+                    if (lancer_recrutement_corvette)
+                    {
+                        recrutement_corvette_OK = true;
+                        lancer_recrutement_corvette = false;
+                    }
+                    if (lancer_recrutement_croiseur)
+                    {
+                        recrutement_croiseur_OK = true;
+                        lancer_recrutement_croiseur = false;
+                    }
+                    if (lancer_recrutement_cuirasse)
+                    {
+                        recrutement_cuirasse_OK = true;
+                        lancer_recrutement_cuirasse = false;
+                    }
+                    if (lancer_recrutement_destroyer)
+                    {
+                        recrutement_destroyer_OK = true;
+                        lancer_recrutement_destroyer = false;
+                    }
+                    finish = true;
+                    continu = false;
+
+                }
+            }
+        }
     }
 }
