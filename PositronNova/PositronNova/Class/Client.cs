@@ -56,8 +56,6 @@ namespace PositronNova.Class
         }
         public void Send(string message)
         {
-            //byte[] foo = utf8.GetBytes(message);
-            //sock.Send(foo);
             clientWriter.WriteLine(message);
             clientWriter.Flush();
         }
