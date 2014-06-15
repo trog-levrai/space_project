@@ -74,6 +74,12 @@ namespace PositronNova.Class
         }
         public void Receive()
         {
+            while (!Start)
+            {
+                string foo;
+                foo = clientReader.ReadLine();
+                Start = foo == "game";
+            }
             while (true)
             {
                 try
@@ -96,8 +102,6 @@ namespace PositronNova.Class
                     foo = clientReader.ReadLine();
                     if (foo != "" && foo != "\0")
                     {
-                        if (foo == "game")
-                            Start = true;
                         chat.addString(foo);
                     }
                 }
