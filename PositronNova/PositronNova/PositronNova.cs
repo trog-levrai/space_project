@@ -423,16 +423,16 @@ namespace PositronNova
                     {
                         if (activeScreen == actionScreen_)
                         {
-                            List<Unit> send = new List<Unit>();
-                            foreach (var unit in unitList)
-                            {
-                                if (unit.Friendly)
-                                {
-                                    send.Add(unit);
-                                }
-                            }
                             if (client.Start)
                             {
+                                List<Unit> send = new List<Unit>();
+                                foreach (var unit in unitList)
+                                {
+                                    if (unit.Friendly)
+                                    {
+                                        send.Add(unit);
+                                    }
+                                }
                                 client.SendUnit(send);
                                 List<Unit> aux = unitList;
                                 unitList.Clear();

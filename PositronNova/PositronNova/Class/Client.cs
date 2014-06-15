@@ -84,11 +84,10 @@ namespace PositronNova.Class
                     if (foo == "game")
                     {
                         Start = true;
-                        break;
+                        foo = "";
                     }
                     if (foo != "")
                         chat.addString(foo);
-
                 }
                 catch
                 {
