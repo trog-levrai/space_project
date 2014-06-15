@@ -259,7 +259,7 @@ namespace PositronNova
                             if (startScreen.SelectedIndex == 2)
                             {
                                 activeScreen.Hide();
-                                activeScreen = actionScreen;
+                                activeScreen = actionScreen_;
                                 activeScreen.Show();
                                 client = new Client("Polo", "10.3.141.70", 1234, this);
                                 client.Connect();
