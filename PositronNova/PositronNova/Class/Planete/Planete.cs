@@ -201,6 +201,8 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\Fleche"),
                 Content.Load<Texture2D>("img\\Icone_tech\\precision_ok"),
                 Content.Load<Texture2D>("img\\Icone_tech\\Moteur_ok"),
+                Content.Load<Texture2D>("img\\Icone_tech\\Blindage"),
+                Content.Load<Texture2D>("img\\Icone_tech\\Blindage_ok"),
                 Content.Load<SpriteFont>("Planete"),
                 ressource,
                 text);
