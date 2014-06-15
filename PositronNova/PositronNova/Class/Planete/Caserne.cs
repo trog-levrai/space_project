@@ -45,6 +45,7 @@ namespace PositronNova
         Texture2D fleche;
 
         bool selected_fleche;
+        bool finish;
         bool recrut;
         public bool Recrut
         {
@@ -57,6 +58,8 @@ namespace PositronNova
         bool selected_destroyer;
         bool selected_cuirasse;
         bool selected_fleche_caserne;
+
+        List<int> list;
 
         bool lancer_recrutement_chasseur;
         bool recrutement_chasseur_OK;
@@ -125,6 +128,8 @@ namespace PositronNova
 
             this.text = text;
 
+            list = new List<int>();
+
             this.Icone_corvette_grisee = Icone_corvette_grisee;
             this.Icone_croiseur_grisee = Icone_croiseur_grisee;
             this.Icone_cuirasse_grisee = Icone_cuirasse_grisee;
@@ -144,6 +149,7 @@ namespace PositronNova
             selected_fleche_caserne = false;
             recrut = false;
 
+            finish = true;
             lancer_recrutement_chasseur = false;
             recrutement_chasseur_OK = false;
             lancer_recrutement_chasseur_lourd = false;
@@ -214,8 +220,10 @@ namespace PositronNova
                 selected_chasseur = Math.Abs(mouseState.X - (position_icone_chasseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_chasseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_chasseur && ressource.curRessources() >= RecquiredRessourceChasseur())
                 {
-                    lancer_recrutement_chasseur = true;
+                    //lancer_recrutement_chasseur = true;
                     diminution_ressource_chasseur = true;
+                    list.Add(1);
+                    selected_chasseur = false;
                 }
                 else
                 {
@@ -236,9 +244,10 @@ namespace PositronNova
                 selected_chasseur_lourd = Math.Abs(mouseState.X - (position_icone_chasseur_lourd.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_chasseur_lourd.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_chasseur_lourd && ressource.curRessources() >= RecquiredRessourceChasseurLourd())
                 {
-                    lancer_recrutement_chasseur_lourd = true;
+                    //lancer_recrutement_chasseur_lourd = true;
+                    list.Add(2);
                     diminution_ressource_chasseur_lourd = true;
-
+                    selected_chasseur_lourd = false;
                 }
                 else 
                 {
@@ -259,8 +268,10 @@ namespace PositronNova
                 selected_corvette = Math.Abs(mouseState.X - (position_icone_corvette.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_corvette.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_corvette && Planete.Niveau_caserne > 1 && ressource.curRessources() >= RecquiredRessourceCorvette())
                 {
-                    lancer_recrutement_corvette = true;
+                    //lancer_recrutement_corvette = true;
+                    list.Add(3);
                     diminution_ressources_corvette = true;
+                    selected_corvette = false;
                 }
                 else
                 {
@@ -281,8 +292,10 @@ namespace PositronNova
                 selected_croiseur = Math.Abs(mouseState.X - (position_icone_croiseur.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_croiseur.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_croiseur && Planete.Niveau_caserne > 2 && ressource.curRessources() >= RecquiredRessourceCroiseur())
                 {
-                    lancer_recrutement_croiseur = true;
+                    //lancer_recrutement_croiseur = true;
+                    list.Add(4);
                     diminution_ressource_croiseur = true;
+                    selected_croiseur = false;
                 }
                 else
                 {
@@ -303,8 +316,10 @@ namespace PositronNova
                 selected_cuirasse = Math.Abs(mouseState.X - (position_icone_cuirasse.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_cuirasse.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_cuirasse && Planete.Niveau_caserne > 3 && ressource.curRessources() >= RecquiredRessourceCuirasse())
                 {
-                    lancer_recrutement_cuirasse = true;
+                    //lancer_recrutement_cuirasse = true;
+                    list.Add(6);
                     diminution_ressource_cuirasse = true;
+                    selected_cuirasse = false;
                 }
                 else 
                 {
@@ -325,8 +340,10 @@ namespace PositronNova
                 selected_destroyer = Math.Abs(mouseState.X - (position_icone_destroyer.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_destroyer.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
                 if (selected_destroyer && Planete.Niveau_caserne > 4 && ressource.curRessources() >= RecquiredRessourceDestroyer())
                 {
-                    lancer_recrutement_destroyer = true;
+                    //lancer_recrutement_destroyer = true;
+                    list.Add(5);
                     diminution_resource_destroyer = true;
+                    selected_destroyer = false;
                 }
                 else 
                 {
@@ -351,6 +368,32 @@ namespace PositronNova
                 }
                 if (mouseState.RightButton == ButtonState.Pressed & oldmouse.RightButton == ButtonState.Released)
                     changement_position = false;
+            }
+
+            if (list.Count != 0 & finish)
+            {
+                finish = false;
+                switch (list[0])
+                {
+                    case 1:
+                        lancer_recrutement_chasseur = true;
+                        break;
+                    case 2:
+                        lancer_recrutement_chasseur_lourd = true;
+                        break;
+                    case 3:
+                        lancer_recrutement_corvette = true;
+                        break;
+                    case 4: 
+                        lancer_recrutement_croiseur = true;
+                        break;
+                    case 5:
+                        lancer_recrutement_destroyer = true;
+                        break;
+                    case 6:
+                        lancer_recrutement_cuirasse = true;
+                        break;
+                }
             }
 
         }
@@ -540,6 +583,13 @@ namespace PositronNova
                             new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
                             Color.Red);
+
+                    spriteBatch.DrawString(spriteFont,
+                        "Nombre d'unites en cours de creation : " + (list.Count),
+                        new Vector2((int)(game.Window.ClientBounds.Width / 2 + 200 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
+                        Color.Red);
+
                 compteur += rand.Next(1, 30);
                 if (compteur > 100)
                 {
@@ -574,6 +624,7 @@ namespace PositronNova
                         recrutement_destroyer_OK = true;
                         lancer_recrutement_destroyer = false;
                     }
+                    finish = true;
 
                 }
                 last = new TimeSpan(0);
@@ -585,6 +636,12 @@ namespace PositronNova
                             new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X),
                         (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
                             Color.Red);
+
+                    spriteBatch.DrawString(spriteFont,
+                        "Nombre d'unites en cours de creation : " + (list.Count),
+                        new Vector2((int)(game.Window.ClientBounds.Width / 2 + 200 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y)),
+                        Color.Red);
             }
 
         }
@@ -631,6 +688,7 @@ namespace PositronNova
                         localUnit.Destination = new Vector2(500, 500);
                     localUnit.moving = true;
                     selected_chasseur = false;
+                    list.RemoveAt(0);
                 }
             }
 
@@ -642,6 +700,7 @@ namespace PositronNova
                     //ressource.Metal -= 60;
                     ressource -= RecquiredRessourceChasseur();
                     diminution_ressource_chasseur = false;
+
                 }
                 if (diminution_ressource_chasseur_lourd)
                 {
