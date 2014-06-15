@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PositronNova.Class
 {
+    [Serializable()]
     class Client
     {
         public bool Start;
