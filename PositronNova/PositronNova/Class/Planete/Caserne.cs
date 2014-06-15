@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PositronNova.Class.Unit;
+using PositronNova.Class;
 
 namespace PositronNova
 {
@@ -205,7 +206,7 @@ namespace PositronNova
             {
                 genHum(1);
                 text.addString("Un Chasseur vient d'être créé !");
-                //Son : Unité créée
+                Manager.unitePrete_s.Play();
                 recrutement_chasseur_OK = false;
             }
 
@@ -228,7 +229,7 @@ namespace PositronNova
             {
                 genHum(2);
                 text.addString("Un Chasseur lourd vient d'être créé !");
-                //Son : Unité créée
+                Manager.unitePrete_s.Play();
                 recrutement_chasseur_lourd_OK = false;
             }
 
@@ -250,7 +251,7 @@ namespace PositronNova
             {
                 genHum(3);
                 text.addString("Une Corvette vient d'être créée !");
-                //Son : Unité créée
+                Manager.unitePrete_s.Play();
                 recrutement_corvette_OK = false;
             }
 
@@ -272,7 +273,7 @@ namespace PositronNova
             {
                 genHum(4);
                 text.addString("Un Croiseur vient d'être créé !");
-                //Son : Unité créée
+                Manager.unitePrete_s.Play();
                 recrutement_croiseur_OK = false;
             }
 
@@ -294,7 +295,7 @@ namespace PositronNova
             {
                 genHum(6);
                 text.addString("Un Cuirasse vient d'être créé !");
-                //Son : Unité crées
+                Manager.unitePrete_s.Play();
                 recrutement_cuirasse_OK = false;
             }
 
@@ -316,7 +317,7 @@ namespace PositronNova
             {
                 genHum(5);
                 text.addString("Un Destroyer vient d'être créé !");
-                //Son
+                Manager.unitePrete_s.Play();
                 recrutement_destroyer_OK = false;
             }
 

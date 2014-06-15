@@ -22,6 +22,8 @@ namespace PositronNova.Class
         public static SoundEffect missileLaunch_s, missileHit_s, laserFire_s, laserHit_s, plasmaFire_s, plasmaHit_s;
         static public SoundEffect deathNoise_s;
 
+        static public SoundEffect unitePerdu_s, unitePrete_s, actionImpossible_s, rechercheTerminee_s;
+
         static public SpriteFont font_t;
 
         static public void ContentLoad(ContentManager content)
@@ -71,6 +73,11 @@ namespace PositronNova.Class
             missileHit_s = content.Load<SoundEffect>("sounds\\missileHit");
 
             deathNoise_s = content.Load<SoundEffect>("sounds\\shipDeath");
+
+            unitePerdu_s = content.Load<SoundEffect>("sounds\\voix\\unite perdu");
+            unitePrete_s = content.Load<SoundEffect>("sounds\\voix\\unite prete");
+            actionImpossible_s = content.Load<SoundEffect>("sounds\\voix\\action impossible1");
+            rechercheTerminee_s = content.Load<SoundEffect>("sounds\\voix\\recherche terminee");
 
             font_t = content.Load<SpriteFont>("Affichage_mouse");
         }

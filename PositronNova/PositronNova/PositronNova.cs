@@ -521,7 +521,10 @@ namespace PositronNova
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
                                 if (unitList[i].Side == UnitSide.Humain)
+                                {
                                     text.addString("f:" + unitList[i].Name + " a été détruit !");
+                                    Manager.unitePerdu_s.Play();
+                                }
                                 else
                                 {
                                     text.addString("Un Alien a été détruit !");

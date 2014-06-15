@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PositronNova.Class.Unit;
+using PositronNova.Class;
 
 namespace PositronNova
 {
@@ -200,13 +201,13 @@ namespace PositronNova
             if (precision_ok)
             {
                 text.addString("La technologie 'Dégats' est maintenant recherchée");
-                //Son : Recherche terminée
+                Manager.rechercheTerminee_s.Play();
                 precision_ok = false;
             }
             if (moteur_ok)
             {
                 text.addString("La technologie 'Moteur' est maintenant recherchée");
-                //Son : recherche Terminée
+                Manager.rechercheTerminee_s.Play();
                 moteur_ok = false;
             }
         }

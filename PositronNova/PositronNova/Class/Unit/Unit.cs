@@ -321,8 +321,8 @@ namespace PositronNova.Class.Unit
                     hitBoxesWidth = 150;
                     hitBoxesHeight = 60;
                     nbCIV = 1;
-                    CIVWidth = 300;
-                    CIVHeight = 120;
+                    CIVWidth = 220;
+                    CIVHeight = 100;
                     nbFrame = 4;
                     frameWidth = 200;
                     frameHeight = 100;
