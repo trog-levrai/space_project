@@ -96,6 +96,7 @@ namespace PositronNova.Class.Unit
         {
             this.name = name;
             unitType = type;
+            direction = new Vector2(1, 0); // Important pour l'initialisation des hitboxes et CIV !! C'est pour qu'elles soient bien placées dès le départ
         }
 
         public override void Init()
@@ -105,7 +106,7 @@ namespace PositronNova.Class.Unit
             else
                 color = Color.IndianRed;
             //speed = 0;
-            //direction = Vector2.Zero;
+            //direction = Vector2.One;
             destination = position;
 
             _font = Manager.font_t;
@@ -116,11 +117,14 @@ namespace PositronNova.Class.Unit
                 case UnitType.Chasseur:
                     side = UnitSide.Humain;
                     texture = Manager.chasseur_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[1];
-                    hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, 10, 10);
-                    // ----
-                    champDeVisionWidth = 100;
+                    nbHitBoxes = 1;
+                    decalageHitBoxes = 0;
+                    hitBoxesWidth = 10; // Hitboxes ??? Je ne sais pas ce que c'est :o)
+                    hitBoxesHeight = 10;
+                    nbCIV = 1;
+                    CIVWidth = 20; // CIV c'est le rectangle collisionInterVaisseau
+                    CIVHeight = 20;
+                    champDeVisionWidth = 100; // ça bah... c'est pour le champ de vision :o)
                     champDeVisionHeight = 100;
                     fireRate = new TimeSpan(0, 0, 0, 0, 600);
                     weaponType = BulletType.LittleCinetique;
@@ -135,14 +139,15 @@ namespace PositronNova.Class.Unit
                 case UnitType.Bombardier:
                     side = UnitSide.Humain;
                     texture = Manager.chasseurLourd_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[3];
+                    nbHitBoxes = 3;
                     decalageHitBoxes = 14;
-                    for (int i = 0; i < 3; i++)
-                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, 16, 16);
-                    // ----
-                    champDeVisionWidth = 100;
-                    champDeVisionHeight = 100;
+                    hitBoxesWidth = 16;
+                    hitBoxesHeight = 16;
+                    nbCIV = 3;
+                    CIVWidth = 32;
+                    CIVHeight = 32;
+                    champDeVisionWidth = 150;
+                    champDeVisionHeight = 150;
                     fireRate = new TimeSpan(0, 0, 0, 0, 900);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
@@ -156,16 +161,15 @@ namespace PositronNova.Class.Unit
                 case UnitType.Corvette:
                     side = UnitSide.Humain;
                     texture = Manager.corvette_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[3];
-                    tailleHitBoxesX = 25;
-                    tailleHitBoxesY = 25;
+                    nbHitBoxes = 3;
                     decalageHitBoxes = 20;
-                    for (int i = 0; i < 3; i++)
-                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
-                    // ----
-                    champDeVisionWidth = 100;
-                    champDeVisionHeight = 100;
+                    hitBoxesWidth = 25;
+                    hitBoxesHeight = 25;
+                    nbCIV = 3;
+                    CIVWidth = 50;
+                    CIVHeight = 50;
+                    champDeVisionWidth = 200;
+                    champDeVisionHeight = 200;
                     fireRate = new TimeSpan(0, 0, 0, 0, 1500);
                     weaponType = BulletType.Laser;
                     pv_max = 60;
@@ -179,16 +183,15 @@ namespace PositronNova.Class.Unit
                 case UnitType.Destroyer:
                     side = UnitSide.Humain;
                     texture = Manager.destroyer_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[5];
-                    tailleHitBoxesX = 40;
-                    tailleHitBoxesY = 40;
+                    nbHitBoxes = 5;
                     decalageHitBoxes = 30;
-                    for (int i = 0; i < 5; i++)
-                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
-                    // ----
-                    champDeVisionWidth = 100;
-                    champDeVisionHeight = 100;
+                    hitBoxesWidth = 40;
+                    hitBoxesHeight = 40;
+                    nbCIV = 5;
+                    CIVWidth = 80;
+                    CIVHeight = 80;
+                    champDeVisionWidth = 250;
+                    champDeVisionHeight = 250;
                     fireRate = new TimeSpan(0, 0, 0, 0, 2000);
                     weaponType = BulletType.Ion;
                     pv_max = 90;
@@ -202,16 +205,15 @@ namespace PositronNova.Class.Unit
                 case UnitType.Croiseur:
                     side = UnitSide.Humain;
                     texture = Manager.croiseur_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[5];
-                    tailleHitBoxesX = 40;
-                    tailleHitBoxesY = 40;
+                    nbHitBoxes = 5;
                     decalageHitBoxes = 30;
-                    for (int i = 0; i < 5; i++)
-                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesY);
-                    // ----
-                    champDeVisionWidth = 100;
-                    champDeVisionHeight = 100;
+                    hitBoxesWidth = 40;
+                    hitBoxesHeight = 40;
+                    nbCIV = 5;
+                    CIVWidth = 80;
+                    CIVHeight = 80;
+                    champDeVisionWidth = 300;
+                    champDeVisionHeight = 300;
                     fireRate = new TimeSpan(0, 0, 0, 0, 2500);
                     weaponType = BulletType.Plasma;
                     pv_max = 110;
@@ -225,16 +227,15 @@ namespace PositronNova.Class.Unit
                 case UnitType.Cuirasse:
                     side = UnitSide.Humain;
                     texture = Manager.cuirasse_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[5];
-                    tailleHitBoxesX = 50;
-                    tailleHitBoxesY = 50;
+                    nbHitBoxes = 5;
                     decalageHitBoxes = 40;
-                    for (int i = 0; i < 5; i++)
-                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
-                    // ----
-                    champDeVisionWidth = 100;
-                    champDeVisionHeight = 100;
+                    hitBoxesWidth = 50;
+                    hitBoxesHeight = 50;
+                    nbCIV = 5;
+                    CIVWidth = 100;
+                    CIVHeight = 100;
+                    champDeVisionWidth = 350;
+                    champDeVisionHeight = 350;
                     fireRate = new TimeSpan(0, 0, 0, 3);
                     weaponType = BulletType.Missile;
                     pv_max = 250;
@@ -252,14 +253,13 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = Manager.bacterie_t;
                     textureAnime = Manager.bacterieAnim_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[3];
-                    tailleHitBoxesX = 10;
-                    tailleHitBoxesY = 10;
-                    decalageHitBoxes = 5;
-                    for (int i = 0; i < 3; i++)
-                        hitBoxes[i] = new Rectangle((int)position.X + decalageHitBoxes * i, (int)position.Y, tailleHitBoxesX, tailleHitBoxesX);
-                    // ----
+                    nbHitBoxes = 3;
+                    decalageHitBoxes = 6;
+                    hitBoxesWidth = 10;
+                    hitBoxesHeight = 10;
+                    nbCIV = 3;
+                    CIVWidth = 20;
+                    CIVHeight = 20;
                     nbFrame = 3;
                     frameWidth = 53;
                     frameHeight = 10;
@@ -274,10 +274,13 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = Manager.neurone_t;
                     textureAnime = Manager.neuroneAnim_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[1];
-                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 20, 20);
-                    // ----
+                    nbHitBoxes = 1;
+                    decalageHitBoxes = 0;
+                    hitBoxesWidth = 20;
+                    hitBoxesHeight = 20;
+                    nbCIV = 1;
+                    CIVWidth = 40;
+                    CIVHeight = 40;
                     nbFrame = 3;
                     frameWidth = 40;
                     frameHeight = 40;
@@ -292,10 +295,13 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = Manager.phagosome_t;
                     textureAnime = Manager.phagosomeAnim_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[1];
-                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 75, 75);
-                    // ----
+                    nbHitBoxes = 1;
+                    decalageHitBoxes = 0;
+                    hitBoxesWidth = 75;
+                    hitBoxesHeight = 75;
+                    nbCIV = 1;
+                    CIVWidth = 150;
+                    CIVHeight = 150;
                     nbFrame = 5;
                     frameWidth = 150;
                     frameHeight = 150;
@@ -310,10 +316,13 @@ namespace PositronNova.Class.Unit
                     side = UnitSide.Alien;
                     texture = Manager.kraken_t;
                     textureAnime = Manager.krakenAnim_t;
-                    // Creation des HitBoxes
-                    hitBoxes = new Rectangle[1];
-                    hitBoxes[0] = new Rectangle((int)position.X + decalageHitBoxes, (int)position.Y, 150, 60);
-                    // ----
+                    nbHitBoxes = 1;
+                    decalageHitBoxes = 0;
+                    hitBoxesWidth = 150;
+                    hitBoxesHeight = 60;
+                    nbCIV = 1;
+                    CIVWidth = 300;
+                    CIVHeight = 120;
                     nbFrame = 4;
                     frameWidth = 200;
                     frameHeight = 100;
@@ -332,10 +341,21 @@ namespace PositronNova.Class.Unit
             lifeBar = new HealthBar(pv, texture.Width);
 
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
+            // Creation des HitBoxes
+            hitBoxes = new Rectangle[nbHitBoxes];
+            for (int i = 0; i < nbHitBoxes; i++)
+                hitBoxes[i] = new Rectangle((int)(position.X + (decalageHitBoxes * i)), (int)(position.Y + centre.Y - hitBoxesHeight / 2), hitBoxesWidth, hitBoxesHeight);
+            // ----
+            // Creation des rectangles CollisionInterVaisseau
+            collisionInterVaisseau = new Rectangle[nbCIV];
+            for (int i = 0; i < nbCIV; i++)
+                collisionInterVaisseau[i] = new Rectangle((int)(position.X + (decalageHitBoxes * i)), (int)(position.Y + centre.Y - CIVHeight / 2), CIVWidth, CIVHeight);
+            // ----
 
+            // Placement des hitBoxes et et des CIV
             PlacementHitBoxes();
-            champDeVision = new Rectangle((int)(position.X + centre.X - champDeVisionWidth / 2), (int)(position.Y + centre.X - champDeVisionHeight / 2), champDeVisionWidth, champDeVisionHeight);
-            collisionInterVaisseau = new Rectangle((int)(position.X + centre.X - texture.Width / 2), (int)(position.Y + centre.X - texture.Height / 2), texture.Width, texture.Width);
+
+            champDeVision = new Rectangle((int)(position.X + centre.X - champDeVisionWidth / 2), (int)(position.Y + centre.Y - champDeVisionHeight / 2), champDeVisionWidth, champDeVisionHeight);
 
             base.Init();
         }
@@ -350,7 +370,6 @@ namespace PositronNova.Class.Unit
             }
 
             deplacement(gt);
-            //CollisionInterVaisseau();
             if (Destruction())
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
                         position.X + centre.X > Camera2d.Origine.X &&
@@ -407,16 +426,15 @@ namespace PositronNova.Class.Unit
                 }
 
                 sb.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 25), color);
+                //sb.Draw(Manager.lifeBrick_t, destination, Color.White);  // Dessine la destination pour voir comment elle évolue :o)
             }
             else
             {
                 sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
-
             }
 
-            //sb.Draw(Manager.lifeBrick_t, collisionInterVaisseau, Color.White);
-
-            //DrawHitboxes(sb);
+            //for (int i = 0; i < collisionInterVaisseau.Length; i++)
+            //    sb.Draw(Manager.lifeBrick_t, hitBoxes[i], Color.White);
 
             base.Draw(sb);
         }
@@ -437,8 +455,6 @@ namespace PositronNova.Class.Unit
                 PlacementHitBoxes();
                 champDeVision.X = (int)(position.X + centre.X - champDeVisionWidth / 2);
                 champDeVision.Y = (int)(position.Y + centre.Y - champDeVisionHeight / 2);
-                collisionInterVaisseau.X = (int)(position.X + centre.X - collisionInterVaisseau.Width / 2);
-                collisionInterVaisseau.Y = (int)(position.Y + centre.Y - collisionInterVaisseau.Height / 2);
                 if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
             }
@@ -491,6 +507,9 @@ namespace PositronNova.Class.Unit
             {
                 hitBoxes[0].X = (int)(position.X + centre.X - hitBoxes[0].Width / 2);
                 hitBoxes[0].Y = (int)(position.Y + centre.Y - hitBoxes[0].Height / 2);
+
+                collisionInterVaisseau[0].X = (int)(position.X + centre.X - collisionInterVaisseau[0].Width / 2);
+                collisionInterVaisseau[0].Y = (int)(position.Y + centre.Y - collisionInterVaisseau[0].Height / 2);
             }
             else if (unitType == UnitType.Bombardier || unitType == UnitType.Corvette || unitType == UnitType.Bacterie)
             {
@@ -502,6 +521,15 @@ namespace PositronNova.Class.Unit
 
                 hitBoxes[2].X = (int)(decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[1].X;
                 hitBoxes[2].Y = (int)(decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[1].Y;
+
+                collisionInterVaisseau[1].X = (int)(position.X + centre.X - collisionInterVaisseau[1].Width / 2);
+                collisionInterVaisseau[1].Y = (int)(position.Y + centre.Y - collisionInterVaisseau[1].Height / 2);
+
+                collisionInterVaisseau[0].X = (int)(decalageHitBoxes * Math.Cos(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[1].X;
+                collisionInterVaisseau[0].Y = (int)(decalageHitBoxes * Math.Sin(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[1].Y;
+
+                collisionInterVaisseau[2].X = (int)(decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[1].X;
+                collisionInterVaisseau[2].Y = (int)(decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[1].Y;
             }
             else if (unitType == UnitType.Destroyer || unitType == UnitType.Croiseur || unitType == UnitType.Cuirasse)
             {
@@ -519,6 +547,21 @@ namespace PositronNova.Class.Unit
 
                 hitBoxes[4].X = (int)(2 * decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].X;
                 hitBoxes[4].Y = (int)(2 * decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + hitBoxes[2].Y;
+
+                collisionInterVaisseau[2].X = (int)(position.X + centre.X - collisionInterVaisseau[2].Width / 2);
+                collisionInterVaisseau[2].Y = (int)(position.Y + centre.Y - collisionInterVaisseau[2].Height / 2);
+
+                collisionInterVaisseau[1].X = (int)(decalageHitBoxes * Math.Cos(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].X;
+                collisionInterVaisseau[1].Y = (int)(decalageHitBoxes * Math.Sin(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].Y;
+
+                collisionInterVaisseau[0].X = (int)(2 * decalageHitBoxes * Math.Cos(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].X;
+                collisionInterVaisseau[0].Y = (int)(2 * decalageHitBoxes * Math.Sin(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].Y;
+
+                collisionInterVaisseau[3].X = (int)(decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].X;
+                collisionInterVaisseau[3].Y = (int)(decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].Y;
+
+                collisionInterVaisseau[4].X = (int)(2 * decalageHitBoxes * -Math.Cos(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].X;
+                collisionInterVaisseau[4].Y = (int)(2 * decalageHitBoxes * -Math.Sin(Math.Atan(direction.Y / direction.X))) + collisionInterVaisseau[2].Y;
             }
         }
 
@@ -534,12 +577,12 @@ namespace PositronNova.Class.Unit
             {
                 if (PositronNova.UnitList[i] != this)
                 {
-                    if (collisionInterVaisseau.Intersects(PositronNova.UnitList[i].collisionInterVaisseau))
-                    {
-
-                        return new Vector2(PositronNova.UnitList[i].position.X - position.X, PositronNova.UnitList[i].position.Y - position.Y);
-                    }
-
+                    for (int j = 0; j < collisionInterVaisseau.Length; j++)
+                        for (int k = 0; k < PositronNova.UnitList[i].collisionInterVaisseau.Length; k++)
+                            if (collisionInterVaisseau[j].Intersects(PositronNova.UnitList[i].collisionInterVaisseau[k]))
+                            {
+                                return new Vector2(PositronNova.UnitList[i].position.X - position.X, PositronNova.UnitList[i].position.Y - position.Y);
+                            }
                 }
             }
             return Vector2.Zero;

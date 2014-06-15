@@ -516,7 +516,7 @@ namespace PositronNova
                                     }
                                 }
                             }
-
+                            // ----
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
