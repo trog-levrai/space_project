@@ -344,6 +344,7 @@ namespace PositronNova
                         }
 
                         diminution_centrale = true;
+                        selected_centrale = false;
                         plus = false;
 
                     }
@@ -377,6 +378,7 @@ namespace PositronNova
                                 break;
                         }
                         diminution_extracteur = true;
+                        selected_extracteur = false;
                         plus = false;
                     }
                     else
@@ -411,6 +413,7 @@ namespace PositronNova
                                 break;
                         }
                         diminution_caserne = true;
+                        selected_caserne = false;
                         plus = false;
                     }
                     else
