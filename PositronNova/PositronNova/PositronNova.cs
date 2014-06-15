@@ -29,8 +29,6 @@ namespace PositronNova
         //Pour la gestion du serveur
         private static Thread _thEcoute;
 
-
-
         static private Texture2D backgroundTexture;
         static public Texture2D BackgroundTexture
         {
@@ -47,10 +45,9 @@ namespace PositronNova
         static List<Bullet> bulletList = new List<Bullet>();
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
 
-        static public Ressources ressources;
+        static public List<Planete> planeteList = new List<Planete>();
 
-        static Planete planete;
-        static public Planete PLANETE { get { return planete; } }
+        static public Ressources ressources;
 
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
@@ -229,7 +226,7 @@ namespace PositronNova
             startScreen.SelectedIndex = 1;
             activeScreen.Show();
 
-            planete = new Planete(this,
+            planeteList.Add(new Planete(this,
                 Content.Load<Texture2D>("img\\Planete_1"),
                 Content.Load<Texture2D>("img\\Plus"),
                 Content.Load<Texture2D>("img\\centrale"),
@@ -242,9 +239,9 @@ namespace PositronNova
                 ressources,
                 Content.Load<SpriteFont>("Planete"),
                 Content.Load<SpriteFont>("progress"),
-                text);
+                text));
 
-            planete.LoadContent(Content);
+            planeteList[0].LoadContent(Content);
 
             chat = Content.Load<SpriteFont>("chat");
 
@@ -330,12 +327,12 @@ namespace PositronNova
 
                                 //genHumain(10);
                                 genAlien(10);
-                                planete.Niveau_centrale = 1;
-                                planete.Niveau_extracteur = 1;
+                                planeteList[0].Niveau_centrale = 1;
+                                planeteList[0].Niveau_extracteur = 1;
                                 Planete.Niveau_caserne = 0;
                                 Universite.Changement_moteur = false;
                                 Universite.Changement_precision = false;
-                                planete.Start();
+                                planeteList[0].Start();
                                 ressources = Ressources.getStartRessources();
 
                                 foreach (Unit unit in unitList)
@@ -485,9 +482,9 @@ namespace PositronNova
                         _camera.Update1(keyboardState, mouse);
                         _camera.Update2(keyboardState, mouse);
 
-                        planete.Update(gameTime, mouse, oldMouse, keyboardState, oldKeyboardState);
-                        ressources = planete.setRessource();
-                        ressources.Update(gameTime, planete.Niveau_centrale, planete.Niveau_extracteur);
+                        planeteList[0].Update(gameTime, mouse, oldMouse, keyboardState, oldKeyboardState);
+                        ressources = planeteList[0].setRessource();
+                        ressources.Update(gameTime, planeteList[0].Niveau_centrale, planeteList[0].Niveau_extracteur);
 
                         if (CheckKey(Keys.Escape))
                         {
@@ -687,7 +684,7 @@ namespace PositronNova
                         spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                         //Affiche le chat
                         // La planètatoum :o) 
-                        planete.Draw(spriteBatch);
+                        planeteList[0].Draw(spriteBatch);
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
 

@@ -75,6 +75,19 @@ Content\img\Icone_unite\Icone_destroyer.xnb
 Content\img\Fleche.xnb
 Content\img\recrutement.xnb
 Content\img\recrutement_grise.xnb
+Content\img\Icone_unite\Icone_corvette_grisee.xnb
+Content\img\Icone_unite\Icone_croiseur_grisee.xnb
+Content\img\Icone_unite\Icone_cuirasse_grisee.xnb
+Content\img\Icone_unite\Icone_Destroyer_grisee.xnb
+Content\img\universite.xnb
+Content\img\Icone_tech\precision.xnb
+Content\img\Icone_tech\precision_ok.xnb
+Content\img\Icone_tech\Moteur_ok.xnb
+Content\img\Icone_tech\Moteur.xnb
+Content\img\Extracteur2.xnb
+Content\img\Icone_tech\Blindage.xnb
+Content\img\Icone_tech\Blindage_ok.xnb
+Content\img\Icone_fleche.xnb
 Content\Affichage_mouse.xnb
 Content\chat.xnb
 Content\menufont.xnb
@@ -95,18 +108,6 @@ Content\sounds\missileHit.xnb
 Content\sounds\MissileLaunch.xnb
 Content\sounds\shipDeath.xnb
 Content\sounds\plasmaHit.xnb
-Content\img\Icone_unite\Icone_corvette_grisee.xnb
-Content\img\Icone_unite\Icone_croiseur_grisee.xnb
-Content\img\Icone_unite\Icone_cuirasse_grisee.xnb
-Content\img\Icone_unite\Icone_Destroyer_grisee.xnb
-Content\img\universite.xnb
-Content\img\Icone_tech\precision.xnb
-Content\img\Icone_tech\precision_ok.xnb
-Content\img\Icone_tech\Moteur_ok.xnb
-Content\img\Icone_tech\Moteur.xnb
-Content\img\Extracteur2.xnb
-Content\img\Icone_tech\Blindage.xnb
-Content\img\Icone_tech\Blindage_ok.xnb
 Content\sounds\voix\action impossible1.xnb
 Content\sounds\voix\action impossible2.xnb
 Content\sounds\voix\action impossible3.xnb
@@ -123,7 +124,6 @@ Content\sounds\voix\scan.xnb
 Content\sounds\voix\technologie.xnb
 Content\sounds\voix\unite perdu.xnb
 Content\sounds\voix\unite prete.xnb
-Content\img\Icone_fleche.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

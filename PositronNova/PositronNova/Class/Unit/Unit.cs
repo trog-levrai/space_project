@@ -377,7 +377,10 @@ namespace PositronNova.Class.Unit
                 last = new TimeSpan(0);
             }
 
-            IA();
+            PlacementHitBoxes();
+            if (!moving) // Pour ne pas avoir deux fois les déplacement avec IA + deplacement pour les humains
+                IA();
+
             if (side == UnitSide.Humain)
                 deplacement(gt);
 
@@ -420,7 +423,7 @@ namespace PositronNova.Class.Unit
 
         public override void Draw(SpriteBatch sb)
         {
-            //Mettre "|| !friendly" pour tester l'effet de la methode attack
+            //DrawHitboxes(sb);
             if (side == UnitSide.Humain)
             {
                 if (direction.X > 0)
@@ -442,7 +445,10 @@ namespace PositronNova.Class.Unit
             else
             {
                 //sb.Draw(Manager.lifeBrick_t, champDeVision, Color.White);
-                sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
+                if (unitType == UnitType.Bacterie)
+                    sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
+                else
+                    sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
             }
 
             //for (int i = 0; i < collisionInterVaisseau.Length; i++)
@@ -457,6 +463,9 @@ namespace PositronNova.Class.Unit
         {
             int stopPrecision = 2;
 
+            if (hasTarget && enn != null && (enn.position - position).Length() <= range)
+                moving = false;
+
             if (moving)
             {
                 destination = new Vector2((int)destination.X, (int)destination.Y);
@@ -464,9 +473,6 @@ namespace PositronNova.Class.Unit
                 direction.Normalize();
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
                 CorrectionTrajectoire();
-                PlacementHitBoxes();
-                champDeVision.X = (int)(position.X + centre.X - champDeVisionWidth / 2);
-                champDeVision.Y = (int)(position.Y + centre.Y - champDeVisionHeight / 2);
                 if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
             }
@@ -474,7 +480,7 @@ namespace PositronNova.Class.Unit
             {
                 destination = position;
             }
-            moving = (position != destination) || (hasTarget && last >= fireRate && enn != null && Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2));
+            moving = (position != destination) || (last >= fireRate && enn != null && Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2));
         }
 
         void shoot()
@@ -511,8 +517,11 @@ namespace PositronNova.Class.Unit
             return pv <= 0;
         }
 
-        public void PlacementHitBoxes()
+        public void PlacementHitBoxes() // On mets aussi les boxes du champ de vision
         {
+            champDeVision.X = (int)(position.X + centre.X - champDeVisionWidth / 2); 
+            champDeVision.Y = (int)(position.Y + centre.Y - champDeVisionHeight / 2);
+
             if (unitType == UnitType.Chasseur || unitType == UnitType.Neurone || unitType == UnitType.Phagosome || unitType == UnitType.Kraken)
             {
                 hitBoxes[0].X = (int)(position.X + centre.X - hitBoxes[0].Width / 2);
@@ -616,7 +625,27 @@ namespace PositronNova.Class.Unit
 
             if (side == UnitSide.Humain)
             {
-
+                if (enn == null) // s'il n'a pas de cible, on recherche la première cible à porté
+                {
+                    for (int i = 0; i < PositronNova.UnitList.Count; i++)
+                    {
+                        if (PositronNova.UnitList[i] != this)
+                        {
+                            if ((PositronNova.UnitList[i].position - position).Length() <= range && PositronNova.UnitList[i].side != side && enn == null) // Le enn == null sert juste à garder la même cible si jamais il y a plusieurs unité à porté
+                            {
+                                this.enn = PositronNova.UnitList[i];
+                                //hasTarget = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (hasTarget) // Si c'est une cible marqué alors le vaisseau la traque
+                    {
+                        IATrackDown(enn);
+                    }
+                }
             }
             else if (side == UnitSide.Alien) // Inutile de l'écrire, mais c'est plus explicite, et puis si jamais on rajoute un autre clan... :o)
             {
@@ -648,8 +677,6 @@ namespace PositronNova.Class.Unit
                 direction = cible.position - position;
                 direction.Normalize();
                 position += direction * speed;
-                champDeVision.X = (int)(position.X + centre.X - champDeVisionWidth / 2);
-                champDeVision.Y = (int)(position.Y + centre.Y - champDeVisionHeight / 2);
             }
         }
     }

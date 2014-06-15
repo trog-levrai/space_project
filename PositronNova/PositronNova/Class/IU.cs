@@ -58,15 +58,8 @@ namespace PositronNova
                     if (UnitSelected[i].Side == UnitSide.Humain)
                     {
                         UnitSelected[i].Ennemy = PositronNova.GetEnnemy();
-                        if (UnitSelected[i].Ennemy != null)
-                        {
-                            UnitSelected[i].HasTarget = Math.Pow(UnitSelected[i].position.X - UnitSelected[i].Ennemy.position.X, 2) + Math.Pow(UnitSelected[i].position.Y - UnitSelected[i].Ennemy.position.Y, 2) <= Math.Pow(UnitSelected[i].Range, 2);
-                        }
-                        else
-                        {
-                            UnitSelected[i].HasTarget = false;
-                        }
-                        if (!UnitSelected[i].HasTarget && UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
+                        UnitSelected[i].HasTarget = UnitSelected[i].Ennemy != null; // Utilisé pour marqué et suivre une cible
+                        if (UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
                         {
                             UnitSelected[i].Destination = new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
                             UnitSelected[i].Direction = new Vector2(UnitSelected[i].Destination.X - UnitSelected[i].position.X, UnitSelected[i].Destination.Y - UnitSelected[i].position.Y);
