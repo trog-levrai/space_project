@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace PositronNova
 {
+    [Serializable()]
     public abstract class sprite
     {
         //private Texture2D _texture;
@@ -61,7 +62,7 @@ namespace PositronNova
         //    set { selected = value; }
         //}
 
-        public Texture2D texture;
+        [NonSerialized()] public Texture2D texture;
         public Rectangle hitbox;
         public Vector2 position;
         public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture :o)
@@ -72,7 +73,7 @@ namespace PositronNova
 
         protected float textureRotation;
 
-        public Color[] textureData; //Pour les collisions Pix/Pix 
+        [NonSerialized()] public Color[] textureData; //Pour les collisions Pix/Pix 
 
         ////////////////////////// CONSTRUCTEURS
 
