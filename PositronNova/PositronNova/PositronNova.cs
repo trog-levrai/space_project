@@ -649,7 +649,7 @@ namespace PositronNova
                     {
                         actionScreen.Draw(gameTime);
 
-                        foreach (Unit unit in unitList) // On utilise ChampdeVision ici c'est normal ! Avec hitBoxes c'est casse cul... la fleme et pas le temps
+                        foreach (Unit unit in unitList) // On utilise ChampdeVision ici c'est normal ! 
                         {
                             if (unit.champDeVision.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
                                 unit.champDeVision.Bottom > Camera2d.Origine.Y &&
@@ -721,7 +721,7 @@ namespace PositronNova
             Unit localUnit;
             for (int i = 0; i < nombre; i++)
             {
-                localUnit = new Unit(new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
+                localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width / 2, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
                 localUnit.Init();
                 unitList.Add(localUnit);
             }

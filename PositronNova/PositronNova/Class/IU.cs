@@ -58,7 +58,7 @@ namespace PositronNova
                     if (UnitSelected[i].Side == UnitSide.Humain)
                     {
                         UnitSelected[i].Ennemy = PositronNova.GetEnnemy();
-                        UnitSelected[i].HasTarget = UnitSelected[i].Ennemy != null; // Utilisé pour marqué et suivre une cible
+                        UnitSelected[i].HasTarget = UnitSelected[i].Ennemy != null;
                         if (UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
                         {
                             UnitSelected[i].Destination = new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
@@ -103,7 +103,7 @@ namespace PositronNova
                             sb.Draw(selection, new Vector2(Math.Min(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X), Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(-4, -4), new Rectangle(0, 6, 7, 7), Color.White); // bas gauche
                             sb.Draw(selection, new Vector2(Math.Max(UnitSelected[i].collisionInterVaisseau[0].X, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].X) + UnitSelected[i].CIVWidth, Math.Max(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) + UnitSelected[i].CIVHeight) + new Vector2(-4, -4), new Rectangle(6, 6, 7, 7), Color.White); // bas droit
                         }
-                        aUneCible(UnitSelected[i], sb);
+                        //aUneCible(UnitSelected[i], sb);
                         UnitSelected[i].LifeBar.Draw(sb, (int)(UnitSelected[i].position.X + UnitSelected[i].centre.X - (UnitSelected[i].texture.Width / 2)), (int)(Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) - 10));
                     }
                 }

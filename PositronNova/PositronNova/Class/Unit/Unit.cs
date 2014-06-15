@@ -47,7 +47,7 @@ namespace PositronNova.Class.Unit
         UnitSide side;
         public UnitSide Side { get { return side; } }
 
-        private bool hasTarget;
+        private bool hasTarget = false;
         public bool HasTarget
         {
             get { return hasTarget; }
@@ -378,11 +378,11 @@ namespace PositronNova.Class.Unit
             }
 
             PlacementHitBoxes();
-            if (!moving) // Pour ne pas avoir deux fois les déplacement avec IA + deplacement pour les humains
-                IA();
 
-            if (side == UnitSide.Humain)
+            if (side == UnitSide.Humain && !hasTarget)
                 deplacement(gt);
+
+            IA();
 
             if (Destruction())
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
@@ -446,7 +446,12 @@ namespace PositronNova.Class.Unit
             {
                 //sb.Draw(Manager.lifeBrick_t, champDeVision, Color.White);
                 if (unitType == UnitType.Bacterie)
-                    sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
+                    if (direction.X > 0)
+                        sb.Draw(textureAnime, position + centre, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.FlipHorizontally, 0);
+                    else if (direction.X < 0)
+                        sb.Draw(textureAnime, position + centre, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
+                    else
+                        sb.Draw(texture, position, Color.White);
                 else
                     sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
             }
@@ -621,7 +626,10 @@ namespace PositronNova.Class.Unit
         void IA()
         {
             if (enn != null && enn.pv <= 0)
+            {
                 enn = null;
+                hasTarget = false;
+            }
 
             if (side == UnitSide.Humain)
             {

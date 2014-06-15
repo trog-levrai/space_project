@@ -53,6 +53,17 @@ namespace PositronNova
             if (keyboard.IsKeyDown(Keys.PageDown) && keyRepeat.IsKeyUp(Keys.PageDown))
                 zoom += 0.2f;
 
+            // Pour empecher le scrolle de dépasser
+            if (origine.X < 0) 
+                origine.X = 0;
+            if (origine.X + PositronNova.winWidth > PositronNova.BackgroundTexture.Width)
+                origine.X = PositronNova.BackgroundTexture.Width - PositronNova.winWidth;
+            if (origine.Y < 0)
+                origine.Y = 0;
+            if (origine.Y + PositronNova.winHeight > PositronNova.BackgroundTexture.Height)
+                origine.Y = PositronNova.BackgroundTexture.Height - PositronNova.winHeight;
+            // ----
+
             keyRepeat = Keyboard.GetState();
         }
 

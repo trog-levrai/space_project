@@ -291,7 +291,7 @@ namespace PositronNova
                     }
 
                 }
-
+                
                 if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
                 {
                     selected_recrutement = Math.Abs(mouse.X - (position_icone_recrutement.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_recrutement.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2 & recrutement; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
@@ -304,7 +304,7 @@ namespace PositronNova
                         selected_universite = false;
                     }
                     else if (Math.Abs(mouse.X - (position_icone_recrutement.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouse.Y - (position_icone_recrutement.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2 & !recrutement)
-                        Manager.missileHit_s.Play();
+                        Manager.actionImpossible_s.Play();
                 }
 
                 if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
