@@ -48,6 +48,7 @@ namespace PositronNova
         bool selected_fleche;
         bool selected_precision;
         bool selected_moteur;
+        bool selected_blindage;
 
         static bool diminution_ressource_precision;
         static public bool Diminution_ressource_precision
@@ -61,9 +62,16 @@ namespace PositronNova
             get { return diminution_ressource_moteur; }
             set { diminution_ressource_moteur = value; }
         }
+        static bool diminution_ressource_blindage;
+        static public bool Diminution_ressource_blindage
+        {
+            get { return diminution_ressource_blindage; }
+            set { diminution_ressource_blindage = value; }
+        }
 
         bool precision_ok;
         bool moteur_ok;
+        bool blindage_ok;
 
         bool lancer_recherche_precision;
         static private bool changement_precision;
