@@ -31,7 +31,6 @@ namespace PositronNova.Class.Unit
         System.TimeSpan fireRate;
         System.TimeSpan last;
 
-        SoundEffect deathNoise;
         Bullet localBullet;
         BulletType weaponType;
 
@@ -113,7 +112,6 @@ namespace PositronNova.Class.Unit
             destination = position;
 
             _font = Manager.font_t;
-            deathNoise = Manager.deathNoise_s;
 
             switch (unitType)
             {
@@ -129,7 +127,7 @@ namespace PositronNova.Class.Unit
                     CIVHeight = 20;
                     champDeVisionWidth = 100; // ça bah... c'est pour le champ de vision :o)
                     champDeVisionHeight = 100;
-                    fireRate = new TimeSpan(0, 0, 0, 0, 600);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 800);
                     weaponType = BulletType.LittleCinetique;
                     pv_max = 10;
                     if (Universite.Changement_moteur)
@@ -151,7 +149,7 @@ namespace PositronNova.Class.Unit
                     CIVHeight = 32;
                     champDeVisionWidth = 150;
                     champDeVisionHeight = 150;
-                    fireRate = new TimeSpan(0, 0, 0, 0, 900);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 1200);
                     weaponType = BulletType.Cinetique;
                     pv_max = 40;
                     if (Universite.Changement_moteur)
@@ -191,13 +189,13 @@ namespace PositronNova.Class.Unit
                     hitBoxesWidth = 40;
                     hitBoxesHeight = 40;
                     nbCIV = 5;
-                    CIVWidth = 80;
-                    CIVHeight = 80;
+                    CIVWidth = 76;
+                    CIVHeight = 76;
                     champDeVisionWidth = 250;
                     champDeVisionHeight = 250;
                     fireRate = new TimeSpan(0, 0, 0, 0, 2000);
                     weaponType = BulletType.Ion;
-                    pv_max = 90;
+                    pv_max = 100;
                     if (Universite.Changement_moteur)
                         speed = 2f;
                     else
@@ -213,13 +211,13 @@ namespace PositronNova.Class.Unit
                     hitBoxesWidth = 40;
                     hitBoxesHeight = 40;
                     nbCIV = 5;
-                    CIVWidth = 80;
-                    CIVHeight = 80;
+                    CIVWidth = 76;
+                    CIVHeight = 76;
                     champDeVisionWidth = 300;
                     champDeVisionHeight = 300;
                     fireRate = new TimeSpan(0, 0, 0, 0, 2500);
                     weaponType = BulletType.Plasma;
-                    pv_max = 110;
+                    pv_max = 160;
                     if (Universite.Changement_moteur)
                         speed = 1.9f;
                     else
@@ -249,9 +247,6 @@ namespace PositronNova.Class.Unit
                     range = 600;
                     requiredResources = new Ressources(80, 110);
                     break;
-                case UnitType.Virus:
-                    side = UnitSide.Alien;
-                    break;
                 case UnitType.Bacterie:
                     side = UnitSide.Alien;
                     texture = Manager.bacterie_t;
@@ -269,9 +264,9 @@ namespace PositronNova.Class.Unit
                     frameWidth = 53;
                     frameHeight = 10;
                     timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 900);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 1200);
                     weaponType = BulletType.BloodSting;
-                    pv_max = 40;
+                    pv_max = 70;
                     speed = 1.9f;
                     range = 300;
                     break;
@@ -292,9 +287,9 @@ namespace PositronNova.Class.Unit
                     frameWidth = 40;
                     frameHeight = 40;
                     timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 400);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 1800);
                     weaponType = BulletType.BloodSting;
-                    pv_max = 60;
+                    pv_max = 120;
                     speed = 1.6f;
                     range = 400;
                     break;
@@ -315,9 +310,9 @@ namespace PositronNova.Class.Unit
                     frameWidth = 150;
                     frameHeight = 150;
                     timeToNextFrame = new TimeSpan(0, 0, 0, 0, 120);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 2000);
-                    weaponType = BulletType.BloodSting;
-                    pv_max = 90;
+                    fireRate = new TimeSpan(0, 0, 0, 0, 2300);
+                    weaponType = BulletType.StickySting;
+                    pv_max = 170;
                     speed = 1.4f;
                     range = 450;
                     break;
@@ -338,7 +333,7 @@ namespace PositronNova.Class.Unit
                     frameWidth = 200;
                     frameHeight = 100;
                     timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 4000);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 3500);
                     weaponType = BulletType.BloodSting;
                     pv_max = 300;
                     speed = 1;
@@ -390,10 +385,17 @@ namespace PositronNova.Class.Unit
             if (Destruction())
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
                         position.X + centre.X > Camera2d.Origine.X &&
-                        position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                        position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y - 228 &&
                         position.Y + centre.Y > Camera2d.Origine.Y)
                 {
-                    deathNoise.Play();
+                    if (side == UnitSide.Humain)
+                    {
+                        Manager.deathNoise_s.Play();
+                    }
+                    else if (side == UnitSide.Alien)
+                    {
+                        Manager.alienDeath_s.Play();
+                    }
                 }
 
             // Bords du background
@@ -507,10 +509,11 @@ namespace PositronNova.Class.Unit
                     localUnit.Init();
                     PositronNova.UnitList.Add(localUnit);
                 }
+
                 // Les sons à l'intérieur de l'écran
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
                     position.X + centre.X > Camera2d.Origine.X &&
-                    position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                    position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y - 228 &&
                     position.Y + centre.Y > Camera2d.Origine.Y)
                 {
                     if (weaponType == BulletType.Missile)
@@ -519,6 +522,14 @@ namespace PositronNova.Class.Unit
                         Manager.laserFire_s.Play();
                     else if (weaponType == BulletType.Plasma)
                         Manager.plasmaFire_s.Play();
+                    else if (weaponType == BulletType.LittleCinetique)
+                        Manager.bulletFire_s.Play();
+                    else if (weaponType == BulletType.Cinetique)
+                        Manager.HeavyBulletFire_s.Play();
+                    else if (weaponType == BulletType.BloodSting)
+                        Manager.tirAlien_s.Play();
+                    else if (weaponType == BulletType.StickySting)
+                        Manager.tirGluant_s.Play();
                 }
             }
             else if (homeWorld != null && homeWorld.Pv > 0)
@@ -529,7 +540,7 @@ namespace PositronNova.Class.Unit
                 // Les sons à l'intérieur de l'écran
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
                     position.X + centre.X > Camera2d.Origine.X &&
-                    position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                    position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y - 228 &&
                     position.Y + centre.Y > Camera2d.Origine.Y)
                 {
                     if (weaponType == BulletType.Missile)
@@ -538,6 +549,14 @@ namespace PositronNova.Class.Unit
                         Manager.laserFire_s.Play();
                     else if (weaponType == BulletType.Plasma)
                         Manager.plasmaFire_s.Play();
+                    else if (weaponType == BulletType.LittleCinetique)
+                        Manager.bulletFire_s.Play();
+                    else if (weaponType == BulletType.Cinetique)
+                        Manager.HeavyBulletFire_s.Play();
+                    else if (weaponType == BulletType.BloodSting)
+                        Manager.tirAlien_s.Play();
+                    else if (weaponType == BulletType.StickySting)
+                        Manager.tirGluant_s.Play();
                 }
             }
         }

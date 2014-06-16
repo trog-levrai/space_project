@@ -41,7 +41,7 @@ namespace PositronNova
         {
             if ((keyboard.IsKeyDown(Keys.Up) || mouse.Y <= 1) && origine.Y > 0)
                 origine = new Vector2(origine.X, origine.Y - 10);
-            if ((keyboard.IsKeyDown(Keys.Down) || mouse.Y >= PositronNova.winHeight - 1) && origine.Y + PositronNova.winHeight < PositronNova.BackgroundTexture.Height)
+            if ((keyboard.IsKeyDown(Keys.Down) || mouse.Y >= PositronNova.winHeight - 1) && origine.Y + PositronNova.winHeight < PositronNova.BackgroundTexture.Height + 228)
                 origine = new Vector2(origine.X, origine.Y + 10);
             if ((keyboard.IsKeyDown(Keys.Left) || mouse.X <= 1) && origine.X > 0)
                 origine = new Vector2(origine.X - 10, origine.Y);
@@ -60,7 +60,7 @@ namespace PositronNova
                 origine.X = PositronNova.BackgroundTexture.Width - PositronNova.winWidth;
             if (origine.Y < 0)
                 origine.Y = 0;
-            if (origine.Y + PositronNova.winHeight > PositronNova.BackgroundTexture.Height)
+            if (origine.Y + PositronNova.winHeight > PositronNova.BackgroundTexture.Height + 228)
                 origine.Y = PositronNova.BackgroundTexture.Height - PositronNova.winHeight;
             // ----
 

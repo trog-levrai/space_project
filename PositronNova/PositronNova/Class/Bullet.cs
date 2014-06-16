@@ -14,7 +14,7 @@ namespace PositronNova
     public enum BulletType
     {
         LittleCinetique, Cinetique, Laser, Ion, Plasma, Missile,
-        BloodSting
+        BloodSting, StickySting, ElectricString
     };
 
     public class Bullet : sprite
@@ -63,7 +63,7 @@ namespace PositronNova
                 case BulletType.Laser:
                     texture = Manager.laser_t;
                     hitNoise = Manager.laserHit_s;
-                    speed = 10;
+                    speed = 8;
                     if (Universite.Changement_precision)
                         damage = 30;
                     else
@@ -80,7 +80,7 @@ namespace PositronNova
                 case BulletType.Plasma:
                     texture = Manager.plasma_t;
                     hitNoise = Manager.plasmaHit_s;
-                    speed = 10;
+                    speed = 11;
                     if (Universite.Changement_precision)
                         damage = 54;
                     else
@@ -99,12 +99,21 @@ namespace PositronNova
                 case BulletType.BloodSting:
                     texture = Manager.bloodSting_t;
                     speed = 4;
-                    damage = 4;
+                    damage = 6;
+                    break;
+                case BulletType.ElectricString:
+                    speed = 8;
+                    damage = 24;
+                    break;
+                case BulletType.StickySting:
+                    texture = Manager.StickySting_t;
+                    speed = 9;
+                    damage = 30;
                     break;
             }
 
             hitBoxes = new Rectangle[1];
-            hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, texture.Width * 2 / 3, texture.Height * 2 / 3);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
             //textureData = new Color[texture.Width * texture.Height];
             //texture.GetData(textureData);
@@ -136,7 +145,7 @@ namespace PositronNova
                 case BulletType.Laser:
                     texture = Manager.laser_t;
                     hitNoise = Manager.laserHit_s;
-                    speed = 10;
+                    speed = 8;
                     if (Universite.Changement_precision)
                         damage = 30;
                     else
@@ -153,7 +162,8 @@ namespace PositronNova
                 case BulletType.Plasma:
                     texture = Manager.plasma_t;
                     hitNoise = Manager.plasmaHit_s;
-                    speed = 10;
+                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 40);
+                    speed = 11;
                     if (Universite.Changement_precision)
                         damage = 54;
                     else
@@ -172,12 +182,22 @@ namespace PositronNova
                 case BulletType.BloodSting:
                     texture = Manager.bloodSting_t;
                     speed = 4;
-                    damage = 4;
+                    damage = 6;
+                    break;
+                case BulletType.ElectricString:
+                    speed = 8;
+                    damage = 24;
+                    break;
+                case BulletType.StickySting:
+                    texture = Manager.StickySting_t;
+                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 10);
+                    speed = 9;
+                    damage = 30;
                     break;
             }
 
             hitBoxes = new Rectangle[1];
-            hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            hitBoxes[0] = new Rectangle((int)(position.X + (texture.Width / 2) - (texture.Width * 2 / 3)), (int)(position.Y + (texture.Height / 2) - (texture.Height * 2 / 3)), texture.Width * 2 / 3, texture.Height * 2 / 3);
             centre = new Vector2(texture.Width / 2, texture.Height / 2);
             //textureData = new Color[texture.Width * texture.Height];
             //texture.GetData(textureData);
@@ -195,6 +215,26 @@ namespace PositronNova
                 {
                     spawnLast = new TimeSpan(0);
                     PositronNova.AddEffect(new EffectBullet(position + centre, EffectType.MissileFumee));
+                }
+            }
+            else if (bulletType == BulletType.StickySting)
+            {
+                spawnLast = spawnLast.Add(gameTime.ElapsedGameTime);
+
+                if (frequenceSpawnFumee <= spawnLast)
+                {
+                    spawnLast = new TimeSpan(0);
+                    PositronNova.AddEffect(new EffectBullet(position + centre, EffectType.StickyEffect));
+                }
+            }
+            else if (bulletType == BulletType.Plasma)
+            {
+                spawnLast = spawnLast.Add(gameTime.ElapsedGameTime);
+
+                if (frequenceSpawnFumee <= spawnLast)
+                {
+                    spawnLast = new TimeSpan(0);
+                    PositronNova.AddEffect(new EffectBullet(position + centre, EffectType.PlasmaEffect));
                 }
             }
 
@@ -216,6 +256,7 @@ namespace PositronNova
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(texture, position + centre, null, Color.White, textureRotation, centre, 1f, SpriteEffects.None, 0);
+            //sb.Draw(Manager.lifeBrick_t, position + centre, Color.White);
         }
 
         // METHODES

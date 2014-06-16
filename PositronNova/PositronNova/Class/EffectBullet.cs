@@ -9,7 +9,7 @@ namespace PositronNova.Class
 {
     public enum EffectType
     {
-        MissileFumee, ExplosionMissile, Explosion, GrosseExplosion, ExplosionLaser, ExplosionPlasma
+        MissileFumee, ExplosionMissile, Explosion, GrosseExplosion, ExplosionLaser, ExplosionPlasma, StickyEffect, PlasmaEffect
     };
 
     public class EffectBullet : sprite
@@ -49,6 +49,14 @@ namespace PositronNova.Class
                 case EffectType.ExplosionMissile:
                     texture = Manager.explosionMissile_t;
                     tempsDeVie = new TimeSpan(0, 0, 0, 0, 20);
+                    break;
+                case EffectType.StickyEffect:
+                    texture = Manager.stickyEffect_t;
+                    tempsDeVie = new TimeSpan(0, 0, 0, 0, 80);
+                    break;
+                case EffectType.PlasmaEffect:
+                    texture = Manager.plasmaEffect_t;
+                    tempsDeVie = new TimeSpan(0, 0, 0, 0, 30);
                     break;
             }
 
