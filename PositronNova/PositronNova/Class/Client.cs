@@ -11,9 +11,7 @@ namespace PositronNova.Class
 {
     [Serializable()]
     class Client
-    {
-        public bool Start;
-
+    {   
         private List<Unit.Unit> enn;
         public List<Unit.Unit>Ennemies
         {
@@ -38,8 +36,6 @@ namespace PositronNova.Class
             Writer = new Thread(new ThreadStart(Receive));
             Writer.IsBackground = true;
             Writer.Start();
-
-            Start = false;
         }
         //Methode de connection au serveur
         public void KBInput(KeyboardState ks)
@@ -69,8 +65,7 @@ namespace PositronNova.Class
             MemoryStream ms = new MemoryStream();
             format.Serialize(ms, unit);
             byte[] buffer = ms.GetBuffer();
-            if (Start)
-                sock.Send(buffer);
+            sock.Send(buffer);
         }
         public void Receive()
         {
