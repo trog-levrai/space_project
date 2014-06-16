@@ -236,6 +236,7 @@ namespace PositronNova
                 Content.Load<Texture2D>("img\\recrutement"),
                 Content.Load<Texture2D>("img\\recrutement_grise"),
                 Content.Load<Texture2D>("img\\universite"),
+                Content.Load<Texture2D>("img\\Croix"),
                 ressources,
                 Content.Load<SpriteFont>("Planete"),
                 Content.Load<SpriteFont>("progress"),

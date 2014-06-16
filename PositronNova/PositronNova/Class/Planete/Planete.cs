@@ -36,6 +36,7 @@ namespace PositronNova
         Texture2D image_universite;
         Texture2D image_recrutement;
         Texture2D image_recrutement_grisee;
+        Texture2D image_croix;
 
         Rectangle imageRectangle;
         public Rectangle champDeVision;
@@ -57,6 +58,7 @@ namespace PositronNova
         bool selected_centrale;
         bool selected_extracteur;
         bool selected_caserne;
+        bool selected_croix;
         bool plus;
         bool diminution_centrale;
         bool diminution_extracteur;
@@ -99,6 +101,7 @@ namespace PositronNova
         Vector2 position_icone_recrutement;
         Vector2 position_icone_universite;
         Vector2 position_icone_plus;
+        Vector2 position_croix;
 
         private int niveau_centrale;
         public int Niveau_centrale
@@ -129,6 +132,7 @@ namespace PositronNova
             Texture2D image_recrutement,
             Texture2D image_recrutement_grise,
             Texture2D image_universite,
+            Texture2D image_croix,
             Ressources ressource,
             SpriteFont spriteFont,
             SpriteFont progressFont,
@@ -144,6 +148,7 @@ namespace PositronNova
             this.image_recrutement = image_recrutement;
             this.image_recrutement_grisee = image_recrutement_grise;
             this.image_universite = image_universite;
+            this.image_croix = image_croix;
             this.spriteFont = spriteFont;
             this.game = game;
             this.ressource = ressource;
@@ -174,6 +179,7 @@ namespace PositronNova
             selected_caserne = false;
             selected_recrutement = false;
             selected_universite = false;
+            selected_croix = false;
             continu = false;
             plus = false;
             diminution_centrale = false;
@@ -235,6 +241,8 @@ namespace PositronNova
                 (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y));
             position_icone_universite = new Vector2((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
+            position_croix = new Vector2((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
+                    (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y));
 
             recrutement = (niveau_caserne != 0);
 
@@ -507,6 +515,23 @@ namespace PositronNova
             caserne.Continu = !selected_recrutement;
             caserne.Recrutement();
 
+            //if ((progress_centrale || progress_extracteur || progress_caserne) && selected2)
+            //{
+            //    if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+            //    {
+            //        selected_croix = Math.Abs(mouse.X - (position_croix.X + 25 / 2) + Camera2d.Origine.X) <= 25 / 2 & Math.Abs(mouse.Y - (position_croix.Y + 25 / 2) + Camera2d.Origine.Y) <= 25 / 2; // Le Camera2d.Origine c'est la décalage hein ;) distance entre l'orgine du background et l'origine de la cam
+            //        if (selected_croix)
+            //        {
+            //            progress_caserne = false;
+            //            progress_centrale = false;
+            //            progress_extracteur = false;
+            //            continu = false;
+            //            compteur = 0;
+            //            selected = true;
+            //        }
+            //    }
+            //}
+
 
         }
 
@@ -652,6 +677,11 @@ namespace PositronNova
                          "Progression : " + compteur + "%",
                         new Vector2((int)(game.Window.ClientBounds.Width / 2 + Camera2d.Origine.X), (int)(game.Window.ClientBounds.Height - 140 + Camera2d.Origine.Y)),
                         Color.Red);
+
+                    spriteBatch.Draw(image_croix,
+                        new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
+                    (int)(game.Window.ClientBounds.Height - 130 + Camera2d.Origine.Y), 25, 25),
+                    Color.White);
 
                 }
 
