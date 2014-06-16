@@ -94,7 +94,7 @@ namespace PositronNova.Class
                         mem.Seek(0, SeekOrigin.Begin);
                         try
                         {
-                            units = (Unit.Unit[])format.Deserialize(mem);
+                            units = (Unit.Unit[]) format.Deserialize(mem);
                             lock (enn)
                             {
                                 enn.Clear();
@@ -107,10 +107,8 @@ namespace PositronNova.Class
                         }
                         catch
                         {
-                            break;
+                            
                         }
-
-                    
                 }
                 //}
                 //catch
