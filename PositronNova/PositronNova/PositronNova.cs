@@ -37,7 +37,7 @@ namespace PositronNova
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
-
+        private bool Send = true;
         GameScreen activeScreen;
         StartScreen startScreen;
         ActionScreen actionScreen;
@@ -428,15 +428,19 @@ namespace PositronNova
                             last = last.Add(gameTime.ElapsedGameTime);
                             if (last > seconde)
                             {
-                                List<Unit> send = new List<Unit>();
-                                foreach (var unit in unitList)
+                                if (Send)
                                 {
-                                    if (unit.Friendly)
+                                    List<Unit> send = new List<Unit>();
+                                    foreach (var unit in unitList)
                                     {
-                                        send.Add(unit);
+                                        if (unit.Friendly)
+                                        {
+                                            send.Add(unit);
+                                        }
                                     }
+                                    client.SendUnit(send);
                                 }
-                                client.SendUnit(send);
+                                Send = !Send;
                                 for (int i = 0; i < unitList.Count; i++)
                                 {
                                     if (!unitList[i].Friendly)
