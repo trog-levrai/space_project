@@ -67,8 +67,13 @@ namespace PositronNova.Class
             format.Serialize(ms, unit);
             byte[] bytes = new byte[ms.Capacity];
             ms.Seek(0, SeekOrigin.Begin);
-            ms.Write(bytes, 0, bytes.Length);
-            if (bytes[0] != 0)
+            bytes = ms.GetBuffer();
+            bool Send = false;
+            foreach (var b in bytes)
+            {
+                Send = Send || b != 0;
+            }
+            if (Send)
                 sock.Send(bytes);
         }
         public void Receive()
@@ -87,16 +92,24 @@ namespace PositronNova.Class
 
                         MemoryStream mem = new MemoryStream(buffer);
                         mem.Seek(0, SeekOrigin.Begin);
-                        units = (Unit.Unit[])format.Deserialize(mem);
-                        lock (enn)
+                        try
                         {
-                            enn.Clear();
-                            for (int i = 0; i < units.Length; i++)
+                            units = (Unit.Unit[])format.Deserialize(mem);
+                            lock (enn)
                             {
-                                units[i].Friendly = false;
-                                enn.Add(units[i]);
+                                enn.Clear();
+                                for (int i = 0; i < units.Length; i++)
+                                {
+                                    units[i].Friendly = false;
+                                    enn.Add(units[i]);
+                                }
                             }
                         }
+                        catch
+                        {
+                            break;
+                        }
+
                     
                 }
                 //}
