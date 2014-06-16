@@ -28,6 +28,7 @@ namespace PositronNova.Class
         {
             //format = new BinaryFormatter();
             chat = new Chat(game);
+            enn = new List<Unit.Unit>();
             this.name = name;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             sock.Connect(host, port);
@@ -86,28 +87,18 @@ namespace PositronNova.Class
                     List<Unit.Unit> units;
                     byte[] buffer = new byte[2048 * 128];
                     sock.Receive(buffer);
-                    if (buffer != null)
+                    MemoryStream mem = new MemoryStream(buffer);
+                    mem.Position = 0;
+                    units = (List<Unit.Unit>) format.Deserialize(mem);
+                    lock (enn)
                     {
-                        MemoryStream mem = new MemoryStream(buffer);
-                        try
+                        enn.Clear();
+                        for (int i = 0; i < units.Count; i++)
                         {
-                            mem.Position = 0;
-                            units = (List<Unit.Unit>) format.Deserialize(mem);
-                            lock (enn)
-                            {
-                                enn.Clear();
-                                for (int i = 0; i < units.Count; i++)
-                                {
-                                    units[i].Friendly = false;
-                                    enn.Add(units[i]);
-                                }
-                            }
+                            units[i].Friendly = false;
+                            enn.Add(units[i]);
                         }
-                        catch
-                        {
-                            
-                        }
-                }
+                    }
                 //}
                 //catch
                 //{
