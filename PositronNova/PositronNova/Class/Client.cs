@@ -66,6 +66,7 @@ namespace PositronNova.Class
             MemoryStream ms = new MemoryStream();
             format.Serialize(ms, unit);
             byte[] bytes = new byte[ms.Capacity];
+            ms.Seek(0, SeekOrigin.Begin);
             bytes = ms.GetBuffer();
             sock.Send(bytes);
         }
