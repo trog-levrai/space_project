@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using PositronNova.Class.Unit;
 
 namespace PositronNova.Class
 {
@@ -21,6 +22,7 @@ namespace PositronNova.Class
         private Thread Writer;
         public String name { get; private set; }
         public Socket sock;
+        private FileStream fs;
         StreamReader clientReader;
         StreamWriter clientWriter;
         //public BinaryFormatter format;
@@ -33,6 +35,7 @@ namespace PositronNova.Class
             sock.Connect(host, port);
             this.clientReader = new StreamReader(new NetworkStream(sock));
             this.clientWriter = new StreamWriter(new NetworkStream(sock));
+            fs = new FileStream("Save.dat", FileMode.Open);
             Writer = new Thread(new ThreadStart(Receive));
             Writer.IsBackground = true;
             Writer.Start();
@@ -64,9 +67,7 @@ namespace PositronNova.Class
             //On serialise la liste d'unites
             BinaryFormatter format = new BinaryFormatter();
             MemoryStream ms = new MemoryStream();
-            format.Serialize(ms, unit);
-            byte[] buffer = ms.GetBuffer();
-            sock.Send(buffer);
+            format.Serialize(fs, unit);
         }
         public void Receive()
         {
@@ -79,7 +80,8 @@ namespace PositronNova.Class
                     byte[] buffer = new byte[2048 * 128];
                     sock.Receive(buffer);
                     MemoryStream mem = new MemoryStream(buffer);
-                    units = (Unit.Unit[])format.Deserialize(mem);
+                    units = (Unit.Unit[])format.Deserialize(fs);
+                    units[0] = new Unit.Unit("Test", Vector2.Zero, UnitType.Chasseur, false);
                     enn.Clear();
                     for (int i = 0; i < units.Length; i++)
                     {
