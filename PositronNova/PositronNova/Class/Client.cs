@@ -85,7 +85,7 @@ namespace PositronNova.Class
                 //{
                     BinaryFormatter format = new BinaryFormatter();
                     List<Unit.Unit> units;
-                    byte[] buffer = new byte[2048 * 128];
+                    byte[] buffer = new byte[sock.ReceiveBufferSize];
                     sock.Receive(buffer);
                     MemoryStream mem = new MemoryStream(buffer);
                     mem.Position = 0;
