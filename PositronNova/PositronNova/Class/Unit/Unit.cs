@@ -192,6 +192,44 @@ namespace PositronNova.Class.Unit
                 }
             }
         }
+        //Fonction appelle a la reception
+        public void Reload(ContentManager cm)
+        {
+            deathNoise = cm.Load<SoundEffect>("sound\\shipDeath");
+            color = Color.IndianRed;
+            _font = cm.Load<SpriteFont>("Affichage_mouse");
+            selection = cm.Load<Texture2D>("img\\SelectionCarre");
+            cible = cm.Load<Texture2D>("img\\TargetCarre");
+            switch (unitType)
+            {
+                case UnitType.Chasseur:
+                    weaponType = BulletType.LittleCinetique;
+                    texture = cm.Load<Texture2D>("img\\ships\\Chasseur2");
+                    break;
+                case UnitType.Bombardier:
+                    weaponType = BulletType.Cinetique;
+                    texture = cm.Load<Texture2D>("img\\ships\\Bombardier");
+                    break;
+                case UnitType.Corvette:
+                    weaponType = BulletType.Laser;
+                    texture = cm.Load<Texture2D>("img\\ships\\Corvette");
+                    break;
+                case UnitType.Destroyer:
+                    weaponType = BulletType.Cinetique;
+                    texture = cm.Load<Texture2D>("img\\ships\\Destroyer");
+                    break;
+                case UnitType.Croiseur:
+                    weaponType = BulletType.Plasma;
+                    texture = cm.Load<Texture2D>("img\\ships\\Croiseur");
+                    break;
+                case UnitType.Cuirasse:
+                    weaponType = BulletType.Missile;
+                    texture = cm.Load<Texture2D>("img\\ships\\Cuirasse");
+                    break;
+            }
+            textureData = new Color[texture.Width * texture.Height];
+            texture.GetData(textureData);
+        }
         public void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
