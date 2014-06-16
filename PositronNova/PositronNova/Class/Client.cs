@@ -89,7 +89,7 @@ namespace PositronNova.Class
                 {
                     string foo;
                     foo = clientReader.ReadLine();
-                    if (foo != "" && foo != "\0")
+                    if (foo != "")
                     {
                         chat.addString(foo);
                     }
