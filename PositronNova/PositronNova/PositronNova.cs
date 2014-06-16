@@ -519,6 +519,8 @@ namespace PositronNova
                     {
                         cue.Pause();
                         cue1.Resume();
+                        if (enableFog)
+                            fog.Update();
                         _camera.Update2(keyboardState, mouse);
                         if (CheckKey(Keys.Escape) || (pauseScreen.SelectedIndex == 0 && CheckKey(Keys.Enter)))
                         {
@@ -699,6 +701,9 @@ namespace PositronNova
                             bullet.Draw(spriteBatch);
                         foreach (EffectBullet effect in effectBulletList)
                             effect.Draw(spriteBatch);
+                        if (enableFog)
+                            fog.Draw(spriteBatch);
+                        planeteList[0].Draw2(spriteBatch);
 
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         pauseScreen.Draw(gameTime);
