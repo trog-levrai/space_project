@@ -23,10 +23,10 @@ namespace PositronNova.Class
         public Socket sock;
         StreamReader clientReader;
         StreamWriter clientWriter;
-        public BinaryFormatter format;
+        //public BinaryFormatter format;
         public Client(String name, String host, int port, Game game)
         {
-            format = new BinaryFormatter();
+            //format = new BinaryFormatter();
             chat = new Chat(game);
             this.name = name;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -62,6 +62,7 @@ namespace PositronNova.Class
         public void SendUnit(List<Unit.Unit> unit)
         {
             //On serialise la liste d'unites
+            BinaryFormatter format = new BinaryFormatter();
             MemoryStream ms = new MemoryStream();
             format.Serialize(ms, unit);
             byte[] buffer = ms.GetBuffer();
@@ -73,8 +74,9 @@ namespace PositronNova.Class
             {
                 //try
                 //{
+                    BinaryFormatter format = new BinaryFormatter();
                     Unit.Unit[] units;
-                    byte[] buffer = new byte[2048];
+                    byte[] buffer = new byte[2048 * 128];
                     sock.Receive(buffer);
                     MemoryStream mem = new MemoryStream(buffer);
                     units = (Unit.Unit[])format.Deserialize(mem);
