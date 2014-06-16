@@ -88,7 +88,6 @@ Content\img\Extracteur2.xnb
 Content\img\Icone_tech\Blindage.xnb
 Content\img\Icone_tech\Blindage_ok.xnb
 Content\img\PlaneteAlien.xnb
-Content\img\Icone_fleche.xnb
 Content\img\Croix.xnb
 Content\Affichage_mouse.xnb
 Content\chat.xnb
@@ -126,6 +125,8 @@ Content\sounds\voix\scan.xnb
 Content\sounds\voix\technologie.xnb
 Content\sounds\voix\unite perdu.xnb
 Content\sounds\voix\unite prete.xnb
+Content\img\Icone_fleche2.xnb
+Content\img\Icone_fleche.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb
