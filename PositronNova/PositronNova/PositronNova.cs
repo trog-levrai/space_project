@@ -37,7 +37,7 @@ namespace PositronNova
         static List<EffectBullet> effectBulletList = new List<EffectBullet>();
         KeyboardState keyboardState;
         KeyboardState oldKeyboardState;
-        private bool Send = false;
+        private bool Send = true;
         GameScreen activeScreen;
         StartScreen startScreen;
         ActionScreen actionScreen;
@@ -439,25 +439,22 @@ namespace PositronNova
                                         }
                                     }
                                     client.SendUnit(send);
-                                    Send = !Send;
                                 }
-                                lock (client)
+                                Send = !Send;
+                                for (int i = 0; i < unitList.Count; i++)
                                 {
-                                    for (int i = 0; i < unitList.Count; i++)
+                                    if (!unitList[i].Friendly)
                                     {
-                                        if (!unitList[i].Friendly)
-                                        {
-                                            unitList.RemoveAt(i);
-                                        }
+                                        unitList.RemoveAt(i);
                                     }
-                                    if (client.Ennemies != null)
+                                }
+                                if (client.Ennemies != null)
+                                {
+                                    foreach (var unit in client.Ennemies)
                                     {
-                                        foreach (var unit in client.Ennemies)
-                                        {
-                                            unit.Init();
-                                            unit.LoadContent(Content);
-                                            unitList.Add(unit);
-                                        }
+                                        unit.Init();
+                                        unit.LoadContent(Content);
+                                        unitList.Add(unit);
                                     }
                                 }
                             }
