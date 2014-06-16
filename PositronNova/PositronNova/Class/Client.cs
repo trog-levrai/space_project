@@ -71,8 +71,8 @@ namespace PositronNova.Class
         {
             while (true)
             {
-                try
-                {
+                //try
+                //{
                     Unit.Unit[] units;
                     byte[] buffer = new byte[2048];
                     sock.Receive(buffer);
@@ -84,16 +84,23 @@ namespace PositronNova.Class
                         units[i].Friendly = false;
                         enn.Add(units[i]);
                     }
-                }
-                catch
-                {
-                    string foo;
-                    foo = clientReader.ReadLine();
-                    if (foo != "")
-                    {
-                        chat.addString(foo);
-                    }
-                }
+                //}
+                //catch
+                //{
+                //    try
+                //    {
+                //        string foo;
+                //        foo = clientReader.ReadLine();
+                //        if (foo != "")
+                //        {
+                //            chat.addString(foo);
+                //        }
+                //    }
+                //    catch
+                //    {
+                //        break;
+                //    }
+                //}
             }
         }
         public void Close()
