@@ -530,6 +530,8 @@ namespace PositronNova.Class.Unit
                         Manager.tirAlien_s.Play();
                     else if (weaponType == BulletType.StickySting)
                         Manager.tirGluant_s.Play();
+                    else if (weaponType == BulletType.Ion)
+                        Manager.ionFire_s.Play();
                 }
             }
             else if (homeWorld != null && homeWorld.Pv > 0)
@@ -557,6 +559,8 @@ namespace PositronNova.Class.Unit
                         Manager.tirAlien_s.Play();
                     else if (weaponType == BulletType.StickySting)
                         Manager.tirGluant_s.Play();
+                    else if (weaponType == BulletType.Ion)
+                        Manager.ionFire_s.Play();
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace PositronNova.Class
         static public Texture2D virus_t, bacterie_t, neurone_t, phagosome_t, kraken_t, nyan_t;                                                                      // texture vaisseaux alien
         static public Texture2D virusAnim_t, bacterieAnim_t, neuroneAnim_t, phagosomeAnim_t, krakenAnim_t, nyanAnim_t;                                              // texture vaisseaux alien animé
 
-        public static SoundEffect missileLaunch_s, missileHit_s, laserFire_s, laserHit_s, plasmaFire_s, plasmaHit_s, bulletFire_s, bulletHit_s, HeavyBulletFire_s; 
+        public static SoundEffect missileLaunch_s, missileHit_s, laserFire_s, laserHit_s, plasmaFire_s, plasmaHit_s, bulletFire_s, bulletHit_s, HeavyBulletFire_s, ionFire_s; 
         public static SoundEffect tirAlien_s, tirGluant_s, tirNeurone_s;
         static public SoundEffect deathNoise_s, alienDeath_s;
 
@@ -80,6 +80,7 @@ namespace PositronNova.Class
             tirAlien_s = content.Load<SoundEffect>("sounds\\tirAlien");
             tirGluant_s = content.Load<SoundEffect>("sounds\\tirGluant");
             tirNeurone_s = content.Load<SoundEffect>("sounds\\tirNeurone");
+            ionFire_s = content.Load<SoundEffect>("sounds\\IonFire");
 
             deathNoise_s = content.Load<SoundEffect>("sounds\\shipDeath");
             alienDeath_s = content.Load<SoundEffect>("sounds\\AlienDying");
