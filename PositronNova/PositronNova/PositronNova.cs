@@ -263,7 +263,7 @@ namespace PositronNova
                                 activeScreen.Hide();
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();
-                                client = new Client("trog", "10.3.4.17", 1234, this);
+                                client = new Client("Polo", "94.23.56.31", 1234, this);
                                 client.Connect();
                                 for (int i = 0; i < unitList.Count; i++)
                                 {
