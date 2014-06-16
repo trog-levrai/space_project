@@ -86,48 +86,145 @@ namespace PositronNova
 
             if (last >= ressou_rate)
             {
-                switch (niveau_centrale)
+                if (PositronNova.Difficulte_easy)
                 {
-                    case 1:
-                        r_energie += 4;
-                        break;
-                    case 2:
-                        r_energie += 10;
-                        break;
-                    case 3:
-                        r_energie += 20;
-                        break;
-                    case 4:
-                        r_energie += 50;
-                        break;
-                    case 5:
-                        r_energie += 100;
-                        break;
-                    default :
-                        r_energie += 4;
-                        break;
+                    switch (niveau_centrale)
+                    {
+                        case 1:
+                            r_energie += 6;
+                            break;
+                        case 2:
+                            r_energie += 15;
+                            break;
+                        case 3:
+                            r_energie += 30;
+                            break;
+                        case 4:
+                            r_energie += 70;
+                            break;
+                        case 5:
+                            r_energie += 120;
+                            break;
+                        default:
+                            r_energie += 6;
+                            break;
+                    }
+
+                    switch (niveau_extracteur)
+                    {
+                        case 1:
+                            r_metal += 6;
+                            break;
+                        case 2:
+                            r_metal += 15;
+                            break;
+                        case 3:
+                            r_metal += 30;
+                            break;
+                        case 4:
+                            r_metal += 70;
+                            break;
+                        case 5:
+                            r_metal += 120;
+                            break;
+                        default:
+                            r_metal += 6;
+                            break;
+                    }
                 }
 
-                switch (niveau_extracteur)
+                if (PositronNova.Difficulte_medium)
                 {
-                    case 1:
-                        r_metal += 4;
-                        break;
-                    case 2:
-                        r_metal += 10;
-                        break;
-                    case 3:
-                        r_metal += 20;
-                        break;
-                    case 4:
-                        r_metal += 50;
-                        break;
-                    case 5:
-                        r_metal += 100;
-                        break;
-                    default:
-                        r_metal += 4;
-                        break;
+                    switch (niveau_centrale)
+                    {
+                        case 1:
+                            r_energie += 4;
+                            break;
+                        case 2:
+                            r_energie += 10;
+                            break;
+                        case 3:
+                            r_energie += 20;
+                            break;
+                        case 4:
+                            r_energie += 50;
+                            break;
+                        case 5:
+                            r_energie += 100;
+                            break;
+                        default:
+                            r_energie += 4;
+                            break;
+                    }
+
+                    switch (niveau_extracteur)
+                    {
+                        case 1:
+                            r_metal += 4;
+                            break;
+                        case 2:
+                            r_metal += 10;
+                            break;
+                        case 3:
+                            r_metal += 20;
+                            break;
+                        case 4:
+                            r_metal += 50;
+                            break;
+                        case 5:
+                            r_metal += 100;
+                            break;
+                        default:
+                            r_metal += 4;
+                            break;
+                    }
+                }
+
+                if (PositronNova.Difficulte_hard)
+                {
+                    switch (niveau_centrale)
+                    {
+                        case 1:
+                            r_energie += 2;
+                            break;
+                        case 2:
+                            r_energie += 8;
+                            break;
+                        case 3:
+                            r_energie += 15;
+                            break;
+                        case 4:
+                            r_energie += 40;
+                            break;
+                        case 5:
+                            r_energie += 80;
+                            break;
+                        default:
+                            r_energie += 2;
+                            break;
+                    }
+
+                    switch (niveau_extracteur)
+                    {
+                        case 1:
+                            r_metal += 2;
+                            break;
+                        case 2:
+                            r_metal += 8;
+                            break;
+                        case 3:
+                            r_metal += 15;
+                            break;
+                        case 4:
+                            r_metal += 40;
+                            break;
+                        case 5:
+                            r_metal += 80;
+                            break;
+                        default:
+                            r_metal += 2;
+                            break;
+                    }
                 }
 
                 last = new TimeSpan(0);
