@@ -14,6 +14,7 @@ namespace PositronNova
     class IU
     {
         List<Unit> UnitSelected = new List<Unit>();
+        List<Planete> PlaneteSelected = new List<Planete>();
 
         Texture2D selection;
         Texture2D cible;
@@ -32,24 +33,29 @@ namespace PositronNova
         {
             if (mouse.LeftButton == ButtonState.Pressed)
             {
-                if (keyboard.IsKeyDown(Keys.LeftShift))
-                {
-                    if (UnitSelected.Count > 0 && UnitSelected[0].Side == UnitSide.Alien)
-                        UnitSelected.RemoveAt(0);
-                    if (PositronNova.GetHumain() != null)
-                        UnitSelected.Add(PositronNova.GetHumain());
-                    else if (PositronNova.GetEnnemy() != null)
-                        UnitSelected.Add(PositronNova.GetEnnemy());
-                }
-                else
-                {
-                    for (int j = 0; j < UnitSelected.Count; j++)
-                        UnitSelected.RemoveAt(j);
-                    if (PositronNova.GetHumain() != null)
-                        UnitSelected.Add(PositronNova.GetHumain());
-                    else if (PositronNova.GetEnnemy() != null)
-                        UnitSelected.Add(PositronNova.GetEnnemy());
-                }
+                if (mouse.Y < PositronNova.winHeight - 228)
+                    if (keyboard.IsKeyDown(Keys.LeftShift))
+                    {
+                        if (UnitSelected.Count > 0 && UnitSelected[0].Side == UnitSide.Alien)
+                            UnitSelected.RemoveAt(0);
+                        if (PositronNova.GetHumain() != null)
+                            UnitSelected.Add(PositronNova.GetHumain());
+                        else if (PositronNova.GetEnnemy() != null)
+                            UnitSelected.Add(PositronNova.GetEnnemy());
+                    }
+                    else
+                    {
+                        for (int j = 0; j < UnitSelected.Count; j++)
+                            UnitSelected.RemoveAt(j);
+                        for (int j = 0; j < PlaneteSelected.Count; j++)
+                            PlaneteSelected.RemoveAt(j);
+                        if (PositronNova.GetHumain() != null)
+                            UnitSelected.Add(PositronNova.GetHumain());
+                        else if (PositronNova.GetEnnemy() != null)
+                            UnitSelected.Add(PositronNova.GetEnnemy());
+                        else if (PositronNova.GetPlanete() != null)
+                            PlaneteSelected.Add(PositronNova.GetPlanete());
+                    }
             }
             if (mouse.RightButton == ButtonState.Pressed)
             {
@@ -57,14 +63,27 @@ namespace PositronNova
                 {
                     if (UnitSelected[i].Side == UnitSide.Humain)
                     {
-                        UnitSelected[i].Ennemy = PositronNova.GetEnnemy();
-                        UnitSelected[i].HasTarget = UnitSelected[i].Ennemy != null;
-                        if (UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
+                        if (PositronNova.GetEnnemy() != null || PositronNova.GetPlanete() != null)
+                        {
+                            UnitSelected[i].Ennemy = PositronNova.GetEnnemy();
+                            UnitSelected[i].HasTarget = UnitSelected[i].Ennemy != null;
+
+                            if (UnitSelected[i].Ennemy == null)
+                            {
+                                if (PositronNova.GetPlanete() != null && PositronNova.GetPlanete().Side != UnitSelected[i].Side)
+                                {
+                                    UnitSelected[i].HomeWorld = PositronNova.GetPlanete();
+                                    UnitSelected[i].HasTarget = UnitSelected[i].HomeWorld != null;
+                                }
+                            }
+                        }
+                        else if (UnitSelected[i].Destination != new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y))
                         {
                             UnitSelected[i].Destination = new Vector2(mouse.X - UnitSelected[i].texture.Width / 2 + Camera2d.Origine.X, mouse.Y - UnitSelected[i].texture.Height / 2 + Camera2d.Origine.Y); //position de la mouse par rapport à l'origine de l'écran + décalage par rapport à l'origine de l'écran par rapport à l'origine du background
                             UnitSelected[i].Direction = new Vector2(UnitSelected[i].Destination.X - UnitSelected[i].position.X, UnitSelected[i].Destination.Y - UnitSelected[i].position.Y);
                             UnitSelected[i].Direction.Normalize();
                             UnitSelected[i].moving = true;
+                            UnitSelected[i].HasTarget = false;
                         }
                     }
                 }
@@ -107,6 +126,11 @@ namespace PositronNova
                         UnitSelected[i].LifeBar.Draw(sb, (int)(UnitSelected[i].position.X + UnitSelected[i].centre.X - (UnitSelected[i].texture.Width / 2)), (int)(Math.Min(UnitSelected[i].collisionInterVaisseau[0].Y, UnitSelected[i].collisionInterVaisseau[UnitSelected[i].collisionInterVaisseau.Length - 1].Y) - 10));
                     }
                 }
+            }
+            else if (PlaneteSelected.Count > 0)
+            {
+                PlaneteSelected[0].LifeBar.Draw(sb, (int)(PlaneteSelected[0].Position.X), (int)(PlaneteSelected[0].Position.Y - 10));
+                //sb.Draw(Manager.lifeBrick_t, PlaneteSelected[0].Hitbox, Color.White);
             }
         }
 

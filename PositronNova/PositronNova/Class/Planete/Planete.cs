@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PositronNova.Class;
+using PositronNova.Class.Unit;
 
 namespace PositronNova
 {
@@ -28,6 +29,7 @@ namespace PositronNova
         Color color;
 
         Texture2D image_planete;
+        public Texture2D Image_planete { get { return image_planete; } }
         Texture2D image_plus;
         Texture2D image_centrale;
         Texture2D image_extracteur;
@@ -89,6 +91,7 @@ namespace PositronNova
         Chat text;
 
         Vector2 position;
+        public Vector2 Position { get { return position; } }
         SpriteFont spriteFont;
         SpriteFont progressFont;
         Game game;
@@ -117,6 +120,42 @@ namespace PositronNova
         {
             get { return niveau_caserne; }
             set { niveau_caserne = value; }
+        }
+
+
+        const int pv_max = 800;
+        public int Pv_max
+        {
+            get { return pv_max; }
+        }
+        int pv;
+        public int Pv
+        {
+            get { return pv; }
+            set { pv = value; }
+        }
+        HealthBar lifeBar;
+        public HealthBar LifeBar
+        {
+            get { return lifeBar; }
+        }
+
+        Rectangle hitbox;
+        public Rectangle Hitbox { get { return hitbox; } }
+
+        UnitSide side;
+        public UnitSide Side { get { return side; } }
+
+        public Planete(Game game, Texture2D image_planete)
+        {
+            this.image_planete = image_planete;
+            pv = pv_max;
+            lifeBar = new HealthBar(pv, image_planete.Width * 2);
+            side = UnitSide.Alien;
+            position = new Vector2(PositronNova.BackgroundTexture.Width - (2 * image_planete.Width) - 100, PositronNova.BackgroundTexture.Height - (2 * image_planete.Height) - 250);
+            hitbox = new Rectangle((int)(position.X + image_planete.Width - 60), (int)(position.Y + image_planete.Height - 60), 120, 120);
+            imageRectangle = new Rectangle((int)position.X, (int)position.Y, image_planete.Width * 2, image_planete.Height * 2);
+            champDeVision = new Rectangle((int)(position.X + image_planete.Width - 300), (int)(position.Y + image_planete.Height - 300), 600, 600);
         }
 
         public Planete(Game game, 
@@ -162,9 +201,9 @@ namespace PositronNova
             compteur = 0;
             rand = new Random();
 
-            position = new Vector2(50, 250);
+            position = new Vector2(100, 250);
             champDeVision = new Rectangle((int)(position.X + image_planete.Width - 300), (int)(position.Y + image_planete.Height - 300), 600, 600);
-            imageRectangle = new Rectangle(50, 250, image_planete.Width * 2, image_planete.Height * 2);
+            imageRectangle = new Rectangle((int)position.X, (int)position.Y, image_planete.Width * 2, image_planete.Height * 2);
 
             recrutement = false;
             selected = false;
@@ -184,6 +223,11 @@ namespace PositronNova
             progress_caserne = false;
             passage_niveau_OK = false;
             verif = -1;
+
+            pv = pv_max;
+            lifeBar = new HealthBar(pv, image_planete.Width * 2);
+            hitbox = new Rectangle((int)(position.X + image_planete.Width - 60), (int)(position.Y + image_planete.Height - 60), 120, 120);
+            side = UnitSide.Humain;
         }
 
         public void LoadContent(ContentManager Content)
@@ -219,9 +263,18 @@ namespace PositronNova
                 text);
         }
 
+        public void Update()
+        {
+            //Update de la vie
+            lifeBar.Update(pv);
+        }
+
         public void Update(GameTime gameTime, MouseState mouse, MouseState oldmouse, KeyboardState keyboardState, KeyboardState oldKeyboardState)
         {
             last = last.Add(gameTime.ElapsedGameTime);
+
+            //Update de la vie
+            lifeBar.Update(pv);
 
             position_icone_centrale = new Vector2((int)(game.Window.ClientBounds.Width / 2 - 50 + Camera2d.Origine.X), 
                 (int)(game.Window.ClientBounds.Height - 190 + Camera2d.Origine.Y));
@@ -367,7 +420,7 @@ namespace PositronNova
                     }
                     else
                     {
-                        //Son : Pas possible
+                        Manager.actionImpossible_s.Play();
                     }
                 }
 
@@ -403,7 +456,7 @@ namespace PositronNova
                     }
                     else
                     {
-                        //Son : Pas possible
+                        Manager.actionImpossible_s.Play();
                     }
                 }
                 if (selected && selected_caserne && plus)
@@ -441,7 +494,7 @@ namespace PositronNova
                     }
                     else
                     {
-                        //Son : Pas possible
+                        Manager.actionImpossible_s.Play();
                     }
                 }
 
@@ -510,10 +563,13 @@ namespace PositronNova
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw1(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(image_planete, imageRectangle, Color.White);
+        }
 
+        public void Draw2(SpriteBatch spriteBatch)
+        {
             mouseState = Mouse.GetState();
 
             if (!selected_recrutement && !selected_universite)

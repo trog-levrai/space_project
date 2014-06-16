@@ -779,6 +779,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="img\PlaneteAlien.png">
+      <Name>PlaneteAlien</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="img\Icone_fleche.jpg">
       <Name>Icone_fleche</Name>
       <Importer>TextureImporter</Importer>

@@ -226,6 +226,7 @@ namespace PositronNova
             startScreen.SelectedIndex = 1;
             activeScreen.Show();
 
+            // Planete humaine
             planeteList.Add(new Planete(this,
                 Content.Load<Texture2D>("img\\Planete_1"),
                 Content.Load<Texture2D>("img\\Plus"),
@@ -240,6 +241,9 @@ namespace PositronNova
                 Content.Load<SpriteFont>("Planete"),
                 Content.Load<SpriteFont>("progress"),
                 text));
+
+            // Planete Alien
+            planeteList.Add(new Planete(this, Content.Load<Texture2D>("img\\PlaneteAlien")));
 
             planeteList[0].LoadContent(Content);
 
@@ -325,7 +329,7 @@ namespace PositronNova
                                     i--;
                                 }
 
-                                //genHumain(10);
+                                genHumain(10);
                                 genAlien(10);
                                 planeteList[0].Niveau_centrale = 1;
                                 planeteList[0].Niveau_extracteur = 1;
@@ -483,6 +487,8 @@ namespace PositronNova
                         _camera.Update2(keyboardState, mouse);
 
                         planeteList[0].Update(gameTime, mouse, oldMouse, keyboardState, oldKeyboardState);
+                        planeteList[1].Update();
+
                         ressources = planeteList[0].setRessource();
                         ressources.Update(gameTime, planeteList[0].Niveau_centrale, planeteList[0].Niveau_extracteur);
 
@@ -498,25 +504,6 @@ namespace PositronNova
                         for (int i = 0; i < unitList.Count; i++)
                         {
                             unitList[i].Update(gameTime);
-                            //// Mini IA
-                            //if (unitList[i].Side == UnitSide.Alien && unitList[0].Side == UnitSide.Humain)
-                            //{
-                            //    unitList[i].Ennemy = unitList[0];
-                            //    unitList[i].HasTarget = true;
-                            //}
-                            //else if (unitList[i].Side == UnitSide.Alien)
-                            //{
-                            //    for (int j = 0; j < unitList.Count; j++)
-                            //    {
-                            //        if (unitList[j].Side == UnitSide.Humain)
-                            //        {
-                            //            unitList[i].Ennemy = unitList[j];
-                            //            unitList[i].HasTarget = true;
-                            //            j = unitList.Count;
-                            //        }
-                            //    }
-                            //}
-                            //// ----
                             if (unitList[i].Destruction()) // Destruction des vaisseaux
                             {
                                 effectBulletList.Add(new EffectBullet(unitList[i].position + unitList[i].centre, EffectType.GrosseExplosion));
@@ -533,15 +520,6 @@ namespace PositronNova
                                 if (i > 0)
                                     i--;
                             }
-
-                            //for (int j = 0; j < unitList.Count; j++)
-                            //{
-                            //    if (i == j)
-                            //    {
-                            //        for (int k = 0; k < unitList[i].hitBoxes.Length; k++)
-                            //            for (int l = 0; l <
-                            //    }
-                            //}
                         }
 
                         interfaceJoueur.HandleInput(keyboardState, mouse);
@@ -610,7 +588,7 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.LightGoldenrodYellow);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
             MouseState mouse = Mouse.GetState();
 
@@ -649,6 +627,17 @@ namespace PositronNova
                     {
                         actionScreen.Draw(gameTime);
 
+                        foreach (Planete p in planeteList)
+                        {
+                            if (p.champDeVision.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
+                                p.champDeVision.Bottom > Camera2d.Origine.Y &&
+                                p.champDeVision.Left < Camera2d.Origine.X + PositronNova.winWidth &&
+                                p.champDeVision.Right > Camera2d.Origine.X)
+                            {
+                                p.Draw1(spriteBatch);
+                            }
+                        }
+
                         foreach (Unit unit in unitList) // On utilise ChampdeVision ici c'est normal ! 
                         {
                             if (unit.champDeVision.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
@@ -683,8 +672,8 @@ namespace PositronNova
 
                         spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                         //Affiche le chat
-                        // La planètatoum :o) 
-                        planeteList[0].Draw(spriteBatch);
+                        //Les élément de la planète sélectionné pour l'iu
+                        planeteList[0].Draw2(spriteBatch);
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
 
@@ -742,6 +731,14 @@ namespace PositronNova
                 if (unit.Side == UnitSide.Humain)
                     if (Math.Abs(Mouse.GetState().X - (unit.position.X + unit.texture.Width / 2) + Camera2d.Origine.X) <= unit.texture.Width / 2 && Math.Abs(Mouse.GetState().Y - (unit.position.Y + unit.texture.Height / 2) + Camera2d.Origine.Y) <= unit.texture.Height / 2)
                         return unit;
+            return null;
+        }
+
+        static public Planete GetPlanete()
+        {
+            foreach (Planete planete in planeteList)
+                if (Math.Abs(Mouse.GetState().X - (planete.Position.X + planete.Image_planete.Width) + Camera2d.Origine.X) <= planete.Image_planete.Width && Math.Abs(Mouse.GetState().Y - (planete.Position.Y + planete.Image_planete.Height) + Camera2d.Origine.Y) <= planete.Image_planete.Height)
+                    return planete;
             return null;
         }
 
