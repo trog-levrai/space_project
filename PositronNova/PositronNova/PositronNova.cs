@@ -24,6 +24,9 @@ namespace PositronNova
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        TimeSpan compt;
+        TimeSpan last;
+
         static public int winWidth = 1366, winHeight = 768; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
@@ -134,6 +137,7 @@ namespace PositronNova
             _thEcoute = new Thread(new ParameterizedThreadStart(Ecouter));
             _thEcoute.Start(text);
             _thEcoute.IsBackground = true;
+            compt = new TimeSpan(0, 0, 10);
 
             UdpClient udpClient = new UdpClient();
             byte[] msg = Encoding.Default.GetBytes("nick:Biatch");
@@ -276,6 +280,8 @@ namespace PositronNova
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             Vector2 movement = Vector2.Zero;
+            last = last.Add(gameTime.ElapsedGameTime);
+            engine.Update();
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             //    this.Exit();
             
@@ -290,11 +296,16 @@ namespace PositronNova
                     break;
                 case GameState.Game:
                     vidPlayer.Stop();
-                    cue.Resume();
 
 #region StartScreen
                     if (activeScreen == startScreen)
                     {
+                        cue.Resume();
+                        if (cue.IsStopped)
+                        {
+                            cue = soundBank.GetCue("Menu");
+                            cue.Play();
+                        }
                         if (enableFog)
                         {
                             fog = new BrouillardDeGuerre(100, 100, BackgroundTexture.Width, BackgroundTexture.Height);
@@ -480,6 +491,12 @@ namespace PositronNova
                     {
                         cue.Pause();
                         cue1.Resume();
+                        if (cue1.IsStopped)
+                        {
+                            cue1 = soundBank.GetCue("Espace");
+                            cue1.Play();
+                        }
+
                         _camera.Update1(keyboardState, mouse);
                         _camera.Update2(keyboardState, mouse);
 
