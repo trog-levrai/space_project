@@ -34,10 +34,10 @@ namespace PositronNova
             : base(game, spriteBatch)
         {
             this.graphics = graphics;
-            string[] OptionItems = { "Full Screen", "The volume of music", "Back"};
+            string[] OptionItems = { "Full Screen", "The volume of music", "Difficulty", "Fog of war" ,"Back"};
             optionComponent = new OptionComponent(game, spriteBatch, spriteFont, OptionItems);
             Components.Add(optionComponent);
-            string[] OptionItemsMusique = { "On", "Off", "-", "+",};
+            string[] OptionItemsMusique = { "On", "Off", "-", "+", "Facile", "Medium", "Hard", "On", "Off"};
             optionComponentSelection = new OptionComponentSelection(game, spriteBatch, spriteFont, OptionItemsMusique, optionComponent);
             Componentsoption.Add(optionComponentSelection);
 

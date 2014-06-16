@@ -72,7 +72,12 @@ namespace PositronNova
 
         public static Ressources getStartRessources()
         {
-            return new Ressources(100, 100);
+            if (PositronNova.Difficulte_hard)
+                return new Ressources(100, 100);
+            else if (PositronNova.Difficulte_medium)
+                return new Ressources(200, 200);
+            else
+                return new Ressources(300, 300);
         }
 
         public void Update(GameTime gameTime, int niveau_centrale, int niveau_extracteur)

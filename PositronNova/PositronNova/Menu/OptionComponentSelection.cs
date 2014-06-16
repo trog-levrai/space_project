@@ -107,7 +107,7 @@ namespace PositronNova
             }
 
             position = new Vector2((Game.Window.ClientBounds.Width - width) / 2,
-                (Game.Window.ClientBounds.Height - height) / 2 +14);
+                (Game.Window.ClientBounds.Height - height) / 2 + 54);
         }
 
         /// <summary>
@@ -160,6 +160,8 @@ namespace PositronNova
                 {
                     if (sselectedIndex < 2)
                         sselectedIndex = 2;
+                    if (sselectedIndex > 3)
+                        sselectedIndex = 3;
                     if (checkKey(Keys.Right))
                     {
                         sselectedIndex++;
@@ -175,6 +177,42 @@ namespace PositronNova
                         {
                             sselectedIndex = 2;
                         }
+                    }
+                }
+                if (optionComponent.SelectedIndex == 2)
+                {
+                    if (sselectedIndex < 4)
+                        sselectedIndex = 4;
+                    if (sselectedIndex > 6)
+                        sselectedIndex = 6;
+                    if (checkKey(Keys.Right))
+                    {
+                        sselectedIndex++;
+                        if (sselectedIndex == 7)
+                            sselectedIndex = 6;
+                    }
+                    if (checkKey(Keys.Left))
+                    {
+                        sselectedIndex--;
+                        if (sselectedIndex < 4)
+                            sselectedIndex = 4;
+                    }
+                }
+                if (optionComponent.SelectedIndex == 3)
+                {
+                    if (sselectedIndex < 7)
+                        sselectedIndex = 7;
+                    if (checkKey(Keys.Right))
+                    {
+                        sselectedIndex++;
+                        if (sselectedIndex == 9)
+                            sselectedIndex = 8;
+                    }
+                    if (checkKey(Keys.Left))
+                    {
+                        sselectedIndex--;
+                        if (sselectedIndex < 7)
+                            sselectedIndex = 7;
                     }
                 }
 
@@ -252,7 +290,70 @@ namespace PositronNova
                     }
                     location.Y += spriteFont.LineSpacing + 5;
                 }
-            
+                if (optionComponent.SelectedIndex == 2)
+                {
+                    location = new Vector2((Game.Window.ClientBounds.Width - width) / 2,
+                (Game.Window.ClientBounds.Height - height) / 2 +112);
+                    for (int i = 4; i < 7; i++)
+                    {
+                        if (i == sselectedIndex)
+                        {
+                            tint = hilite;
+                        }
+                        else
+                        {
+                            tint = normal;
+                        }
+                        spriteBatch.DrawString(
+                        spriteFont, optionItems[i], location, tint);
+                        location.X += 100;
+                    }
+                    location.Y += spriteFont.LineSpacing + 5;
+                }
+                else
+                {
+                    location = new Vector2((Game.Window.ClientBounds.Width - width) / 2,
+                    (Game.Window.ClientBounds.Height - height) / 2 + 112);
+                    for (int i = 4; i < 7; i++)
+                    {
+                        spriteBatch.DrawString(
+                        spriteFont, optionItems[i], location, normal);
+                        location.X += 100;
+                    }
+                    location.Y += spriteFont.LineSpacing + 5;
+                }
+                if (optionComponent.SelectedIndex == 3)
+                {
+                    location = new Vector2((Game.Window.ClientBounds.Width - width) / 2,
+                    (Game.Window.ClientBounds.Height - height) / 2 + 143);
+                    for (int i = 7; i < 9; i++)
+                    {
+                        if (i == sselectedIndex)
+                        {
+                            tint = hilite;
+                        }
+                        else
+                        {
+                            tint = normal;
+                        }
+                        spriteBatch.DrawString(
+                        spriteFont, optionItems[i], location, tint);
+                        location.X += 100;
+                    }
+                    location.Y += spriteFont.LineSpacing + 5;
+                }
+                else
+                {
+                    location = new Vector2((Game.Window.ClientBounds.Width - width) / 2,
+                    (Game.Window.ClientBounds.Height - height) / 2 + 143);
+                    for (int i = 7; i < 9; i++)
+                    {
+                        spriteBatch.DrawString(
+                        spriteFont, optionItems[i], location, normal);
+                        location.X += 100;
+                    }
+                    location.Y += spriteFont.LineSpacing + 5;
+                }
             
         }
 
