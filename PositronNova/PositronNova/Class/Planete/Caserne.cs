@@ -298,7 +298,7 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_cuirasse = Math.Abs(mouseState.X - (position_icone_cuirasse.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_cuirasse.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_cuirasse && Planete.Niveau_caserne > 3 && ressource.curRessources() >= RecquiredRessourceCuirasse())
+                if (selected_cuirasse && Planete.Niveau_caserne > 3 && ressource.curRessources() >= RecquiredRessourceCuirasse() && Universite.Changement_blindage && Universite.Changement_moteur)
                 {
                     //lancer_recrutement_cuirasse = true;
                     list.Add(6);
@@ -315,7 +315,7 @@ namespace PositronNova
             if (mouseState.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
             {
                 selected_destroyer = Math.Abs(mouseState.X - (position_icone_destroyer.X + 50 / 2) + Camera2d.Origine.X) <= 50 / 2 & Math.Abs(mouseState.Y - (position_icone_destroyer.Y + 50 / 2) + Camera2d.Origine.Y) <= 50 / 2;
-                if (selected_destroyer && Planete.Niveau_caserne > 4 && ressource.curRessources() >= RecquiredRessourceDestroyer())
+                if (selected_destroyer && Planete.Niveau_caserne > 4 && ressource.curRessources() >= RecquiredRessourceDestroyer() && Universite.Changement_blindage)
                 {
                     //lancer_recrutement_destroyer = true;
                     list.Add(5);
@@ -386,24 +386,24 @@ namespace PositronNova
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
 
-            if(Planete.Niveau_caserne < 4)
-                spriteBatch.Draw(Icone_destroyer_grisee,
-                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
-                        (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
-                    Color.White);
-            else
+            if(Planete.Niveau_caserne >= 4 && Universite.Changement_blindage)
                 spriteBatch.Draw(Icone_destroyer,
                     new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
                         (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                     Color.White);
+            else
+                spriteBatch.Draw(Icone_destroyer_grisee,
+                    new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X),
+                        (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
+                    Color.White);
 
-            if(Planete.Niveau_caserne < 5)
-                spriteBatch.Draw(Icone_cuirasse_grisee,
+            if(Planete.Niveau_caserne == 5 && Universite.Changement_moteur && Universite.Changement_blindage)
+                spriteBatch.Draw(Icone_cuirasse,
                     new Rectangle((int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X),
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
             else
-                spriteBatch.Draw(Icone_cuirasse,
+                spriteBatch.Draw(Icone_cuirasse_grisee,
                 new Rectangle((int)(game.Window.ClientBounds.Width / 2 +500 + Camera2d.Origine.X),
                     (int)(game.Window.ClientBounds.Height - 90 + Camera2d.Origine.Y), 50, 50),
                 Color.White);
@@ -488,31 +488,33 @@ namespace PositronNova
                 if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X) &&
                     mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + 250 + Camera2d.Origine.X + 50))
                 {
-                    if (Planete.Niveau_caserne < 4)
-                        spriteBatch.DrawString(spriteFont,
-                            "Destroyer" + "\nRecquiert caserne \nniveau 4 ou plus",
-                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
-                    else
+                    if (Planete.Niveau_caserne >= 4 && Universite.Changement_blindage)
                         spriteBatch.DrawString(spriteFont,
                         "Destroyer" + "\nRequis : 250, 250",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
                         Color.Green);
+                    else
+                        spriteBatch.DrawString(spriteFont,
+                        "Destroyer" + "\nRecquiert caserne \nniveau 4 ou plus + " + "\nla technologie Blindage",
+                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Red);
+
                 }
 
                 if (mouseState.X + Camera2d.Origine.X > (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X) &&
                     mouseState.X + Camera2d.Origine.X < (int)(game.Window.ClientBounds.Width / 2 + 500 + Camera2d.Origine.X + 50))
                 {
-                    if (Planete.Niveau_caserne < 5)
-                        spriteBatch.DrawString(spriteFont,
-                            "Cuirasse" + "\nRecquiert caserne \nniveau 5",
-                            new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
-                        Color.Red);
-                    else
-                        spriteBatch.DrawString(spriteFont,
+                    if (Planete.Niveau_caserne == 5 && Universite.Changement_blindage && Universite.Changement_moteur)
+                          spriteBatch.DrawString(spriteFont,
                         "Cuirasse" + "\nRequis : 450, 500",
                         new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
                         Color.Green);
+                    else
+                        spriteBatch.DrawString(spriteFont,
+                        "Cuirasse" + "\nRecquiert caserne \nniveau 5 et les" + "\ntechnologies Moteur et Blindage",
+                        new Vector2(mouseState.X + Camera2d.Origine.X, mouseState.Y + Camera2d.Origine.Y),
+                        Color.Red);
+
                 }
             }
 
