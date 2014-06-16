@@ -25,6 +25,7 @@ namespace PositronNova
         SoundEffect hitNoise;
         BulletType bulletType;
         Unit target;
+        Planete homeWorld;
         public BulletType BulletType
         {
             get { return bulletType; }
@@ -35,6 +36,79 @@ namespace PositronNova
         int damage;
 
         ///////////////////////////////// CONSTRUCTEURS
+
+        public Bullet(Vector2 origine, Planete target, BulletType bulletType)
+            : base(origine, target.Position + new Vector2(target.Image_planete.Width, target.Image_planete.Height))
+        {
+            this.homeWorld = target;
+            this.bulletType = bulletType;
+            switch (bulletType)
+            {
+                case BulletType.LittleCinetique:
+                    texture = Manager.littleCinetique_t;
+                    speed = 4;
+                    if (Universite.Changement_precision)
+                        damage = 6;
+                    else
+                        damage = 4;
+                    break;
+                case BulletType.Cinetique:
+                    texture = Manager.cinetique_t;
+                    speed = 6;
+                    if (Universite.Changement_precision)
+                        damage = 12;
+                    else
+                        damage = 8;
+                    break;
+                case BulletType.Laser:
+                    texture = Manager.laser_t;
+                    hitNoise = Manager.laserHit_s;
+                    speed = 10;
+                    if (Universite.Changement_precision)
+                        damage = 30;
+                    else
+                        damage = 20;
+                    break;
+                case BulletType.Ion:
+                    texture = Manager.ion_t;
+                    speed = 10;
+                    if (Universite.Changement_precision)
+                        damage = 42;
+                    else
+                        damage = 28;
+                    break;
+                case BulletType.Plasma:
+                    texture = Manager.plasma_t;
+                    hitNoise = Manager.plasmaHit_s;
+                    speed = 10;
+                    if (Universite.Changement_precision)
+                        damage = 54;
+                    else
+                        damage = 36;
+                    break;
+                case BulletType.Missile:
+                    texture = Manager.missile_t;
+                    hitNoise = Manager.missileHit_s;
+                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 2);
+                    speed = 12;
+                    if (Universite.Changement_precision)
+                        damage = 75;
+                    else
+                        damage = 50;
+                    break;
+                case BulletType.BloodSting:
+                    texture = Manager.bloodSting_t;
+                    speed = 4;
+                    damage = 4;
+                    break;
+            }
+
+            hitBoxes = new Rectangle[1];
+            hitBoxes[0] = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            centre = new Vector2(texture.Width / 2, texture.Height / 2);
+            //textureData = new Color[texture.Width * texture.Height];
+            //texture.GetData(textureData);
+        }
 
         public Bullet(Vector2 origine, Unit target, BulletType bulletType)
             : base(origine, target.position + target.centre)
@@ -170,6 +244,15 @@ namespace PositronNova
                         destruc = true;
                         hitTarget = true;
                     }
+                }
+            }
+            else if (homeWorld != null && homeWorld.Pv > 0)
+            {
+                if (hitBoxes[0].Intersects(homeWorld.Hitbox))
+                {
+                    homeWorld.Pv -= damage;
+                    destruc = true;
+                    hitTarget = true;
                 }
             }
         }

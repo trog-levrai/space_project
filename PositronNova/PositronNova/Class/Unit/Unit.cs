@@ -74,12 +74,15 @@ namespace PositronNova.Class.Unit
         int champDeVisionWidth, champDeVisionHeight;
 
         // Cible
-        private Unit enn;
+        private Unit enn = null;
         public Unit Ennemy
         {
             get { return enn; }
             set { enn = value; }
         }
+
+        Planete homeWorld = null;
+        public Planete HomeWorld { get { return homeWorld; } set { homeWorld = value; } }
 
         private static Ressources requiredResources = new Ressources(0, 0);
 
@@ -335,7 +338,7 @@ namespace PositronNova.Class.Unit
                     frameWidth = 200;
                     frameHeight = 100;
                     timeToNextFrame = new TimeSpan(0, 0, 0, 0, 60);
-                    fireRate = new TimeSpan(0, 0, 0, 0, 2000);
+                    fireRate = new TimeSpan(0, 0, 0, 0, 4000);
                     weaponType = BulletType.BloodSting;
                     pv_max = 300;
                     speed = 1;
@@ -371,7 +374,7 @@ namespace PositronNova.Class.Unit
         public override void Update(GameTime gt)
         {
             last = last.Add(gt.ElapsedGameTime);
-            if (enn != null && last >= fireRate && Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2))
+            if (last >= fireRate && ((enn != null && (position - enn.position).Length() <= range) || (homeWorld != null && (position - homeWorld.Position).Length() <= range)))
             {
                 shoot();
                 last = new TimeSpan(0);
@@ -398,7 +401,7 @@ namespace PositronNova.Class.Unit
                 position.Y <= 5 || position.Y + texture.Height >= PositronNova.BackgroundTexture.Height - 5)
                 moving = false;
 
-            //texture.GetData(textureData);
+            //Update de la vie
             lifeBar.Update(pv);
 
             // Update du changement de frame
@@ -446,14 +449,18 @@ namespace PositronNova.Class.Unit
             {
                 //sb.Draw(Manager.lifeBrick_t, champDeVision, Color.White);
                 if (unitType == UnitType.Bacterie)
+                {
                     if (direction.X > 0)
-                        sb.Draw(textureAnime, position + centre, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.FlipHorizontally, 0);
-                    else if (direction.X < 0)
                         sb.Draw(textureAnime, position + centre, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.None, 0);
+                    else if (direction.X < 0)
+                        sb.Draw(textureAnime, position + centre, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White, (float)Math.Atan(direction.Y / direction.X), centre, 1f, SpriteEffects.FlipHorizontally, 0);
                     else
-                        sb.Draw(texture, position, Color.White);
+                        sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
+                }
                 else
+                {
                     sb.Draw(textureAnime, position, new Rectangle(frameWidth * frameSquare, 0, frameWidth, frameHeight), Color.White);
+                }
             }
 
             //for (int i = 0; i < collisionInterVaisseau.Length; i++)
@@ -468,7 +475,11 @@ namespace PositronNova.Class.Unit
         {
             int stopPrecision = 2;
 
+            if (position == destination)
+                moving = false;
             if (hasTarget && enn != null && (enn.position - position).Length() <= range)
+                moving = false;
+            if (hasTarget && homeWorld != null && (homeWorld.Position - position).Length() <= range)
                 moving = false;
 
             if (moving)
@@ -478,14 +489,9 @@ namespace PositronNova.Class.Unit
                 direction.Normalize();
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
                 CorrectionTrajectoire();
-                if (Math.Abs(position.X - destination.X) <= stopPrecision && Math.Abs(position.Y - destination.Y) <= stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
+                if ((destination - position).Length() < stopPrecision) // empêche le ship de tourner (vibrer?) autour de la destination avec stopPrecision
                     position = destination;
             }
-            else
-            {
-                destination = position;
-            }
-            moving = (position != destination) || (last >= fireRate && enn != null && Math.Pow(position.X - enn.position.X, 2) + Math.Pow(position.Y - enn.position.Y, 2) <= Math.Pow(range, 2));
         }
 
         void shoot()
@@ -501,6 +507,25 @@ namespace PositronNova.Class.Unit
                     localUnit.Init();
                     PositronNova.UnitList.Add(localUnit);
                 }
+                // Les sons à l'intérieur de l'écran
+                if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
+                    position.X + centre.X > Camera2d.Origine.X &&
+                    position.Y + centre.Y < PositronNova.winWidth + Camera2d.Origine.Y &&
+                    position.Y + centre.Y > Camera2d.Origine.Y)
+                {
+                    if (weaponType == BulletType.Missile)
+                        Manager.missileLaunch_s.Play();
+                    else if (weaponType == BulletType.Laser)
+                        Manager.laserFire_s.Play();
+                    else if (weaponType == BulletType.Plasma)
+                        Manager.plasmaFire_s.Play();
+                }
+            }
+            else if (homeWorld != null && homeWorld.Pv > 0)
+            {
+                localBullet = new Bullet(position + centre, homeWorld, weaponType);
+                PositronNova.AddBullet(localBullet);
+
                 // Les sons à l'intérieur de l'écran
                 if (position.X + centre.X < PositronNova.winWidth + Camera2d.Origine.X &&
                     position.X + centre.X > Camera2d.Origine.X &&
@@ -625,15 +650,16 @@ namespace PositronNova.Class.Unit
 
         void IA()
         {
-            if (enn != null && enn.pv <= 0)
-            {
+            if (enn == null || enn != null && enn.pv <= 0)
                 enn = null;
+            if (homeWorld == null || homeWorld != null && homeWorld.Pv <= 0)
+                homeWorld = null;
+            if (enn == null && homeWorld == null)
                 hasTarget = false;
-            }
 
             if (side == UnitSide.Humain)
             {
-                if (enn == null) // s'il n'a pas de cible, on recherche la première cible à porté
+                if (!hasTarget) // s'il n'a pas de cible, on recherche la première cible à porté
                 {
                     for (int i = 0; i < PositronNova.UnitList.Count; i++)
                     {
@@ -642,7 +668,17 @@ namespace PositronNova.Class.Unit
                             if ((PositronNova.UnitList[i].position - position).Length() <= range && PositronNova.UnitList[i].side != side && enn == null) // Le enn == null sert juste à garder la même cible si jamais il y a plusieurs unité à porté
                             {
                                 this.enn = PositronNova.UnitList[i];
-                                //hasTarget = true;
+                            }
+                        }
+                    }
+
+                    if (enn == null)
+                    {
+                        for (int i = 0; i < PositronNova.planeteList.Count; i++)
+                        {
+                            if (PositronNova.planeteList[i].Side != side && (PositronNova.planeteList[i].Position - position).Length() <= range && homeWorld == null)
+                            {
+                                this.homeWorld = PositronNova.planeteList[i];
                             }
                         }
                     }
@@ -651,13 +687,16 @@ namespace PositronNova.Class.Unit
                 {
                     if (hasTarget) // Si c'est une cible marqué alors le vaisseau la traque
                     {
-                        IATrackDown(enn);
+                        if (enn != null)
+                            IATrackDownUnit(enn);
+                        else if (homeWorld != null)
+                            IATrackDownPlanete(homeWorld);
                     }
                 }
             }
             else if (side == UnitSide.Alien) // Inutile de l'écrire, mais c'est plus explicite, et puis si jamais on rajoute un autre clan... :o)
             {
-                if (enn == null) // s'il n'a pas de cible, on recherche la première cible à porté
+                if (enn == null && homeWorld == null) // s'il n'a pas de cible, on recherche la première cible à porté
                 {
                     for (int i = 0; i < PositronNova.UnitList.Count; i++)
                     {
@@ -666,23 +705,47 @@ namespace PositronNova.Class.Unit
                             if ((PositronNova.UnitList[i].position - position).Length() <= range && PositronNova.UnitList[i].side != side && enn == null) // Le enn == null sert juste à garder la même cible si jamais il y a plusieurs unité à porté
                             {
                                 this.enn = PositronNova.UnitList[i];
-                                //hasTarget = true;
+                            }
+                        }
+                    }
+
+                    if (enn == null)
+                    {
+                        for (int i = 0; i < PositronNova.planeteList.Count; i++)
+                        {
+                            if (PositronNova.planeteList[i].Side != side && (PositronNova.planeteList[i].Position - position).Length() <= range && homeWorld == null)
+                            {
+                                this.homeWorld = PositronNova.planeteList[i];
                             }
                         }
                     }
                 }
                 else // S'il a une cible, alors on ne fait plus de recherche de porté : on traque la cible gnahaha
                 {
-                    IATrackDown(enn);
+                    if (enn != null)
+                        IATrackDownUnit(enn);
+                    else if (homeWorld != null)
+                        IATrackDownPlanete(homeWorld);
+                    CorrectionTrajectoire();
                 }
             }
         }
 
-        void IATrackDown(Unit cible)
+        void IATrackDownUnit(Unit cible)
         {
             if ((cible.position - position).Length() > range)
             {
                 direction = cible.position - position;
+                direction.Normalize();
+                position += direction * speed;
+            }
+        }
+
+        void IATrackDownPlanete(Planete cible)
+        {
+            if ((cible.Position - position).Length() > range)
+            {
+                direction = cible.Position - position;
                 direction.Normalize();
                 position += direction * speed;
             }
