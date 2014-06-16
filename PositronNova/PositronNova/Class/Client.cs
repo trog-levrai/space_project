@@ -68,7 +68,8 @@ namespace PositronNova.Class
             byte[] bytes = new byte[ms.Capacity];
             ms.Seek(0, SeekOrigin.Begin);
             ms.Write(bytes, 0, bytes.Length);
-            sock.Send(bytes);
+            if (bytes[0] != 0)
+                sock.Send(bytes);
         }
         public void Receive()
         {
