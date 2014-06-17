@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,14 +13,17 @@ namespace PositronNova.Class.Unit
     {
         Chasseur, Bombardier, Corvette, Destroyer, Croiseur, Cuirasse
     };
-    [Serializable()]
+    [Serializable]
     public class Unit : sprite
     {
         // Sound et tir
+        [XmlAttribute()]
         public int range;
         public int Range
         { get { return range;  } }
+        [XmlAttribute()]
         System.TimeSpan fireRate;
+        [XmlAttribute()]
         System.TimeSpan last;
 
         [NonSerialized()] SoundEffect deathNoise;
@@ -29,15 +33,19 @@ namespace PositronNova.Class.Unit
         // Caractéristiques unit
         [NonSerialized()] private Color color;
         [NonSerialized()] private SpriteFont _font;
+        [XmlAttribute()]
         public string name;
         public string Name
         {
             get { return name; }
         }
+        [XmlAttribute()]
         UnitType unitType;
-
+        [XmlAttribute()]
         public bool moving = false;
+        [XmlAttribute()]
         public bool selected;
+        [XmlAttribute()]
         public bool hasTarget;
         public bool HasTarget
         {
@@ -45,13 +53,15 @@ namespace PositronNova.Class.Unit
         }
         [NonSerialized()] private Texture2D selection;
         [NonSerialized()] private Texture2D cible;
-
+        [XmlAttribute()]
         public int damage;
+        [XmlAttribute()]
         public int pv_max;
         public int Pv_max
         {
             get { return pv_max; }
         }
+        [XmlAttribute()]
         public int pv;
         public int Pv
         {
@@ -60,6 +70,7 @@ namespace PositronNova.Class.Unit
         }
 
         // Cible
+        [XmlAttribute()]
         public Unit enn;
         public Unit Ennemy
         {
@@ -68,6 +79,7 @@ namespace PositronNova.Class.Unit
         }
 
         //oui moi aussi :o)
+        [XmlAttribute()]
         public bool friendly;
         public bool Friendly
         {

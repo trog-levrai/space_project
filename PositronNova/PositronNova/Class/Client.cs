@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -65,13 +66,13 @@ namespace PositronNova.Class
         public void SendUnit(List<Unit.Unit> unit)
         {
             //On serialise la liste d'unites
-            BinaryFormatter format = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            format.Serialize(ms, unit);
-            byte[] bytes = new byte[ms.Capacity];
-            ms.Position = 0;
-            bytes = ms.GetBuffer();
-            sock.Send(bytes);
+            XmlSerializer format = new XmlSerializer(typeof(List<Unit.Unit>));
+            format.Serialize(clientWriter, unit);
+            clientWriter.Flush();
+            //byte[] bytes = new byte[ms.Capacity];
+            //ms.Position = 0;
+            //bytes = ms.GetBuffer();
+            //sock.Send(bytes);
         }
 
         public void Receive()
@@ -80,13 +81,13 @@ namespace PositronNova.Class
             {
                 //try
                 //{
-                    BinaryFormatter format = new BinaryFormatter();
+                    XmlSerializer format = new XmlSerializer(typeof(List<Unit.Unit>));
                     List<Unit.Unit> units;
-                    byte[] buffer = new byte[2048 * 128];
-                    sock.Receive(buffer);
-                    MemoryStream mem = new MemoryStream(buffer);
-                    mem.Position = 0;
-                    units = (List<Unit.Unit>) format.Deserialize(mem);
+                    //byte[] buffer = new byte[2048 * 128];
+                    //sock.Receive(buffer);
+                    //MemoryStream mem = new MemoryStream(buffer);
+                    //mem.Position = 0;
+                    units = (List<Unit.Unit>) format.Deserialize(clientReader);
                     lock (enn)
                     {
                         for (int i = 0; i < units.Count; i++)
