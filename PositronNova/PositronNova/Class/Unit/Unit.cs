@@ -16,7 +16,7 @@ namespace PositronNova.Class.Unit
     public class Unit : sprite
     {
         // Sound et tir
-        private int range;
+        public int range;
         public int Range
         { get { return range;  } }
         System.TimeSpan fireRate;
@@ -29,7 +29,7 @@ namespace PositronNova.Class.Unit
         // Caractéristiques unit
         [NonSerialized()] private Color color;
         [NonSerialized()] private SpriteFont _font;
-        private string name;
+        public string name;
         public string Name
         {
             get { return name; }
@@ -37,8 +37,8 @@ namespace PositronNova.Class.Unit
         UnitType unitType;
 
         public bool moving = false;
-        bool selected;
-        private bool hasTarget;
+        public bool selected;
+        public bool hasTarget;
         public bool HasTarget
         {
             set { hasTarget = value; }
@@ -46,13 +46,13 @@ namespace PositronNova.Class.Unit
         [NonSerialized()] private Texture2D selection;
         [NonSerialized()] private Texture2D cible;
 
-        protected int damage;
-        protected int pv_max;
+        public int damage;
+        public int pv_max;
         public int Pv_max
         {
             get { return pv_max; }
         }
-        protected int pv;
+        public int pv;
         public int Pv
         {
             get { return pv; }
@@ -60,7 +60,7 @@ namespace PositronNova.Class.Unit
         }
 
         // Cible
-        private Unit enn;
+        public Unit enn;
         public Unit Ennemy
         {
             get { return enn; }
@@ -68,7 +68,7 @@ namespace PositronNova.Class.Unit
         }
 
         //oui moi aussi :o)
-        private bool friendly;
+        public bool friendly;
         public bool Friendly
         {
             get { return friendly; }
