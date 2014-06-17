@@ -71,7 +71,7 @@ namespace PositronNova.Class
             //On serialise la liste d'unites
             XmlSerializer format = new XmlSerializer(typeof(List<Unit.Unit>));
             format.Serialize(clientWriter, unit);
-            clientWriter.WriteLine();
+            clientWriter.Write("\n");
             clientWriter.Flush();
             //byte[] bytes = new byte[ms.Capacity];
             //ms.Position = 0;
