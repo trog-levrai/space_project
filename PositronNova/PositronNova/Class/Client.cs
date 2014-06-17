@@ -11,18 +11,20 @@ namespace PositronNova.Class
 {
     [Serializable()]
     class Client
-    {   
+    {
         private List<Unit.Unit> enn;
-        public List<Unit.Unit>Ennemies
+        public List<Unit.Unit> Ennemies
         {
             get { return enn; }
         }
+        bool end = true;
         public Chat chat;
         private Thread Writer;
         public String name { get; private set; }
         public Socket sock;
         StreamReader clientReader;
         StreamWriter clientWriter;
+        private FileStream fs;
         //public BinaryFormatter format;
         public Client(String name, String host, int port, Game game)
         {
@@ -34,6 +36,7 @@ namespace PositronNova.Class
             sock.Connect(host, port);
             this.clientReader = new StreamReader(new NetworkStream(sock));
             this.clientWriter = new StreamWriter(new NetworkStream(sock));
+            fs = new FileStream("save.dat", FileMode.Open);
             Writer = new Thread(new ThreadStart(Receive));
             Writer.IsBackground = true;
             Writer.Start();
@@ -62,61 +65,71 @@ namespace PositronNova.Class
         }
         public void SendUnit(List<Unit.Unit> unit)
         {
-            //On serialise la liste d'unites
-            BinaryFormatter format = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            format.Serialize(ms, unit);
-            byte[] bytes = new byte[ms.Capacity];
-            ms.Seek(0, SeekOrigin.Begin);
-            bytes = ms.GetBuffer();
-            bool Send = false;
-            foreach (var b in bytes)
-            {
-                Send = Send || b != 0;
-            }
-            if (Send)
-                sock.Send(bytes);
+            ////On serialise la liste d'unites
+            //BinaryFormatter format = new BinaryFormatter();
+            //MemoryStream ms = new MemoryStream();
+
+            //byte[] bytes = new byte[ms.Capacity];
+            //ms.Seek(0, SeekOrigin.Begin);
+            //bytes = ms.GetBuffer();
+            //if (end)
+            //{
+            //    format.Serialize(fs, unit);
+            //    end = false;
+            //} 
         }
+
         public void Receive()
         {
             while (true)
             {
                 //try
                 //{
-                    BinaryFormatter format = new BinaryFormatter();
-                    List<Unit.Unit> units;
-                    byte[] buffer = new byte[sock.ReceiveBufferSize];
-                    sock.Receive(buffer);
-                    MemoryStream mem = new MemoryStream(buffer);
-                    mem.Position = 0;
-                    units = (List<Unit.Unit>) format.Deserialize(mem);
-                    lock (enn)
+                BinaryFormatter format = new BinaryFormatter();
+                List<Unit.Unit> units;
+                //byte[] buffer = new byte[2048*128];
+                //sock.Receive(buffer);
+                //if (buffer != null)
+                //{
+                //MemoryStream mem = new MemoryStream(buffer);
+                //mem.Seek(0, SeekOrigin.Begin);
+                //try
+                //{
+                fs.Position = 0;
+                units = (List<Unit.Unit>)format.Deserialize(fs);
+                lock (enn)
+                {
+                    enn.Clear();
+                    for (int i = 0; i < units.Count; i++)
                     {
-                        enn.Clear();
-                        for (int i = 0; i < units.Count; i++)
-                        {
-                            units[i].Friendly = false;
-                            enn.Add(units[i]);
-                        }
+                        units[i].Friendly = false;
+                        enn.Add(units[i]);
                     }
+                }
                 //}
                 //catch
                 //{
-                //    try
-                //    {
-                //        string foo;
-                //        foo = clientReader.ReadLine();
-                //        if (foo != "")
-                //        {
-                //            chat.addString(foo);
-                //        }
-                //    }
-                //    catch
-                //    {
-                //        break;
-                //    }
+
                 //}
             }
+            //}
+            //catch
+            //{
+            //    //try
+            //    //{
+            //    //    string foo;
+            //    //    foo = clientReader.ReadLine();
+            //    //    if (foo != "")
+            //    //    {
+            //    //        chat.addString(foo);
+            //    //    }
+            //    //}
+            //    //catch
+            //    //{
+            //    //    
+            //    //}
+            //}
+            //}
         }
         public void Close()
         {

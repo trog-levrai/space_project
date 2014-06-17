@@ -13,9 +13,9 @@ Content\img\bullets\Bullet.xnb
 Content\img\ships\Chasseur.xnb
 Content\img\Cibleur.xnb
 Content\img\ships\Corvette.xnb
-Content\img\ships\Destroyer.xnb
-Content\img\ships\Cuirasse.xnb
 Content\img\ships\Croiseur.xnb
+Content\img\ships\Cuirasse.xnb
+Content\img\ships\Destroyer.xnb
 Content\img\FER.xnb
 Content\img\bullets\IonBullet.xnb
 Content\img\bullets\LaserBullet.xnb
@@ -59,12 +59,12 @@ Content\sounds\Espace.xnb
 Content\sounds\Menu.xnb
 Content\sounds\cinetiqueFire.xnb
 Content\sounds\explose2.xnb
+Content\sounds\laserFire1.xnb
+Content\sounds\laserFire2.xnb
 Content\sounds\laserHit.xnb
 Content\sounds\missileHit.xnb
 Content\sounds\MissileLaunch.xnb
 Content\sounds\shipDeath.xnb
-Content\sounds\laserFire1.xnb
-Content\sounds\laserFire2.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

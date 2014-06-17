@@ -264,7 +264,7 @@ namespace PositronNova
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();
 
-                                client = new Client("Polo", "94.23.56.31", 1234, this);
+                                client = new Client("trog", "94.23.56.31", 1234, this);
 
                                 client.Connect();
                                 for (int i = 0; i < unitList.Count; i++)
@@ -452,10 +452,10 @@ namespace PositronNova
                                 }
                                 if (client.Ennemies != null)
                                 {
-                                    foreach (var unit in client.Ennemies)
+                                    for (int i = 0; i < client.Ennemies.Count; i++)
                                     {
-                                        unit.Reload(Content);
-                                        unitList.Add(unit);
+                                        //client.Ennemies[i].Reload(Content);
+                                        unitList.Add(client.Ennemies[i]);
                                     }
                                 }
                             }
