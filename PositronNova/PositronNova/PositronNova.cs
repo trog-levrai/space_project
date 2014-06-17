@@ -38,6 +38,7 @@ namespace PositronNova
             get { return backgroundTexture; }
         }
         Texture2D image;
+        Texture2D image_lost;
 
         // WORLD ELEMENTS
         static List<Unit> unitList = new List<Unit>();
@@ -213,6 +214,7 @@ namespace PositronNova
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
             image = Content.Load<Texture2D>("Final_screen_won");
+            image_lost = Content.Load<Texture2D>("Final_screen_lost");
 
             #region LoadScreen
             startScreen = new StartScreen(
@@ -373,8 +375,14 @@ namespace PositronNova
                                     planeteList[i].Pv = planeteList[i].Pv_max;
                                     planeteList[i].LifeBar.Regenerer();
                                 }
-                                genHumain(10);
+                                //genHumain(10);
                                 //genAlien(10);
+                                if (difficulte_easy)
+                                    genHumain(10);
+                                else if (difficulte_medium)
+                                    genHumain(5);
+                                else if (difficulte_hard)
+                                    genHumain(1);
                                 planeteList[0].Niveau_centrale = 1;
                                 planeteList[0].Niveau_extracteur = 1;
                                 Planete.Niveau_caserne = 0;
@@ -587,6 +595,8 @@ namespace PositronNova
                         ressources = planeteList[0].setRessource();
                         ressources.Update(gameTime, planeteList[0].Niveau_centrale, planeteList[0].Niveau_extracteur);
 
+                        genAlienTime();
+
                         if (CheckKey(Keys.Escape))
                         {
                             action = true;
@@ -674,6 +684,10 @@ namespace PositronNova
                         {
                             CurrentGameState = GameState.Final;
                         }
+                        if (planeteList[0].Pv < 0)
+                        {
+                            CurrentGameState = GameState.Final;
+                        }
                     }
                     break;
                 case GameState.Final:
@@ -701,7 +715,7 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
             MouseState mouse = Mouse.GetState();
 
@@ -796,7 +810,10 @@ namespace PositronNova
                     }
                     break;
                 case GameState.Final:
-                    spriteBatch.Draw(image, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.CornflowerBlue);
+                    if (planeteList[1].Pv < 0)
+                        spriteBatch.Draw(image, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
+                    else
+                        spriteBatch.Draw(image_lost, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                     break;
             }
             spriteBatch.End();
@@ -818,7 +835,7 @@ namespace PositronNova
             string[] names = new string[] {"Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Baptiste"};
             for (int i = 0; i < nombre; i++)
             {
-                localUnit = new Unit(names[i], new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1));
+                localUnit = new Unit(names[i], new Vector2(rand.Next(0, 600), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1));
                 localUnit.Init();
                 unitList.Add(localUnit);
             }
@@ -832,6 +849,43 @@ namespace PositronNova
                 localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width / 2, BackgroundTexture.Width - 300), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
                 localUnit.Init();
                 unitList.Add(localUnit);
+            }
+        }
+
+        void genAlienTime()
+        {
+            if (last > compt)
+            {
+                int comptalien = 0;
+                Unit localUnit;
+                for (int i =0; i < unitList.Count; i++)
+                {
+                    if (unitList[i].Side == UnitSide.Alien)
+                        comptalien++;
+                }
+
+                if (Planete.Niveau_caserne != 0 && comptalien < 10)
+                {
+                    if (Planete.Niveau_caserne == 5 && Universite.Changement_blindage && Universite.Changement_moteur)
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
+                    }
+                    else if (Planete.Niveau_caserne >= 4 && Universite.Changement_blindage)
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Phagosome + 1));
+                    }
+                    else if (Planete.Niveau_caserne >= 2)
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Neurone + 1));
+                    }
+                    else
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), UnitType.Bacterie);
+                    }
+                    localUnit.Init();
+                    unitList.Add(localUnit);
+                }
+                last = new TimeSpan(0);
             }
         }
 

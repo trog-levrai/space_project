@@ -19,7 +19,7 @@ namespace PositronNova.Class.Unit
     public enum UnitType
     {
         Chasseur, Bombardier, Corvette, Destroyer, Croiseur, Cuirasse,
-        Virus, Bacterie, Neurone, Phagosome, Kraken, Nyan
+        Bacterie, Neurone, Phagosome, Kraken
     };
 
     public class Unit : sprite
