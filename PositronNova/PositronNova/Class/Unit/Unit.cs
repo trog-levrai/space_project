@@ -19,7 +19,7 @@ namespace PositronNova.Class.Unit
         // Sound et tir
         [XmlAttribute()]
         public int range;
-        public int Range
+        [XmlIgnore()] public int Range
         { get { return range;  } }
         [XmlAttribute()]
         System.TimeSpan fireRate;
@@ -35,7 +35,7 @@ namespace PositronNova.Class.Unit
         [XmlIgnore()] private SpriteFont _font;
         [XmlAttribute()]
         public string name;
-        public string Name
+        [XmlIgnore()] public string Name
         {
             get { return name; }
         }
@@ -47,7 +47,7 @@ namespace PositronNova.Class.Unit
         public bool selected;
         [XmlAttribute()]
         public bool hasTarget;
-        public bool HasTarget
+        [XmlIgnore()] public bool HasTarget
         {
             set { hasTarget = value; }
         }
@@ -57,13 +57,13 @@ namespace PositronNova.Class.Unit
         public int damage;
         [XmlAttribute()]
         public int pv_max;
-        public int Pv_max
+        [XmlIgnore()] public int Pv_max
         {
             get { return pv_max; }
         }
         [XmlAttribute()]
         public int pv;
-        public int Pv
+        [XmlIgnore()] public int Pv
         {
             get { return pv; }
             set { pv = value; }
@@ -80,7 +80,7 @@ namespace PositronNova.Class.Unit
         //oui moi aussi :o)
         [XmlAttribute()]
         public bool friendly;
-        public bool Friendly
+        [XmlIgnore()] public bool Friendly
         {
             get { return friendly; }
             set { friendly = value; }

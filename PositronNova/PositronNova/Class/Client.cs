@@ -88,6 +88,7 @@ namespace PositronNova.Class
                     //MemoryStream mem = new MemoryStream(buffer);
                     //mem.Position = 0;
                     units = (List<Unit.Unit>) format.Deserialize(clientReader);
+                    clientReader.DiscardBufferedData();
                     lock (enn)
                     {
                         for (int i = 0; i < units.Count; i++)
