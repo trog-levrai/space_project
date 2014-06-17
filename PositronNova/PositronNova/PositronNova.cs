@@ -16,9 +16,12 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace PositronNova
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+    enum EventType
+    {
+        meteor,
+        trounoir
+    };
+
     public class PositronNova : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
@@ -27,7 +30,7 @@ namespace PositronNova
         TimeSpan compt;
         TimeSpan last;
 
-        static public int winWidth = 1366, winHeight = 768; // Accessible pour les autres classes...
+        static public int winWidth = 1920, winHeight = 1080; // Accessible pour les autres classes...
         //Gestion des images...
         //Pour la gestion du serveur
         private static Thread _thEcoute;
@@ -39,6 +42,12 @@ namespace PositronNova
         }
 
         // WORLD ELEMENTS
+
+            //evenements aleatoires
+        private bool EnableEvent = false;
+        private System.TimeSpan TimeEvent = new TimeSpan(0,0,0,10), timeToEnd; // duree de l'event
+        private System.TimeSpan TimeGenEvent = new TimeSpan(0, 0, 0, 30), timeBeforeNE;
+
         static List<Unit> unitList = new List<Unit>();
         static public  List<Unit> UnitList 
         { 
@@ -98,6 +107,9 @@ namespace PositronNova
         // Brouillard
         BrouillardDeGuerre fog;
         bool enableFog = true;
+
+        // Trou noir
+        BlackHole blackhole;
 
         static Random rand = new Random();
         static public Random Rand { get { return rand; } }
@@ -286,6 +298,9 @@ namespace PositronNova
             vidPlayer.Play(vid);
 
             ui = Content.Load<Texture2D>(@"newUI");
+
+            blackhole = new BlackHole(new Vector2(backgroundTexture.Width / 2, backgroundTexture.Height / 2));
+            blackhole.ContentLoad(Content);
 
             interfaceJoueur = new IU();
             interfaceJoueur.ContentLoad(Content);
@@ -565,6 +580,7 @@ namespace PositronNova
 
                     if (activeScreen == actionScreen)
                     {
+                        blackhole.Update(gameTime);
                         cue.Pause();
                         cue1.Resume();
                         if (cue1.IsStopped)
@@ -642,6 +658,8 @@ namespace PositronNova
                             }
                         }
 
+                        
+
                         if (enableFog)
                             fog.Update();
 
@@ -666,7 +684,7 @@ namespace PositronNova
                         if (planeteList[1].Pv < 0)
                         {
                             activeScreen.Hide();
-                            Camera2d.Origine = new Vector2(0, 0);
+                            Camera2d.Origine = new Vector2(0);
                             activeScreen = finalScreenWon;
                             activeScreen.Show();
                         }
@@ -744,6 +762,8 @@ namespace PositronNova
                             }
                         }
 
+                        blackhole.Draw(spriteBatch);
+
                         foreach (Unit unit in unitList) // On utilise ChampdeVision ici c'est normal ! 
                         {
                             if (unit.champDeVision.Top < Camera2d.Origine.Y + PositronNova.winHeight && // On dessine que ce qu'il y a dans le scroll (performance) 
@@ -775,6 +795,8 @@ namespace PositronNova
 
                         if (enableFog)
                             fog.Draw(spriteBatch);
+
+                        
 
                         spriteBatch.Draw(ui, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                         //Affiche le chat
@@ -861,6 +883,14 @@ namespace PositronNova
         static public void AddEffect(EffectBullet effect)
         {
             effectBulletList.Add(effect);
+        }
+
+        public void RandomEvent(GameTime gametime)
+        {
+            if (EnableEvent)
+            {
+                
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace PositronNova
             :base(game, spriteBatch)
         {
             this.image= image;
-            imageRectangle = new Rectangle(0, 0, game.Window.ClientBounds.Width, game.Window.ClientBounds.Height);
+            imageRectangle = new Rectangle(0 + (int)Camera2d.Origine.X, 0 + (int)Camera2d.Origine.Y, PositronNova.winWidth, PositronNova.winHeight);
         }
 
         public override void  Draw(GameTime gameTime)

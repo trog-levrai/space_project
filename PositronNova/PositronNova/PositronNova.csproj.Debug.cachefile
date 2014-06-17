@@ -48,6 +48,10 @@ Content\img\effects\Burst.xnb
 Content\img\effects\Explosion2.xnb
 Content\img\effects\ExplosionLaser.xnb
 Content\img\effects\ExplosionMk3.xnb
+Content\img\life.xnb
+Content\img\alienShips\Neurone.xnb
+Content\img\alienShips\NeuroneSheet.xnb
+Content\img\misc\Brouillard.xnb
 Content\Affichage_mouse.xnb
 Content\chat.xnb
 Content\menufont.xnb
@@ -63,11 +67,7 @@ Content\sounds\laserHit.xnb
 Content\sounds\missileHit.xnb
 Content\sounds\MissileLaunch.xnb
 Content\sounds\shipDeath.xnb
-Content\img\life.xnb
-Content\img\alienShips\Neurone.xnb
-Content\img\alienShips\NeuroneSheet.xnb
 Content\newUI.xnb
-Content\img\misc\Brouillard.xnb
 Content\img\bullets\BloodSting.xnb
 Content\img\effects\ExplosionPlasma.xnb
 Content\img\alienShips\Kraken.xnb
@@ -140,6 +140,7 @@ Content\sounds\tirAlien.xnb
 Content\sounds\tirGluant.xnb
 Content\sounds\tirNeurone.xnb
 Content\sounds\IonFire.xnb
+Content\img\misc\sprites.xnb
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb
