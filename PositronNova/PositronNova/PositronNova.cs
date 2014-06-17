@@ -368,7 +368,10 @@ namespace PositronNova
                                     effectBulletList.RemoveAt(i);
                                     i--;
                                 }
-
+                                for (int i = 0; i < planeteList.Count; i++)
+                                {
+                                    planeteList[i].Pv = planeteList[i].Pv_max;
+                                }
                                 genHumain(10);
                                 //genAlien(10);
                                 planeteList[0].Niveau_centrale = 1;
@@ -671,6 +674,15 @@ namespace PositronNova
                     }
                     break;
                 case GameState.Final:
+                    if (CheckKey(Keys.Enter))
+                    {
+                        CurrentGameState = GameState.Game;
+                        Camera2d.Origine = new Vector2(0, 0);
+                        activeScreen.Hide();
+                        activeScreen = startScreen;
+                        activeScreen.Show();
+                    }
+
                     break;
             }
 
@@ -781,7 +793,7 @@ namespace PositronNova
                     }
                     break;
                 case GameState.Final:
-                    spriteBatch.Draw(image, new Vector2(Ca, Color.CornflowerBlue);
+                    spriteBatch.Draw(image, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.CornflowerBlue);
                     break;
             }
             spriteBatch.End();
