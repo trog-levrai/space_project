@@ -141,7 +141,10 @@ namespace PositronNova
         {
 
         }
-
+        public sprite()
+        {
+            
+        }
         /// <summary>
         /// Dessine le sprite en utilisant ses attributs et le spritebatch donné
         /// </summary>

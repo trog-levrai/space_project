@@ -88,7 +88,10 @@ namespace PositronNova.Class.Unit
         }
 
         //////////////////////////////////// CONSTRUCTEURS /////////////////////////////////////
-
+        public Unit() : base()
+        {
+            
+        }
         public Unit(String name, Vector2 position, UnitType unitType, bool friendly)
             : base(position)
         {
