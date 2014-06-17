@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -81,13 +82,16 @@ namespace PositronNova.Class
             {
                 //try
                 //{
-                    XmlSerializer format = new XmlSerializer(typeof(List<Unit.Unit>));
+                    XmlTextReader format = new XmlTextReader(clientReader);
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<Unit.Unit>));
+                    format.Normalization = false;
                     List<Unit.Unit> units;
                     //byte[] buffer = new byte[2048 * 128];
                     //sock.Receive(buffer);
                     //MemoryStream mem = new MemoryStream(buffer);
                     //mem.Position = 0;
-                    units = (List<Unit.Unit>) format.Deserialize(clientReader);
+                    format.Read();
+                    units = (List<Unit.Unit>)serializer.Deserialize(format);
                     clientReader.DiscardBufferedData();
                     lock (enn)
                     {
