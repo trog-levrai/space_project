@@ -360,7 +360,7 @@ namespace PositronNova
                                     i--;
                                 }
 
-                                genHumain(10);
+                                //genHumain(10);
                                 genAlien(10);
                                 planeteList[0].Niveau_centrale = 1;
                                 planeteList[0].Niveau_extracteur = 1;
@@ -582,6 +582,8 @@ namespace PositronNova
                             activeScreen.Show();
                         }
 
+                        // L'ordinateur évalue la situation
+                        IAStrategie();
 
                         for (int i = 0; i < unitList.Count; i++)
                         {
@@ -795,7 +797,7 @@ namespace PositronNova
             Unit localUnit;
             for (int i = 0; i < nombre; i++)
             {
-                localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width / 2, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
+                localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width / 2, BackgroundTexture.Width - 300), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
                 localUnit.Init();
                 unitList.Add(localUnit);
             }
@@ -835,6 +837,35 @@ namespace PositronNova
         static public void AddEffect(EffectBullet effect)
         {
             effectBulletList.Add(effect);
+        }
+
+        void IAStrategie()
+        {
+            // Sinon si il y a plus de 5 vaisseaux humain sur la carte, les aliens se dirigent vers la planète
+
+            int countHumain = 0;
+            int countAlien = 0;
+            for (int i = 0; i < PositronNova.UnitList.Count; i++)
+            {
+                if (PositronNova.UnitList[i].Side == UnitSide.Humain)
+                    countHumain++;
+                else if (PositronNova.UnitList[i].Side == UnitSide.Alien)
+                    countAlien++;
+            }
+
+            if (countHumain >= 5 && countAlien >= 5) // il faut que les aliens ait au moins 5 vaisseaux pour attaqué la planète adversaire, sinon pas assez nombreux et donc ils ne prennent pas le risque de perdre leur défense
+            {
+                countAlien = 0;
+                for (int i = 0; i < PositronNova.UnitList.Count; i++)
+                {
+                    if (PositronNova.UnitList[i].Side == UnitSide.Alien && countAlien <= 3)
+                    {
+                        countAlien++;
+                        PositronNova.UnitList[i].Destination = PositronNova.planeteList[0].Position + new Vector2(150, 100);
+                        PositronNova.UnitList[i].moving = true;
+                    }
+                }
+            }
         }
     }
 }

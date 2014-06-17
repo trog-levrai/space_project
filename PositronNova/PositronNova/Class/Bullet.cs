@@ -162,7 +162,7 @@ namespace PositronNova
                 case BulletType.Plasma:
                     texture = Manager.plasma_t;
                     hitNoise = Manager.plasmaHit_s;
-                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 40);
+                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 20);
                     speed = 11;
                     if (Universite.Changement_precision)
                         damage = 54;
@@ -190,7 +190,7 @@ namespace PositronNova
                     break;
                 case BulletType.StickySting:
                     texture = Manager.StickySting_t;
-                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 10);
+                    frequenceSpawnFumee = new TimeSpan(0, 0, 0, 0, 40);
                     speed = 9;
                     damage = 30;
                     break;
