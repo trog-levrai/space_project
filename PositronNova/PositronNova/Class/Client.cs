@@ -95,8 +95,11 @@ namespace PositronNova.Class
                     units = (List<Unit.Unit>) format.Deserialize(mem);
                     lock (enn)
                     {
-                        units[i].Friendly = false;
-                        enn.Add(units[i]);
+                        for (int i = 0; i < units.Count; i++)
+                        {
+                            units[i].Friendly = false;
+                            enn.Add(units[i]);
+                        }
                     }
                 }
                 //}
