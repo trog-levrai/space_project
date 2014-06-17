@@ -262,7 +262,7 @@ namespace PositronNova
                             if (startScreen.SelectedIndex == 2)
                             {
                                 seconde = new TimeSpan(0,0,10);
-                                millieme = new TimeSpan(0,0,0, 200);
+                                millieme = new TimeSpan(0, 0, 1);
                                 activeScreen.Hide();
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();
