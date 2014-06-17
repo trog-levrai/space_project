@@ -245,16 +245,16 @@ namespace PositronNova.Class.Unit
                 deathNoise.Play();
 
             // Bords du background
-            //if (position.X <= 5 || position.X + texture.Width >= PositronNova.BackgroundTexture.Width - 5 ||
-            //    position.Y <= 5 || position.Y + texture.Height >= PositronNova.BackgroundTexture.Height - 5)
-            //    moving = false;
+            if (position.X <= 5 || position.X + texture.Width >= PositronNova.BackgroundTexture.Width - 5 ||
+                position.Y <= 5 || position.Y + texture.Height >= PositronNova.BackgroundTexture.Height - 5)
+                moving = false;
 
             base.Update(gt);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 15), color);
+            spriteBatch.DrawString(_font, name, new Vector2(position.X - 3, position.Y - 15), color);
             //Mettre "|| !friendly" pour tester l'effet de la methode attack
             if (direction.X > 0)
                 spriteBatch.Draw(texture, centre, null, Color.White, (float)Math.Atan(direction.Y / direction.X), Vector2.Zero + new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.FlipHorizontally, 0);
@@ -263,9 +263,9 @@ namespace PositronNova.Class.Unit
             else
                 spriteBatch.Draw(texture, position, Color.White);
             isSelected(spriteBatch);
-            //if (selected)
-            //    spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
-            //aUneCible(spriteBatch);
+            if (selected)
+                spriteBatch.DrawString(_font, pv + "/" + pv_max, new Vector2(position.X - 3, position.Y - 25), color);
+            aUneCible(spriteBatch);
 
             base.Draw(spriteBatch);
         }
