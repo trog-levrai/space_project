@@ -25,6 +25,8 @@ namespace PositronNova
         //Pour la gestion du serveur
         private System.TimeSpan seconde;
         private TimeSpan last;
+        private TimeSpan millieme;
+        private TimeSpan last2;
         static private Texture2D backgroundTexture;
         static public Texture2D BackgroundTexture
         {
@@ -260,6 +262,7 @@ namespace PositronNova
                             if (startScreen.SelectedIndex == 2)
                             {
                                 seconde = new TimeSpan(0,0,10);
+                                millieme = new TimeSpan(0,0,0, 200);
                                 activeScreen.Hide();
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();
@@ -426,11 +429,12 @@ namespace PositronNova
                         if (activeScreen == actionScreen_)
                         {
                             last = last.Add(gameTime.ElapsedGameTime);
+                            last2 = last2.Add(gameTime.ElapsedGameTime);
                             if (last > seconde)
                             {
-                                if (Send)
+                                if (Send && last2 > millieme)
                                 {
-                                    List<Unit> send = new List<Unit>();
+                                    List <Unit> send = new List<Unit>();
                                     foreach (var unit in unitList)
                                     {
                                         if (unit.Friendly)
@@ -439,6 +443,7 @@ namespace PositronNova
                                         }
                                     }
                                     client.SendUnit(send);
+                                    last2 = new TimeSpan(0);
                                 }
                                 Send = !Send;
                                 for (int i = 0; i < unitList.Count; i++)
