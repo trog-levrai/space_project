@@ -263,6 +263,7 @@ namespace PositronNova
                             {
                                 seconde = new TimeSpan(0,0,10);
                                 millieme = new TimeSpan(0,0,0,1,0);
+
                                 activeScreen.Hide();
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();

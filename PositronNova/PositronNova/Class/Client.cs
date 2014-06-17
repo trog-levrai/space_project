@@ -25,12 +25,14 @@ namespace PositronNova.Class
         private Thread Writer;
         public String name { get; private set; }
         public Socket sock;
+        FileStream fs;
         StreamReader clientReader;
         StreamWriter clientWriter;
         //public BinaryFormatter format;
         public Client(String name, String host, int port, Game game)
         {
             //format = new BinaryFormatter();
+            fs = new FileStream("fook.dat", FileMode.Append);
             chat = new Chat(game);
             enn = new List<Unit.Unit>();
             this.name = name;
@@ -68,7 +70,6 @@ namespace PositronNova.Class
         {
             //On serialise la liste d'unites
             XmlSerializer format = new XmlSerializer(typeof(List<Unit.Unit>));
-            format.Serialize(clientWriter, unit);
             format.Serialize(clientWriter, unit);
             clientWriter.WriteLine();
             clientWriter.Flush();
