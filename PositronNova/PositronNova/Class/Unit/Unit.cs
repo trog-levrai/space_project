@@ -19,8 +19,8 @@ namespace PositronNova.Class.Unit
         private int range;
         public int Range
         { get { return range;  } }
-        [NonSerialized()] System.TimeSpan fireRate;
-        [NonSerialized()] System.TimeSpan last;
+        System.TimeSpan fireRate;
+        System.TimeSpan last;
 
         [NonSerialized()] SoundEffect deathNoise;
         [NonSerialized()] Bullet localBullet;
