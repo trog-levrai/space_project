@@ -67,9 +67,9 @@ namespace PositronNova.Class
             //On serialise la liste d'unites
             BinaryFormatter format = new BinaryFormatter();
             MemoryStream ms = new MemoryStream();
-            byte[] bytes = new byte[ms.Capacity];
-            ms.Seek(0, SeekOrigin.Begin);
             format.Serialize(ms, unit);
+            byte[] bytes = new byte[ms.Capacity];
+            ms.Position = 0;
             bytes = ms.GetBuffer();
             sock.Send(bytes);
         }

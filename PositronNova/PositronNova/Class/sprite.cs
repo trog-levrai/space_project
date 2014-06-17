@@ -66,12 +66,12 @@ namespace PositronNova
         public Rectangle hitbox;
         public Vector2 position;
         public Vector2 centre; // Centre de l'unité, autrement dit centre de la texture :o)
-        protected Vector2 direction;
-        protected Vector2 destination;
+        public Vector2 direction;
+        public Vector2 destination;
 
-        protected float speed;
+        public float speed;
 
-        protected float textureRotation;
+        public float textureRotation;
 
         [NonSerialized()] public Color[] textureData; //Pour les collisions Pix/Pix 
 
