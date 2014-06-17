@@ -37,6 +37,7 @@ namespace PositronNova
         {
             get { return backgroundTexture; }
         }
+        Texture2D image;
 
         // WORLD ELEMENTS
         static List<Unit> unitList = new List<Unit>();
@@ -61,6 +62,7 @@ namespace PositronNova
         ActionScreen actionScreen;
         OptionScreen optionScreen;
         PauseScreen pauseScreen;
+        FinalScreen finalScreenWon;
         bool action = false;
         static bool difficulte_easy;
         static public bool Difficulte_easy
@@ -126,7 +128,8 @@ namespace PositronNova
         enum GameState
         {
             Video,
-            Game
+            Game,
+            Final
         }
 
         private GameState CurrentGameState = GameState.Video;
@@ -209,6 +212,7 @@ namespace PositronNova
             Manager.ContentLoad(Content);
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
+            image = Content.Load<Texture2D>("Final_screen_won");
 
             #region LoadScreen
             startScreen = new StartScreen(
@@ -243,6 +247,11 @@ namespace PositronNova
                 Content.Load<Texture2D>("PauseScreen"));
             Components.Add(pauseScreen);
             pauseScreen.Hide();
+
+            finalScreenWon = new FinalScreen(
+                this,
+                spriteBatch,
+                Content.Load<Texture2D>("Final_screen_won"));
             #endregion
 
             activeScreen = startScreen;
@@ -359,9 +368,13 @@ namespace PositronNova
                                     effectBulletList.RemoveAt(i);
                                     i--;
                                 }
-
-                                //genHumain(10);
-                                genAlien(10);
+                                for (int i = 0; i < planeteList.Count; i++)
+                                {
+                                    planeteList[i].Pv = planeteList[i].Pv_max;
+                                    planeteList[i].LifeBar.Regenerer();
+                                }
+                                genHumain(10);
+                                //genAlien(10);
                                 planeteList[0].Niveau_centrale = 1;
                                 planeteList[0].Niveau_extracteur = 1;
                                 Planete.Niveau_caserne = 0;
@@ -656,7 +669,23 @@ namespace PositronNova
                         //}
 
                         text.KBInput(Keyboard.GetState());
+
+                        if (planeteList[1].Pv < 0)
+                        {
+                            CurrentGameState = GameState.Final;
+                        }
                     }
+                    break;
+                case GameState.Final:
+                    if (CheckKey(Keys.Enter))
+                    {
+                        CurrentGameState = GameState.Game;
+                        Camera2d.Origine = new Vector2(0, 0);
+                        activeScreen.Hide();
+                        activeScreen = startScreen;
+                        activeScreen.Show();
+                    }
+
                     break;
             }
 
@@ -672,7 +701,7 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
             MouseState mouse = Mouse.GetState();
 
@@ -765,6 +794,9 @@ namespace PositronNova
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
 
                     }
+                    break;
+                case GameState.Final:
+                    spriteBatch.Draw(image, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.CornflowerBlue);
                     break;
             }
             spriteBatch.End();

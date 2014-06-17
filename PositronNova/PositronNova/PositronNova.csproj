@@ -123,6 +123,7 @@
     <Compile Include="Class\Ressources\Ressources.cs" />
     <Compile Include="Class\Unit\Unit.cs" />
     <Compile Include="Menu\ActionScreen.cs" />
+    <Compile Include="Menu\FinalScreen.cs" />
     <Compile Include="Menu\GameScreen.cs" />
     <Compile Include="Menu\MenuComponent.cs" />
     <Compile Include="Menu\OptionComponent.cs" />
