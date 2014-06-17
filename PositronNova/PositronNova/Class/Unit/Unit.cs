@@ -26,13 +26,13 @@ namespace PositronNova.Class.Unit
         [XmlAttribute()]
         System.TimeSpan last;
 
-        [NonSerialized()] SoundEffect deathNoise;
-        [NonSerialized()] Bullet localBullet;
-        [NonSerialized()] BulletType weaponType;
+        [XmlIgnore()] SoundEffect deathNoise;
+        [XmlIgnore()] Bullet localBullet;
+        [XmlIgnore()] BulletType weaponType;
 
         // Caractéristiques unit
-        [NonSerialized()] private Color color;
-        [NonSerialized()] private SpriteFont _font;
+        [XmlIgnore()] private Color color;
+        [XmlIgnore()] private SpriteFont _font;
         [XmlAttribute()]
         public string name;
         public string Name
@@ -51,8 +51,8 @@ namespace PositronNova.Class.Unit
         {
             set { hasTarget = value; }
         }
-        [NonSerialized()] private Texture2D selection;
-        [NonSerialized()] private Texture2D cible;
+        [XmlIgnore()] private Texture2D selection;
+        [XmlIgnore()] private Texture2D cible;
         [XmlAttribute()]
         public int damage;
         [XmlAttribute()]
@@ -70,8 +70,7 @@ namespace PositronNova.Class.Unit
         }
 
         // Cible
-        [XmlAttribute()]
-        public Unit enn;
+        [XmlIgnore()]public Unit enn;
         public Unit Ennemy
         {
             get { return enn; }
