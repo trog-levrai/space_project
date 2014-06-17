@@ -69,6 +69,8 @@ namespace PositronNova.Class
             //On serialise la liste d'unites
             XmlSerializer format = new XmlSerializer(typeof(List<Unit.Unit>));
             format.Serialize(clientWriter, unit);
+            format.Serialize(clientWriter, unit);
+            clientWriter.WriteLine();
             clientWriter.Flush();
             //byte[] bytes = new byte[ms.Capacity];
             //ms.Position = 0;
@@ -82,16 +84,13 @@ namespace PositronNova.Class
             {
                 //try
                 //{
-                    XmlTextReader format = new XmlTextReader(clientReader);
                     XmlSerializer serializer = new XmlSerializer(typeof(List<Unit.Unit>));
-                    format.Normalization = false;
                     List<Unit.Unit> units;
                     //byte[] buffer = new byte[2048 * 128];
                     //sock.Receive(buffer);
                     //MemoryStream mem = new MemoryStream(buffer);
                     //mem.Position = 0;
-                    format.Read();
-                    units = (List<Unit.Unit>)serializer.Deserialize(format);
+                    units = (List<Unit.Unit>)serializer.Deserialize(clientReader);
                     clientReader.DiscardBufferedData();
                     lock (enn)
                     {
