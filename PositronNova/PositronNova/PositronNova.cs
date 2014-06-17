@@ -37,6 +37,7 @@ namespace PositronNova
         {
             get { return backgroundTexture; }
         }
+        Texture2D image;
 
         // WORLD ELEMENTS
         static List<Unit> unitList = new List<Unit>();
@@ -127,7 +128,8 @@ namespace PositronNova
         enum GameState
         {
             Video,
-            Game
+            Game,
+            Final
         }
 
         private GameState CurrentGameState = GameState.Video;
@@ -210,6 +212,7 @@ namespace PositronNova
             Manager.ContentLoad(Content);
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
+            image = Content.Load<Texture2D>("Final_screen_won");
 
             #region LoadScreen
             startScreen = new StartScreen(
@@ -249,8 +252,6 @@ namespace PositronNova
                 this,
                 spriteBatch,
                 Content.Load<Texture2D>("Final_screen_won"));
-            Components.Add(finalScreenWon);
-            finalScreenWon.Hide();
             #endregion
 
             activeScreen = startScreen;
@@ -665,17 +666,11 @@ namespace PositronNova
 
                         if (planeteList[1].Pv < 0)
                         {
-                            activeScreen.Hide();
-                            Camera2d.Origine = new Vector2(0, 0);
-                            activeScreen = finalScreenWon;
-                            activeScreen.Show();
+                            CurrentGameState = GameState.Final;
                         }
                     }
-
-                    if (activeScreen == finalScreenWon)
-                    { 
-
-                    }
+                    break;
+                case GameState.Final:
                     break;
             }
 
@@ -691,7 +686,7 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
             MouseState mouse = Mouse.GetState();
 
@@ -784,11 +779,9 @@ namespace PositronNova
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
 
                     }
-
-                    if (activeScreen == finalScreenWon)
-                    {
-                        finalScreenWon.Draw(gameTime);
-                    }
+                    break;
+                case GameState.Final:
+                    spriteBatch.Draw(image, new Vector2(Ca, Color.CornflowerBlue);
                     break;
             }
             spriteBatch.End();
