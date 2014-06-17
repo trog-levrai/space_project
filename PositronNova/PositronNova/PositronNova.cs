@@ -262,7 +262,7 @@ namespace PositronNova
                             if (startScreen.SelectedIndex == 2)
                             {
                                 seconde = new TimeSpan(0,0,10);
-                                millieme = new TimeSpan(0,0,0, 200);
+                                millieme = new TimeSpan(0,0,0,1,0);
                                 activeScreen.Hide();
                                 activeScreen = actionScreen_;
                                 activeScreen.Show();
@@ -429,10 +429,10 @@ namespace PositronNova
                         if (activeScreen == actionScreen_)
                         {
                             last = last.Add(gameTime.ElapsedGameTime);
-                            last2 = last2.Add(gameTime.ElapsedGameTime);
                             if (last > seconde)
                             {
-                                if (Send && last2 > millieme)
+                                last2 = last2.Add(gameTime.ElapsedGameTime);
+                                if (last2 > millieme)
                                 {
                                     List <Unit> send = new List<Unit>();
                                     foreach (var unit in unitList)
