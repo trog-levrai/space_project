@@ -25,7 +25,6 @@ namespace PositronNova.Class
         public Socket sock;
         StreamReader clientReader;
         StreamWriter clientWriter;
-        private FileStream fs;
         //public BinaryFormatter format;
         public Client(String name, String host, int port, Game game)
         {
@@ -37,7 +36,6 @@ namespace PositronNova.Class
             sock.Connect(host, port);
             this.clientReader = new StreamReader(new NetworkStream(sock));
             this.clientWriter = new StreamWriter(new NetworkStream(sock));
-            fs = new FileStream("save.dat", FileMode.Open);
             Writer = new Thread(new ThreadStart(Receive));
             Writer.IsBackground = true;
             Writer.Start();
@@ -66,18 +64,13 @@ namespace PositronNova.Class
         }
         public void SendUnit(List<Unit.Unit> unit)
         {
-            ////On serialise la liste d'unites
-            //BinaryFormatter format = new BinaryFormatter();
-            //MemoryStream ms = new MemoryStream();
-
-            //byte[] bytes = new byte[ms.Capacity];
-            //ms.Seek(0, SeekOrigin.Begin);
-            //bytes = ms.GetBuffer();
-            //if (end)
-            //{
-            //    format.Serialize(fs, unit);
-            //    end = false;
-            //} 
+            //On serialise la liste d'unites
+            BinaryFormatter format = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream();
+            byte[] bytes = new byte[ms.Capacity];
+            ms.Seek(0, SeekOrigin.Begin);
+            bytes = ms.GetBuffer();
+            sock.Send(bytes);
         }
 
         public void Receive()
