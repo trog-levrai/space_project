@@ -886,8 +886,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="img\misc\sprites.png">
       <Name>sprites</Name>
+=======
+    <Compile Include="Final_screen_lost.jpg">
+      <Name>Final_screen_lost</Name>
+>>>>>>> 248efb2d25e8e23ea52aeead3ba94a88aa7a5e23
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

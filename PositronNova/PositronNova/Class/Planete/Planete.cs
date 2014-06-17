@@ -429,6 +429,7 @@ namespace PositronNova
                     else
                     {
                         Manager.actionImpossible_s.Play();
+                        plus = false;
                     }
                 }
 
@@ -465,6 +466,7 @@ namespace PositronNova
                     else
                     {
                         Manager.actionImpossible_s.Play();
+                        plus = false;
                     }
                 }
                 if (selected && selected_caserne && plus)
@@ -503,6 +505,7 @@ namespace PositronNova
                     else
                     {
                         Manager.actionImpossible_s.Play();
+                        plus = false;
                     }
                 }
 

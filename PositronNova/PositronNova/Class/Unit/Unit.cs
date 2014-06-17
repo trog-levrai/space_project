@@ -19,7 +19,7 @@ namespace PositronNova.Class.Unit
     public enum UnitType
     {
         Chasseur, Bombardier, Corvette, Destroyer, Croiseur, Cuirasse,
-        Virus, Bacterie, Neurone, Phagosome, Kraken, Nyan
+        Bacterie, Neurone, Phagosome, Kraken
     };
 
     public class Unit : sprite
@@ -377,7 +377,7 @@ namespace PositronNova.Class.Unit
 
             PlacementHitBoxes();
 
-            if (side == UnitSide.Humain && !hasTarget)
+            if (!hasTarget)
                 deplacement(gt);
 
             IA();
@@ -479,6 +479,10 @@ namespace PositronNova.Class.Unit
 
             if (position == destination)
                 moving = false;
+            else
+            {
+                moving = true;
+            }
             if (hasTarget && enn != null && (enn.position - position).Length() <= range)
                 moving = false;
             if (hasTarget && homeWorld != null && (homeWorld.Position - position).Length() <= range)
@@ -486,7 +490,7 @@ namespace PositronNova.Class.Unit
 
             if (moving)
             {
-                destination = new Vector2((int)destination.X, (int)destination.Y);
+                destination = new Vector2((int)destination.X, (int)destination.Y); // coordonnée entière de la destination
                 direction = new Vector2(destination.X - position.X, destination.Y - position.Y);
                 direction.Normalize();
                 position += direction * speed; // Silence ça pousse... ahem... bouge ! :o)
@@ -651,7 +655,7 @@ namespace PositronNova.Class.Unit
                 {
                     for (int j = 0; j < collisionInterVaisseau.Length; j++)
                         for (int k = 0; k < PositronNova.UnitList[i].collisionInterVaisseau.Length; k++)
-                            if (collisionInterVaisseau[j].Intersects(PositronNova.UnitList[i].collisionInterVaisseau[k]))
+                            if (collisionInterVaisseau[j].Intersects(PositronNova.UnitList[i].collisionInterVaisseau[k]) && side == PositronNova.UnitList[i].Side)
                             {
                                 return new Vector2(PositronNova.UnitList[i].position.X - position.X, PositronNova.UnitList[i].position.Y - position.Y);
                             }
@@ -673,7 +677,7 @@ namespace PositronNova.Class.Unit
 
         void IA()
         {
-            if (enn == null || enn != null && enn.pv <= 0)
+            if (enn == null || (enn != null && enn.pv <= 0))
                 enn = null;
             if (homeWorld == null || homeWorld != null && homeWorld.Pv <= 0)
                 homeWorld = null;

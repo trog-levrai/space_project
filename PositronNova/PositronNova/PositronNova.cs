@@ -40,6 +40,8 @@ namespace PositronNova
         {
             get { return backgroundTexture; }
         }
+        Texture2D image;
+        Texture2D image_lost;
 
         // WORLD ELEMENTS
 
@@ -139,7 +141,8 @@ namespace PositronNova
         enum GameState
         {
             Video,
-            Game
+            Game,
+            Final
         }
 
         private GameState CurrentGameState = GameState.Video;
@@ -222,6 +225,8 @@ namespace PositronNova
             Manager.ContentLoad(Content);
 
             _camera = new Camera2d(GraphicsDevice.Viewport);
+            image = Content.Load<Texture2D>("Final_screen_won");
+            image_lost = Content.Load<Texture2D>("Final_screen_lost");
 
             #region LoadScreen
             startScreen = new StartScreen(
@@ -261,8 +266,6 @@ namespace PositronNova
                 this,
                 spriteBatch,
                 Content.Load<Texture2D>("Final_screen_won"));
-            Components.Add(finalScreenWon);
-            finalScreenWon.Hide();
             #endregion
 
             activeScreen = startScreen;
@@ -382,9 +385,19 @@ namespace PositronNova
                                     effectBulletList.RemoveAt(i);
                                     i--;
                                 }
-
-                                genHumain(10);
+                                for (int i = 0; i < planeteList.Count; i++)
+                                {
+                                    planeteList[i].Pv = planeteList[i].Pv_max;
+                                    planeteList[i].LifeBar.Regenerer();
+                                }
+                                //genHumain(10);
                                 //genAlien(10);
+                                if (difficulte_easy)
+                                    genHumain(10);
+                                else if (difficulte_medium)
+                                    genHumain(5);
+                                else if (difficulte_hard)
+                                    genHumain(1);
                                 planeteList[0].Niveau_centrale = 1;
                                 planeteList[0].Niveau_extracteur = 1;
                                 Planete.Niveau_caserne = 0;
@@ -598,6 +611,8 @@ namespace PositronNova
                         ressources = planeteList[0].setRessource();
                         ressources.Update(gameTime, planeteList[0].Niveau_centrale, planeteList[0].Niveau_extracteur);
 
+                        genAlienTime();
+
                         if (CheckKey(Keys.Escape))
                         {
                             action = true;
@@ -606,6 +621,8 @@ namespace PositronNova
                             activeScreen.Show();
                         }
 
+                        // L'ordinateur évalue la situation
+                        IAStrategie();
 
                         for (int i = 0; i < unitList.Count; i++)
                         {
@@ -683,17 +700,31 @@ namespace PositronNova
 
                         if (planeteList[1].Pv < 0)
                         {
+<<<<<<< HEAD
                             activeScreen.Hide();
                             Camera2d.Origine = new Vector2(0);
                             activeScreen = finalScreenWon;
                             activeScreen.Show();
+=======
+                            CurrentGameState = GameState.Final;
+                        }
+                        if (planeteList[0].Pv < 0)
+                        {
+                            CurrentGameState = GameState.Final;
+>>>>>>> 248efb2d25e8e23ea52aeead3ba94a88aa7a5e23
                         }
                     }
-
-                    if (activeScreen == finalScreenWon)
-                    { 
-
+                    break;
+                case GameState.Final:
+                    if (CheckKey(Keys.Enter))
+                    {
+                        CurrentGameState = GameState.Game;
+                        Camera2d.Origine = new Vector2(0, 0);
+                        activeScreen.Hide();
+                        activeScreen = startScreen;
+                        activeScreen.Show();
                     }
+
                     break;
             }
 
@@ -709,7 +740,7 @@ namespace PositronNova
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.transforme);
             MouseState mouse = Mouse.GetState();
 
@@ -806,11 +837,12 @@ namespace PositronNova
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
 
                     }
-
-                    if (activeScreen == finalScreenWon)
-                    {
-                        finalScreenWon.Draw(gameTime);
-                    }
+                    break;
+                case GameState.Final:
+                    if (planeteList[1].Pv < 0)
+                        spriteBatch.Draw(image, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
+                    else
+                        spriteBatch.Draw(image_lost, new Rectangle((int)Camera2d.Origine.X, (int)Camera2d.Origine.Y, winWidth, winHeight), Color.White);
                     break;
             }
             spriteBatch.End();
@@ -832,7 +864,7 @@ namespace PositronNova
             string[] names = new string[] {"Roger", "Gerard", "Patrick", "Mouloud", "Dede", "Jean-Claude", "Herve", "Gertrude", "Germaine", "Gisele", "Frenegonde", "JacquesArt", "JacquesOuille", "Riton", "Korben", "Jonathan", "Sebastien", "Paul", "Ilan", "Baptiste"};
             for (int i = 0; i < nombre; i++)
             {
-                localUnit = new Unit(names[i], new Vector2(rand.Next(0, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1));
+                localUnit = new Unit(names[i], new Vector2(rand.Next(0, 600), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Chasseur, (int)UnitType.Cuirasse + 1));
                 localUnit.Init();
                 unitList.Add(localUnit);
             }
@@ -843,9 +875,46 @@ namespace PositronNova
             Unit localUnit;
             for (int i = 0; i < nombre; i++)
             {
-                localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width / 2, BackgroundTexture.Width - 300), rand.Next(0, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
+                localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width / 2, BackgroundTexture.Width - 300), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height - 200)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
                 localUnit.Init();
                 unitList.Add(localUnit);
+            }
+        }
+
+        void genAlienTime()
+        {
+            if (last > compt)
+            {
+                int comptalien = 0;
+                Unit localUnit;
+                for (int i =0; i < unitList.Count; i++)
+                {
+                    if (unitList[i].Side == UnitSide.Alien)
+                        comptalien++;
+                }
+
+                if (Planete.Niveau_caserne != 0 && comptalien < 10)
+                {
+                    if (Planete.Niveau_caserne == 5 && Universite.Changement_blindage && Universite.Changement_moteur)
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Kraken + 1));
+                    }
+                    else if (Planete.Niveau_caserne >= 4 && Universite.Changement_blindage)
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Phagosome + 1));
+                    }
+                    else if (Planete.Niveau_caserne >= 2)
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), (UnitType)rand.Next((int)UnitType.Bacterie, (int)UnitType.Neurone + 1));
+                    }
+                    else
+                    {
+                        localUnit = new Unit(new Vector2(rand.Next(BackgroundTexture.Width - 300, BackgroundTexture.Width), rand.Next(BackgroundTexture.Height / 2, BackgroundTexture.Height)), UnitType.Bacterie);
+                    }
+                    localUnit.Init();
+                    unitList.Add(localUnit);
+                }
+                last = new TimeSpan(0);
             }
         }
 
@@ -885,11 +954,40 @@ namespace PositronNova
             effectBulletList.Add(effect);
         }
 
+
         public void RandomEvent(GameTime gametime)
         {
             if (EnableEvent)
             {
                 
+
+        void IAStrategie()
+        {
+            // Sinon si il y a plus de 5 vaisseaux humain sur la carte, les aliens se dirigent vers la planète
+
+            int countHumain = 0;
+            int countAlien = 0;
+            for (int i = 0; i < PositronNova.UnitList.Count; i++)
+            {
+                if (PositronNova.UnitList[i].Side == UnitSide.Humain)
+                    countHumain++;
+                else if (PositronNova.UnitList[i].Side == UnitSide.Alien)
+                    countAlien++;
+            }
+
+            if (countHumain >= 5 && countAlien >= 5) // il faut que les aliens ait au moins 5 vaisseaux pour attaqué la planète adversaire, sinon pas assez nombreux et donc ils ne prennent pas le risque de perdre leur défense
+            {
+                countAlien = 0;
+                for (int i = 0; i < PositronNova.UnitList.Count; i++)
+                {
+                    if (PositronNova.UnitList[i].Side == UnitSide.Alien && countAlien <= 3)
+                    {
+                        countAlien++;
+                        PositronNova.UnitList[i].Destination = PositronNova.planeteList[0].Position + new Vector2(150, 100);
+                        PositronNova.UnitList[i].moving = true;
+                    }
+                }
+>>>>>>> 248efb2d25e8e23ea52aeead3ba94a88aa7a5e23
             }
         }
     }

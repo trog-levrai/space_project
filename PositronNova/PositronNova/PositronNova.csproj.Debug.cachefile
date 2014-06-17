@@ -140,7 +140,11 @@ Content\sounds\tirAlien.xnb
 Content\sounds\tirGluant.xnb
 Content\sounds\tirNeurone.xnb
 Content\sounds\IonFire.xnb
+<<<<<<< HEAD
 Content\img\misc\sprites.xnb
+=======
+Content\Final_screen_lost.xnb
+>>>>>>> 248efb2d25e8e23ea52aeead3ba94a88aa7a5e23
 Content\Video\Vid.wmv
 Content\sounds\Playsong.xgs
 Content\sounds\Wave Bank.xwb

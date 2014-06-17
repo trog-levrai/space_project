@@ -24,7 +24,7 @@ namespace PositronNova
 
         public override void  Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(image, imageRectangle, Color.White);
+            spriteBatch.Draw(image, new Rectangle(0, 0, 500, 500), Color.White);
  	         base.Draw(gameTime);
         }
     }

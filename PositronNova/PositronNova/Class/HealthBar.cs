@@ -51,5 +51,11 @@ namespace PositronNova.Class
             else
                 sb.Draw(texture, new Rectangle(x, y, largeurTexture, life.Height), life, Color.Red);
         }
+
+        public void Regenerer()
+        {
+            largeurTexture = largeurTextureFixe;
+            this.vie = vieMax;
+        }
     }
 }
