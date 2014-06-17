@@ -86,22 +86,14 @@ namespace PositronNova.Class
             {
                 //try
                 //{
-                BinaryFormatter format = new BinaryFormatter();
-                List<Unit.Unit> units;
-                //byte[] buffer = new byte[2048*128];
-                //sock.Receive(buffer);
-                //if (buffer != null)
-                //{
-                //MemoryStream mem = new MemoryStream(buffer);
-                //mem.Seek(0, SeekOrigin.Begin);
-                //try
-                //{
-                fs.Position = 0;
-                units = (List<Unit.Unit>)format.Deserialize(fs);
-                lock (enn)
-                {
-                    enn.Clear();
-                    for (int i = 0; i < units.Count; i++)
+                    BinaryFormatter format = new BinaryFormatter();
+                    List<Unit.Unit> units;
+                    byte[] buffer = new byte[2048 * 128];
+                    sock.Receive(buffer);
+                    MemoryStream mem = new MemoryStream(buffer);
+                    mem.Position = 0;
+                    units = (List<Unit.Unit>) format.Deserialize(mem);
+                    lock (enn)
                     {
                         units[i].Friendly = false;
                         enn.Add(units[i]);
@@ -112,7 +104,6 @@ namespace PositronNova.Class
                 //{
 
                 //}
-            }
             //}
             //catch
             //{
