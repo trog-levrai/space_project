@@ -61,6 +61,7 @@ namespace PositronNova
         ActionScreen actionScreen;
         OptionScreen optionScreen;
         PauseScreen pauseScreen;
+        FinalScreen finalScreenWon;
         bool action = false;
         static bool difficulte_easy;
         static public bool Difficulte_easy
@@ -243,6 +244,13 @@ namespace PositronNova
                 Content.Load<Texture2D>("PauseScreen"));
             Components.Add(pauseScreen);
             pauseScreen.Hide();
+
+            finalScreenWon = new FinalScreen(
+                this,
+                spriteBatch,
+                Content.Load<Texture2D>("Final_screen_won"));
+            Components.Add(finalScreenWon);
+            finalScreenWon.Hide();
             #endregion
 
             activeScreen = startScreen;
@@ -361,7 +369,7 @@ namespace PositronNova
                                 }
 
                                 genHumain(10);
-                                genAlien(10);
+                                //genAlien(10);
                                 planeteList[0].Niveau_centrale = 1;
                                 planeteList[0].Niveau_extracteur = 1;
                                 Planete.Niveau_caserne = 0;
@@ -654,6 +662,19 @@ namespace PositronNova
                         //}
 
                         text.KBInput(Keyboard.GetState());
+
+                        if (planeteList[1].Pv < 0)
+                        {
+                            activeScreen.Hide();
+                            Camera2d.Origine = new Vector2(0, 0);
+                            activeScreen = finalScreenWon;
+                            activeScreen.Show();
+                        }
+                    }
+
+                    if (activeScreen == finalScreenWon)
+                    { 
+
                     }
                     break;
             }
@@ -762,6 +783,11 @@ namespace PositronNova
                         spriteBatch.DrawString(chat, text.ReturnString(Keyboard.GetState()), text.GetPosition(), Color.AntiqueWhite);
                         spriteBatch.DrawString(chat, ressources.ToString(), new Vector2(Camera2d.Origine.X, Camera2d.Origine.Y), Color.White);
 
+                    }
+
+                    if (activeScreen == finalScreenWon)
+                    {
+                        finalScreenWon.Draw(gameTime);
                     }
                     break;
             }
