@@ -194,7 +194,6 @@ namespace PositronNova.Class.Unit
             }
         }
         //Fonction appelle a la reception
-        [OnDeserialized()]
         public void Reload(ContentManager cm)
         {
             deathNoise = cm.Load<SoundEffect>("sounds\\shipDeath");
